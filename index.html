@@ -1176,9 +1176,13 @@
         document.getElementById('sports-main-nav').addEventListener('click', (event) => {
              event.stopPropagation(); // Prevent document click from immediately closing the dropdown
              const sportsDropdown = document.getElementById('sports-dropdown-menu');
-             sportsDropdown.classList.toggle('hidden'); // Toggle visibility of the main dropdown
-             document.getElementById('rugby-sub-dropdown').classList.add('hidden'); // Hide rugby sub-dropdown if open
-             document.getElementById('bourbon-country-sub-dropdown').classList.add('hidden'); // Hide nested bourbon dropdown if open
+             const wasSportsDropdownVisible = !sportsDropdown.classList.contains('hidden'); // Check current visibility
+
+             closeAllDropdowns(); // Close all dropdowns first
+
+             if (!wasSportsDropdownVisible) {
+                 sportsDropdown.classList.remove('hidden'); // If it was hidden, show it
+             }
 
              // Clear gallery and set message when clicking the main "Sports" tab itself
              galleryContainer.innerHTML = `<p class="text-orange-400 text-center col-span-full text-xl py-20">Select a sub-category to view photos.</p>`;
@@ -1194,8 +1198,18 @@
         document.getElementById('rugby-folder-item').addEventListener('click', (event) => {
             event.stopPropagation(); // Prevent parent dropdown from closing
             const rugbySubDropdown = document.getElementById('rugby-sub-dropdown');
-            rugbySubDropdown.classList.toggle('hidden'); // Toggle visibility of the Rugby sub-dropdown
-            document.getElementById('bourbon-country-sub-dropdown').classList.add('hidden'); // Hide nested bourbon dropdown if open
+            const wasRugbySubDropdownVisible = !rugbySubDropdown.classList.contains('hidden'); // Check current visibility
+
+            // Close only deeper nested dropdowns first, but keep parent open if it was open
+            document.getElementById('bourbon-country-sub-dropdown').classList.add('hidden');
+
+            if (wasRugbySubDropdownVisible) {
+                 rugbySubDropdown.classList.add('hidden'); // If it was visible, hide it
+            } else {
+                 closeAllDropdowns(); // Close all other main dropdowns
+                 document.getElementById('sports-dropdown-menu').classList.remove('hidden'); // Keep sports main dropdown open
+                 rugbySubDropdown.classList.remove('hidden'); // Show rugby sub-dropdown
+            }
 
             // Clear gallery and set message when clicking this intermediate category
             galleryContainer.innerHTML = `<p class="text-orange-400 text-center col-span-full text-xl py-20">Select a Rugby category.</p>`;
@@ -1218,7 +1232,16 @@
         document.getElementById('bourbon-country-main-item').addEventListener('click', (event) => {
             event.stopPropagation(); // Prevent parent dropdown from closing when clicking this item
             const nestedDropdown = document.getElementById('bourbon-country-sub-dropdown');
-            nestedDropdown.classList.toggle('hidden'); // Toggle visibility of the deepest nested dropdown
+            const wasNestedDropdownVisible = !nestedDropdown.classList.contains('hidden'); // Check current visibility
+
+            // Close all dropdowns, then reopen the necessary parent ones, and toggle this one
+            closeAllDropdowns();
+            document.getElementById('sports-dropdown-menu').classList.remove('hidden'); // Keep sports main dropdown open
+            document.getElementById('rugby-sub-dropdown').classList.remove('hidden'); // Keep rugby sub-dropdown open
+
+            if (!wasNestedDropdownVisible) {
+                nestedDropdown.classList.remove('hidden'); // If it was hidden, show it
+            }
 
             // Clear gallery and set message when clicking this intermediate category
             galleryContainer.innerHTML = `<p class="text-orange-400 text-center col-span-full text-xl py-20">Select a Bourbon Country 10s game or team category.</p>`;
