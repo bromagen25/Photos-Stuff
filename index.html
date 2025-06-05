@@ -106,6 +106,8 @@
             color: black;
             font-weight: bold;
         }
+
+        /* Default dropdown styles - rely on 'hidden' class for visibility control */
         .dropdown-menu {
             position: absolute;
             top: 100%; /* Position below the parent nav item */
@@ -116,29 +118,15 @@
             min-width: 100%; /* Match parent width */
             z-index: 10;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow for dropdown */
-            display: none; /* Hidden by default */
-        }
-        /* Make dropdown visible for its parent group hover */
-        .group:hover > .dropdown-menu {
-            display: block;
-        }
-        /* Style for nested dropdown */
-        .group\/sub:hover > .dropdown-menu {
-            display: block;
-            /* On small screens, nested dropdowns drop down */
-            left: 0;
-            top: 100%;
-        }
-        /* Style for deeply nested dropdown (Bourbon Country 10s's sub-dropdown) */
-        .group\/sub-sub:hover > .dropdown-menu {
-            display: block;
-            /* On small screens, deeply nested dropdowns also drop down */
-            left: 0;
-            top: 100%;
+            /* 'display: none' is now controlled by the 'hidden' Tailwind class, added by JS */
         }
 
-        /* Media query for larger screens: nested dropdowns open to the side */
-        @media (min-width: 768px) { /* md breakpoint for Tailwind */
+        /* Only apply hover effects for dropdowns on desktop (min-width: 768px) */
+        @media (min-width: 768px) {
+            .group:hover > .dropdown-menu {
+                /* Remove 'hidden' class on hover to show the dropdown */
+                /* Tailwind's 'hidden' utility adds display: none. Removing it applies default display. */
+            }
             .group\/sub:hover > .dropdown-menu {
                 left: 100%; /* Open to the right of the parent */
                 top: 0; /* Align with the top of the parent */
@@ -148,7 +136,6 @@
                 top: 0; /* Align with the top of the parent */
             }
         }
-
 
         .dropdown-menu-item {
             padding: 0.75rem 1.5rem;
@@ -277,13 +264,13 @@
         <div id="sports-main-nav" class="nav-item relative group">
             Sports
             <!-- Dropdown Menu for Sports sub-categories -->
-            <div id="sports-dropdown-menu" class="dropdown-menu">
+            <div id="sports-dropdown-menu" class="dropdown-menu hidden">
                 <!-- Rugby Folder - nested dropdown opener -->
                 <div id="rugby-folder-item" class="dropdown-menu-item relative group/sub">
                     Rugby
                     <span class="ml-2 text-sm">&#9658;</span> <!-- Right arrow for visual cue -->
                     <!-- Nested Dropdown for Rugby sub-categories -->
-                    <div id="rugby-sub-dropdown" class="dropdown-menu">
+                    <div id="rugby-sub-dropdown" class="dropdown-menu hidden">
                         <!-- Rugby (04-12-2025) - direct sub-item under Rugby folder -->
                         <div id="rugby-04-12-2025-item" class="dropdown-menu-item">Rugby (04-12-2025)</div>
 
@@ -292,7 +279,7 @@
                             Bourbon Country 10s
                             <span class="ml-2 text-sm">&#9658;</span>
                             <!-- Deeply Nested Dropdown for Bourbon Country 10s games -->
-                            <div id="bourbon-country-sub-dropdown" class="dropdown-menu">
+                            <div id="bourbon-country-sub-dropdown" class="dropdown-menu hidden">
                                 <div id="bourbon-country-10s-game1-item" class="dropdown-menu-item">Game 1</div>
                                 <div id="bourbon-country-10s-game2-item" class="dropdown-menu-item">Game 2</div>
                                 <div id="bourbon-country-10s-game3-item" class="dropdown-menu-item">Game 3</div>
@@ -1099,7 +1086,8 @@
         });
 
         /**
-         * Closes all dropdown menus.
+         * Closes all dropdown menus by adding the 'hidden' class to them.
+         * This function is crucial for ensuring dropdowns disappear after interaction.
          */
         function closeAllDropdowns() {
             document.getElementById('sports-dropdown-menu').classList.add('hidden');
@@ -1200,15 +1188,14 @@
             const rugbySubDropdown = document.getElementById('rugby-sub-dropdown');
             const wasRugbySubDropdownVisible = !rugbySubDropdown.classList.contains('hidden'); // Check current visibility
 
-            // Close only deeper nested dropdowns first, but keep parent open if it was open
-            document.getElementById('bourbon-country-sub-dropdown').classList.add('hidden');
+            // Close all dropdowns first
+            closeAllDropdowns();
 
-            if (wasRugbySubDropdownVisible) {
-                 rugbySubDropdown.classList.add('hidden'); // If it was visible, hide it
-            } else {
-                 closeAllDropdowns(); // Close all other main dropdowns
-                 document.getElementById('sports-dropdown-menu').classList.remove('hidden'); // Keep sports main dropdown open
-                 rugbySubDropdown.classList.remove('hidden'); // Show rugby sub-dropdown
+            // Re-open parents if needed, then toggle this dropdown
+            document.getElementById('sports-dropdown-menu').classList.remove('hidden'); // Keep sports main dropdown open
+
+            if (!wasRugbySubDropdownVisible) {
+                rugbySubDropdown.classList.remove('hidden'); // If it was hidden, show it
             }
 
             // Clear gallery and set message when clicking this intermediate category
@@ -1234,8 +1221,10 @@
             const nestedDropdown = document.getElementById('bourbon-country-sub-dropdown');
             const wasNestedDropdownVisible = !nestedDropdown.classList.contains('hidden'); // Check current visibility
 
-            // Close all dropdowns, then reopen the necessary parent ones, and toggle this one
+            // Close all dropdowns first
             closeAllDropdowns();
+
+            // Re-open parents if needed, then toggle this dropdown
             document.getElementById('sports-dropdown-menu').classList.remove('hidden'); // Keep sports main dropdown open
             document.getElementById('rugby-sub-dropdown').classList.remove('hidden'); // Keep rugby sub-dropdown open
 
@@ -1282,8 +1271,10 @@
             const sportsMainNav = document.getElementById('sports-main-nav');
             const homeNav = document.getElementById('home-nav');
             const shareButton = document.getElementById('shareButton');
-            // Only close dropdowns if click is not on a nav item that should keep a dropdown open
-            if (!sportsMainNav.contains(event.target) && !homeNav.contains(event.target) && !shareButton.contains(event.target)) {
+            const clickedInsideNav = sportsMainNav.contains(event.target) || homeNav.contains(event.target) || shareButton.contains(event.target);
+
+            // Only close dropdowns if the click occurred outside the navigation area
+            if (!clickedInsideNav) {
                 closeAllDropdowns();
             }
         });
