@@ -37,8 +37,7 @@
             max-width: 90vw;
             max-height: 90vh;
             object-fit: contain;
-            /* Ensure the image itself doesn't cause overflow */
-            width: auto; /* Allow image to size naturally up to max-width */
+            /* Ensure the image itself doesn't cause overflow. Removed width: auto; as it's not the primary cause and flex handles sizing. */
             height: auto; /* Maintain aspect ratio */
         }
 
@@ -91,7 +90,9 @@
     </main>
 
     <!-- Image Modal -->
-    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 hidden p-4" aria-modal="true" role="dialog">
+    <!-- Removed 'p-4' class from this div to prevent overflow on very small screens,
+         as the inner content already specifies max-width/height relative to viewport. -->
+    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 hidden" aria-modal="true" role="dialog">
         <div class="relative flex items-center justify-center w-full h-full">
             <img id="modal-img" src="" alt="Gallery Image" class="rounded-lg shadow-xl cursor-pointer">
             <!-- Navigation arrows -->
@@ -750,7 +751,6 @@
                 // If we reach here, it means the current path points directly to an image array.
                 // This shouldn't happen if the navigation logic is correct, but as a fallback,
                 // it would mean we're trying to render buttons for an image array.
-                // We should always navigate *to* a gallery from a button, not *through* it.
                 return;
             }
 
