@@ -14,6 +14,7 @@
             -moz-user-select: none; /* Firefox */
             -ms-user-select: none; /* IE10+ */
             user-select: none; /* Standard */
+            overflow-x: hidden; /* Prevent horizontal scrolling on body */
         }
         /* Custom scrollbar for better aesthetics */
         ::-webkit-scrollbar {
@@ -36,6 +37,19 @@
             max-width: 90vw;
             max-height: 90vh;
             object-fit: contain;
+            /* Ensure the image itself doesn't cause overflow */
+            width: auto; /* Allow image to size naturally up to max-width */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        /* Ensure the modal content is flexed to center its children */
+        #image-modal > div { /* Target the inner div within the modal */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%; /* Take full width of parent modal */
+            height: 100%; /* Take full height of parent modal */
+            overflow: hidden; /* Crucial: hide any overflow from modal content */
         }
     </style>
 </head>
@@ -948,7 +962,6 @@
             currentImageIndex = index;
             modalImg.src = currentGalleryImages[currentImageIndex];
             imageModal.classList.remove('hidden');
-            // No need to reset imageClickCount, as it's no longer used for opening host site.
             document.body.style.overflow = 'hidden'; // Prevent scrolling background
         }
 
@@ -966,7 +979,6 @@
         function showNextImage() {
             currentImageIndex = (currentImageIndex + 1) % currentGalleryImages.length;
             modalImg.src = currentGalleryImages[currentImageIndex];
-            // No need to reset imageClickCount here either.
         }
 
         /**
@@ -975,7 +987,6 @@
         function showPreviousImage() {
             currentImageIndex = (currentImageIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
             modalImg.src = currentGalleryImages[currentImageIndex];
-            // No need to reset imageClickCount here either.
         }
 
         // --- Event Listeners ---
@@ -1050,7 +1061,7 @@
         prevImgBtn.addEventListener('click', showPreviousImage);
         nextImgBtn.addEventListener('click', showNextImage);
 
-        // MODIFIED: Single click on modal image now opens the Postimg.cc host page
+        // Single click on modal image now opens the Postimg.cc host page
         modalImg.addEventListener('click', () => {
             if (modalImg.src) { // Ensure there's an image loaded
                 const parts = modalImg.src.split('/');
