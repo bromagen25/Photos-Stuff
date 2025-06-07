@@ -36,7 +36,38 @@
             max-width: 90vw;
             max-height: 90vh;
             object-fit: contain;
-        }
+       <style>
+    body {
+        font-family: 'Inter', sans-serif;
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+ */
+        user-select: none; /* Standard */
+        overflow-x: hidden; /* Add this line */
+    }
+    /* Custom scrollbar for better aesthetics */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #333; /* Dark track */
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #f97316; /* Orange thumb */
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #ea580c; /* Darker orange on hover */
+    }
+
+    /* Styling for the modal image - ensures it fits and is centered */
+    #modal-img {
+        max-width: 90vw;
+        max-height: 90vh;
+        object-fit: contain;
+    }
+</style> }
     </style>
 </head>
 <body class="bg-black text-orange-400 min-h-screen flex flex-col">
