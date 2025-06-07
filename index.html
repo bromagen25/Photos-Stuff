@@ -8,13 +8,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Apply border-box to all elements for consistent layout calculations */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             -webkit-user-select: none; /* Safari */
             -moz-user-select: none; /* Firefox */
             -ms-user-select: none; /* IE10+ */
             user-select: none; /* Standard */
-            overflow-x: hidden; /* Prevent horizontal scrolling on body */
+            overflow-x: hidden; /* Crucial: Prevent horizontal scrolling on the body */
         }
         /* Custom scrollbar for better aesthetics */
         ::-webkit-scrollbar {
@@ -34,21 +39,31 @@
 
         /* Styling for the modal image - ensures it fits and is centered */
         #modal-img {
-            max-width: 90vw;
-            max-height: 90vh;
-            object-fit: contain;
-            /* Ensure the image itself doesn't cause overflow. Removed width: auto; as it's not the primary cause and flex handles sizing. */
-            height: auto; /* Maintain aspect ratio */
+            max-width: 100%; /* Ensure image doesn't overflow its direct parent */
+            max-height: 90vh; /* Limit height relative to viewport height */
+            object-fit: contain; /* Ensure image fits within bounds while maintaining aspect ratio */
+            height: auto; /* Allow height to adjust automatically */
+            width: auto; /* Allow width to adjust automatically */
         }
 
         /* Ensure the modal content is flexed to center its children */
-        #image-modal > div { /* Target the inner div within the modal */
+        #image-modal {
+            /* The parent modal container itself should be flexible */
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100%; /* Take full width of parent modal */
+            padding: 1rem; /* Added back a small padding to the modal for breathing room around the image */
+            /* This padding will now be included within the modal's dimensions due to box-sizing: border-box */
+        }
+
+        #image-modal > div { /* Target the inner div within the modal */
+            position: relative; /* Keep relative for absolute children (arrows, close button) */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%; /* Take full width of parent modal (which now has padding) */
             height: 100%; /* Take full height of parent modal */
-            overflow: hidden; /* Crucial: hide any overflow from modal content */
+            overflow: hidden; /* Hide any overflow from modal content, especially important if images are very large */
         }
     </style>
 </head>
@@ -90,9 +105,7 @@
     </main>
 
     <!-- Image Modal -->
-    <!-- Removed 'p-4' class from this div to prevent overflow on very small screens,
-         as the inner content already specifies max-width/height relative to viewport. -->
-    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 hidden" aria-modal="true" role="dialog">
+    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden" aria-modal="true" role="dialog">
         <div class="relative flex items-center justify-center w-full h-full">
             <img id="modal-img" src="" alt="Gallery Image" class="rounded-lg shadow-xl cursor-pointer">
             <!-- Navigation arrows -->
