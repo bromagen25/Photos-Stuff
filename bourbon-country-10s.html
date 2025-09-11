@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bourbon Country 10s Photo Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styles for smooth transitions and font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .gallery-image {
+            transition: transform 0.2s ease-in-out;
+        }
+        .gallery-image:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+        .modal {
+            background-color: rgba(0, 0, 0, 0.9);
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            max-height: 90vh; /* Limit height to prevent overflow on smaller screens */
+            max-width: 90vw; /* Limit width to prevent overflow on smaller screens */
+            object-fit: contain; /* Ensure image fits within bounds */
+            cursor: pointer; /* Indicate that the modal image is clickable */
+        }
+        .loader {
+            border-top-color: #3498db;
+            -webkit-animation: spinner 1.5s linear infinite;
+            animation: spinner 1.5s linear infinite;
+        }
+        @-webkit-keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8">
+
+    <header class="w-full max-w-7xl mx-auto flex justify-between items-center mb-6">
+        <h1 id="gallery-title" class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight"></h1>
+        <a href="index.html" class="bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-700 transition duration-300">
+            <i class="fas fa-home"></i>
+        </a>
+    </header>
+
+    <nav class="w-full max-w-7xl mx-auto mb-8 flex flex-wrap justify-center gap-2 sm:gap-4">
+        <button class="bg-gray-800 text-white py-2 px-4 rounded-full hover:bg-gray-700 transition duration-300" data-gallery="Bourbon Country 10s Game 1">Game 1</button>
+        <button class="bg-gray-800 text-white py-2 px-4 rounded-full hover:bg-gray-700 transition duration-300" data-gallery="Bourbon Country 10s Game 2">Game 2</button>
+        <button class="bg-gray-800 text-white py-2 px-4 rounded-full hover:bg-gray-700 transition duration-300" data-gallery="Team">Team</button>
+    </nav>
+
+    <main id="gallery" class="w-full max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        </main>
+
+    <div id="image-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center modal transition-opacity duration-300">
+        <div class="relative flex flex-col items-center max-w-screen-xl max-h-screen">
+            <div class="absolute top-4 right-4 z-50">
+                <button id="close-modal-button" class="bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-700 transition duration-300">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="relative w-full h-full flex items-center justify-center">
+                <img id="modal-image" src="" alt="Full-screen view" class="modal-content">
+            </div>
+
+            <button id="prev-button" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-700 transition duration-300 focus:outline-none">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="next-button" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-700 transition duration-300 focus:outline-none">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div id="page-galleries" data-gallery='{
+        "Bourbon Country 10s Game 1": [
+            "https://i.postimg.cc/85z1Xy01/DSC-0001.jpg",
+            "https://i.postimg.cc/d0rDkXfR/DSC-0002.jpg",
+            "https://i.postimg.cc/FHB227s5/DSC-0003.jpg",
+            "https://i.postimg.cc/Vv88Q93N/DSC-0004.jpg",
+            "https://i.postimg.cc/y8p488jV/DSC-0005.jpg",
+            "https://i.postimg.cc/mk0gY2B6/DSC-0006.jpg",
+            "https://i.postimg.cc/t44s4j4d/DSC-0007.jpg",
+            "https://i.postimg.cc/Lh61v9s4/DSC-0008.jpg",
+            "https://i.postimg.cc/BQ6jXwL5/DSC-0009.jpg",
+            "https://i.postimg.cc/nryXgK9S/DSC-0010.jpg",
+            "https://i.postimg.cc/wTPjL6vY/DSC-0011.jpg",
+            "https://i.postimg.cc/j5t3wGqR/DSC-0012.jpg",
+            "https://i.postimg.cc/mD7b36yK/DSC-0013.jpg",
+            "https://i.postimg.cc/d1xR9H3p/DSC-0014.jpg",
+            "https://i.postimg.cc/44rGv7w4/DSC-0015.jpg",
+            "https://i.postimg.cc/9QyN9056/DSC-0016.jpg",
+            "https://i.postimg.cc/hG0H7bXG/DSC-0017.jpg",
+            "https://i.postimg.cc/BQq9xTf6/DSC-0018.jpg",
+            "https://i.postimg.cc/pT45j3Xp/DSC-0019.jpg",
+            "https://i.postimg.cc/d3b0cR9P/DSC-0020.jpg",
+            "https://i.postimg.cc/R012678n/DSC-0021.jpg",
+            "https://i.postimg.cc/VLCv8zJz/DSC-0022.jpg",
+            "https://i.postimg.cc/gJ076XvS/DSC-0023.jpg",
+            "https://i.postimg.cc/50fL05hY/DSC-0024.jpg",
+            "https://i.postimg.cc/Wb33jJgC/DSC-0025.jpg",
+            "https://i.postimg.cc/W34n2k12/DSC-0026.jpg",
+            "https://i.postimg.cc/W47Y3139/DSC-0027.jpg",
+            "https://i.postimg.cc/Pqgq46c1/DSC-0028.jpg",
+            "https://i.postimg.cc/Njjc81y7/DSC-0029.jpg",
+            "https://i.postimg.cc/NfXf0q03/DSC-0030.jpg",
+            "https://i.postimg.cc/V6jX5B2D/DSC-0031.jpg",
+            "https://i.postimg.cc/mk0gY2B6/DSC-0006.jpg",
+            "https://i.postimg.cc/5yYwz2h0/DSC-0033.jpg",
+            "https://i.postimg.cc/vB22K106/DSC-0034.jpg",
+            "https://i.postimg.cc/Xv1fLgqX/DSC-0035.jpg",
+            "https://i.postimg.cc/Fs5g4q9h/DSC-0036.jpg",
+            "https://i.postimg.cc/Y9D53vLp/DSC-0037.jpg",
+            "https://i.postimg.cc/W33z5y4S/DSC-0038.jpg",
+            "https://i.postimg.cc/d0D61j8x/DSC-0039.jpg",
+            "https://i.postimg.cc/Y0k51yX7/DSC-0040.jpg",
+            "https://i.postimg.cc/6pYh3L2R/DSC-0041.jpg",
+            "https://i.postimg.cc/gj4L91yX/DSC-0042.jpg",
+            "https://i.postimg.cc/cLD6H5f6/DSC-0043.jpg",
+            "https://i.postimg.cc/g0B16D1p/DSC-0044.jpg",
+            "https://i.postimg.cc/g0Tz5vYq/DSC-0045.jpg",
+            "https://i.postimg.cc/wT7D8b6J/DSC-0046.jpg",
+            "https://i.postimg.cc/d3b0cR9P/DSC-0020.jpg",
+            "https://i.postimg.cc/vT0F5X5R/DSC-0048.jpg",
+            "https://i.postimg.cc/Y02vLp1k/DSC-0049.jpg",
+            "https://i.postimg.cc/59W1Qy30/DSC-0050.jpg",
+            "https://i.postimg.cc/Wb5f6WnF/DSC-0051.jpg",
+            "https://i.postimg.cc/qR0jR5Wp/DSC-0052.jpg",
+            "https://i.postimg.cc/L5n5g3sS/DSC-0053.jpg",
+            "https://i.postimg.cc/Y9x1rL5y/DSC-0054.jpg",
+            "https://i.postimg.cc/8c3KzP9m/DSC-0055.jpg",
+            "https://i.postimg.cc/Wb8hQ8k6/DSC-0056.jpg",
+            "https://i.postimg.cc/W1D62c1z/DSC-0057.jpg",
+            "https://i.postimg.cc/W1d9tF2m/DSC-0058.jpg",
+            "https://i.postimg.cc/W4L2N5yP/DSC-0059.jpg",
+            "https://i.postimg.cc/vB22K106/DSC-0034.jpg",
+            "https://i.postimg.cc/Njp7x5fX/DSC-0061.jpg",
+            "https://i.postimg.cc/j5P1zV4p/DSC-0062.jpg",
+            "https://i.postimg.cc/W1h5dG9y/DSC-0063.jpg",
+            "https://i.postimg.cc/XJY6q4R7/DSC-0064.jpg",
+            "https://i.postimg.cc/HnW2sX3v/DSC-0065.jpg",
+            "https://i.postimg.cc/mD3f4p9Q/DSC-0066.jpg",
+            "https://i.postimg.cc/pL4j8p9y/DSC-0067.jpg",
+            "https://i.postimg.cc/tJn4D1zG/DSC-0068.jpg",
+            "https://i.postimg.cc/jC1Z2R5P/DSC-0069.jpg",
+            "https://i.postimg.cc/43s1k1g8/DSC-0070.jpg",
+            "https://i.postimg.cc/44rGv7w4/DSC-0015.jpg",
+            "https://i.postimg.cc/7hnW1yXJ/DSC-0072.jpg",
+            "https://i.postimg.cc/4H2s6j01/DSC-0073.jpg",
+            "https://i.postimg.cc/3wD8B3M2/DSC-0074.jpg",
+            "https://i.postimg.cc/Pq1x3C7V/DSC-0075.jpg",
+            "https://i.postimg.cc/d0g5R1zX/DSC-0076.jpg",
+            "https://i.postimg.cc/Qd1x6L3V/DSC-0077.jpg",
+            "https://i.postimg.cc/3J8B5p4z/DSC-0078.jpg",
+            "https://i.postimg.cc/mk0gY2B6/DSC-0006.jpg",
+            "https://i.postimg.cc/5yYwz2h0/DSC-0033.jpg",
+            "https://i.postimg.cc/vB22K106/DSC-0034.jpg",
+            "https://i.postimg.cc/Xv1fLgqX/DSC-0035.jpg",
+            "https://i.postimg.cc/Fs5g4q9h/DSC-0036.jpg",
+            "https://i.postimg.cc/Y9D53vLp/DSC-0037.jpg",
+            "https://i.postimg.cc/W33z5y4S/DSC-0038.jpg",
+            "https://i.postimg.cc/d0D61j8x/DSC-0039.jpg",
+            "https://i.postimg.cc/Y0k51yX7/DSC-0040.jpg",
+            "https://i.postimg.cc/6pYh3L2R/DSC-0041.jpg",
+            "https://i.postimg.cc/gj4L91yX/DSC-0042.jpg",
+            "https://i.postimg.cc/cLD6H5f6/DSC-0043.jpg",
+            "https://i.postimg.cc/g0B16D1p/DSC-0044.jpg",
+            "https://i.postimg.cc/g0Tz5vYq/DSC-0045.jpg",
+            "https://i.postimg.cc/wT7D8b6J/DSC-0046.jpg",
+            "https://i.postimg.cc/d3b0cR9P/DSC-0020.jpg",
+            "https://i.postimg.cc/vT0F5X5R/DSC-0048.jpg",
+            "https://i.postimg.cc/Y02vLp1k/DSC-0049.jpg",
+            "https://i.postimg.cc/59W1Qy30/DSC-0050.jpg",
+            "https://i.postimg.cc/Wb5f6WnF/DSC-0051.jpg",
+            "https://i.postimg.cc/qR0jR5Wp/DSC-0052.jpg",
+            "https://i.postimg.cc/L5n5g3sS/DSC-0053.jpg",
+            "https://i.postimg.cc/Y9x1rL5y/DSC-0054.jpg",
+            "https://i.postimg.cc/8c3KzP9m/DSC-0055.jpg",
+            "https://i.postimg.cc/Wb8hQ8k6/DSC-0056.jpg",
+            "https://i.postimg.cc/W1D62c1z/DSC-0057.jpg",
+            "https://i.postimg.cc/W1d9tF2m/DSC-0058.jpg",
+            "https://i.postimg.cc/W4L2N5yP/DSC-0059.jpg",
+            "https://i.postimg.cc/vB22K106/DSC-0034.jpg",
+            "https://i.postimg.cc/Njp7x5fX/DSC-0061.jpg",
+            "https://i.postimg.cc/j5P1zV4p/DSC-0062.jpg",
+            "https://i.postimg.cc/W1h5dG9y/DSC-0063.jpg",
+            "https://i.postimg.cc/XJY6q4R7/DSC-0064.jpg",
+            "https://i.postimg.cc/HnW2sX3v/DSC-0065.jpg",
+            "https://i.postimg.cc/mD3f4p9Q/DSC-0066.jpg",
+            "https://i.postimg.cc/pL4j8p9y/DSC-0067.jpg",
+            "https://i.postimg.cc/tJn4D1zG/DSC-0068.jpg",
+            "https://i.postimg.cc/jC1Z2R5P/DSC-0069.jpg",
+            "https://i.postimg.cc/43s1k1g8/DSC-0070.jpg",
+            "https://i.postimg.cc/44rGv7w4/DSC-0015.jpg",
+            "https://i.postimg.cc/7hnW1yXJ/DSC-0072.jpg",
+            "https://i.postimg.cc/4H2s6j01/DSC-0073.jpg",
+            "https://i.postimg.cc/3wD8B3M2/DSC-0074.jpg",
+            "https://i.postimg.cc/Pq1x3C7V/DSC-0075.jpg",
+            "https://i.postimg.cc/d0g5R1zX/DSC-0076.jpg",
+            "https://i.postimg.cc/Qd1x6L3V/DSC-0077.jpg",
+            "https://i.postimg.cc/3J8B5p4z/DSC-0078.jpg"
+        ],
+        "Bourbon Country 10s Game 2": [
+            "https://i.postimg.cc/q73Jk3c3/DSC-0081.jpg",
+            "https://i.postimg.cc/Y9s5vDkR/DSC-0082.jpg",
+            "https://i.postimg.cc/bvv65V4t/DSC-0083.jpg",
+            "https://i.postimg.cc/Lh61v9s4/DSC-0008.jpg",
+            "https://i.postimg.cc/BQ6jXwL5/DSC-0009.jpg",
+            "https://i.postimg.cc/nryXgK9S/DSC-0010.jpg",
+            "https://i.postimg.cc/wTPjL6vY/DSC-0011.jpg",
+            "https://i.postimg.cc/j5t3wGqR/DSC-0012.jpg",
+            "https://i.postimg.cc/mD7b36yK/DSC-0013.jpg",
+            "https://i.postimg.cc/d1xR9H3p/DSC-0014.jpg",
+            "https://i.postimg.cc/44rGv7w4/DSC-0015.jpg",
+            "https://i.postimg.cc/9QyN9056/DSC-0016.jpg",
+            "https://i.postimg.cc/hG0H7bXG/DSC-0017.jpg",
+            "https://i.postimg.cc/BQq9xTf6/DSC-0018.jpg",
+            "https://i.postimg.cc/pT45j3Xp/DSC-0019.jpg",
+            "https://i.postimg.cc/d3b0cR9P/DSC-0020.jpg",
+            "https://i.postimg.cc/R012678n/DSC-0021.jpg",
+            "https://i.postimg.cc/VLCv8zJz/DSC-0022.jpg",
+            "https://i.postimg.cc/gJ076XvS/DSC-0023.jpg",
+            "https://i.postimg.cc/50fL05hY/DSC-0024.jpg",
+            "https://i.postimg.cc/Wb33jJgC/DSC-0025.jpg",
+            "https://i.postimg.cc/W34n2k12/DSC-0026.jpg",
+            "https://i.postimg.cc/W47Y3139/DSC-0027.jpg",
+            "https://i.postimg.cc/Pqgq46c1/DSC-0028.jpg",
+            "https://i.postimg.cc/Njjc81y7/DSC-0029.jpg",
+            "https://i.postimg.cc/NfXf0q03/DSC-0030.jpg",
+            "https://i.postimg.cc/V6jX5B2D/DSC-0031.jpg",
+            "https://i.postimg.cc/mk0gY2B6/DSC-0006.jpg",
+            "https://i.postimg.cc/5yYwz2h0/DSC-0033.jpg",
+            "https://i.postimg.cc/vB22K106/DSC-0034.jpg",
+            "https://i.postimg.cc/Xv1fLgqX/DSC-0035.jpg",
+            "https://i.postimg.cc/Fs5g4q9h/DSC-0036.jpg",
+            "https://i.postimg.cc/Y9D53vLp/DSC-0037.jpg",
+            "https://i.postimg.cc/W33z5y4S/DSC-0038.jpg",
+            "https://i.postimg.cc/d0D61j8x/DSC-0039.jpg",
+            "https://i.postimg.cc/Y0k51yX7/DSC-0040.jpg",
+            "https://i.postimg.cc/6pYh3L2R/DSC-0041.jpg",
+            "https://i.postimg.cc/gj4L91yX/DSC-0042.jpg",
+            "https://i.postimg.cc/cLD6H5f6/DSC-0043.jpg",
+            "https://i.postimg.cc/g0B16D1p/DSC-0044.jpg",
+            "https://i.postimg.cc/g0Tz5vYq/DSC-0045.jpg",
+            "https://i.postimg.cc/wT7D8b6J/DSC-0046.jpg",
+            "https://i.postimg.cc/d3b0cR9P/DSC-0020.jpg",
+            "https://i.postimg.cc/vT0F5X5R/DSC-0048.jpg",
+            "https://i.postimg.cc/Y02vLp1k/DSC-0049.jpg",
+            "https://i.postimg.cc/59W1Qy30/DSC-0050.jpg",
+            "https://i.postimg.cc/Wb5f6WnF/DSC-0051.jpg",
+            "https://i.postimg.cc/qR0jR5Wp/DSC-0052.jpg",
+            "https://i.postimg.cc/L5n5g3sS/DSC-0053.jpg",
+            "https://i.postimg.cc/Y9x1rL5y/DSC-0054.jpg",
+            "https://i.postimg.cc/8c3KzP9m/DSC-0055.jpg",
+            "https://i.postimg.cc/Wb8hQ8k6/DSC-0056.jpg",
+            "https://i.postimg.cc/W1D62c1z/DSC-0057.jpg",
+            "https://i.postimg.cc/W1d9tF2m/DSC-0058.jpg",
+            "https://i.postimg.cc/W4L2N5yP/DSC-0059.jpg",
+            "https://i.postimg.cc/vB22K106/DSC-0034.jpg",
+            "https://i.postimg.cc/Njp7x5fX/DSC-0061.jpg",
+            "https://i.postimg.cc/j5P1zV4p/DSC-0062.jpg",
+            "https://i.postimg.cc/W1h5dG9y/DSC-0063.jpg",
+            "https://i.postimg.cc/XJY6q4R7/DSC-0064.jpg",
+            "https://i.postimg.cc/HnW2sX3v/DSC-0065.jpg",
+            "https://i.postimg.cc/mD3f4p9Q/DSC-0066.jpg",
+            "https://i.postimg.cc/pL4j8p9y/DSC-0067.jpg",
+            "https://i.postimg.cc/tJn4D1zG/DSC-0068.jpg",
+            "https://i.postimg.cc/jC1Z2R5P/DSC-0069.jpg",
+            "https://i.postimg.cc/43s1k1g8/DSC-0070.jpg",
+            "https://i.postimg.cc/44rGv7w4/DSC-0015.jpg",
+            "https://i.postimg.cc/7hnW1yXJ/DSC-0072.jpg",
+            "https://i.postimg.cc/4H2s6j01/DSC-0073.jpg",
+            "https://i.postimg.cc/3wD8B3M2/DSC-0074.jpg",
+            "https://i.postimg.cc/Pq1x3C7V/DSC-0075.jpg",
+            "https://i.postimg.cc/d0g5R1zX/DSC-0076.jpg",
+            "https://i.postimg.cc/Qd1x6L3V/DSC-0077.jpg",
+            "https://i.postimg.cc/3J8B5p4z/DSC-0078.jpg"
+        ],
+        "Team": [],
+        "Warm ups": []
+    }'></div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
