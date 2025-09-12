@@ -50,6 +50,16 @@
             background-color: #1a1a1a;
         }
         .nav-button.bg-red-700.active { border-color: #b91c1c; }
+
+        /* Styles for the click-to-source message */
+        #clickToSourceText {
+            opacity: 0; /* Start hidden */
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: none; /* Allows clicks to pass through to the image */
+        }
+        #clickToSourceText.visible {
+            opacity: 1; /* Fade in */
+        }
     </style>
 </head>
 <body class="bg-black min-h-screen flex flex-col items-center py-8">
@@ -77,9 +87,11 @@
             </button>
             <div id="loadingSpinner" class="spinner absolute z-50 hidden"></div>
             <img id="modalImage" src="" alt="Gallery Image" class="modal-content rounded-lg shadow-lg">
+            
             <div id="clickToSourceText" class="absolute bottom-8 text-white text-lg bg-black bg-opacity-50 px-4 py-2 rounded-lg hidden transition-opacity duration-300 opacity-0">
                 Click image to view host page
             </div>
+
         </div>
     </div>
 
@@ -87,7 +99,8 @@
         let currentImageIndex = 0;
         let imageUrls = [];
         let lastClickTime = 0;
-        const DOUBLE_CLICK_TIME = 300; // milliseconds
+        const DOUBLE_CLICK_TIME = 300; // milliseconds for double-click detection
+        let clickToSourceTextTimeout; // To manage the fade-out of the message
 
         const mainTitle = document.getElementById('mainTitle');
         const galleryDiv = document.getElementById('gallery');
@@ -96,7 +109,7 @@
         const modalImage = document.getElementById('modalImage');
         const closeModalBtn = document.getElementById('closeModal');
         const loadingSpinner = document.getElementById('loadingSpinner');
-        const clickToSourceText = document.getElementById('clickToSourceText');
+        const clickToSourceText = document.getElementById('clickToSourceText'); // Get the new element
 
         async function loadGallery() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -202,6 +215,9 @@
             currentImageIndex = index;
             loadingSpinner.classList.remove('hidden');
             modalImage.classList.add('hidden');
+            clickToSourceText.classList.remove('visible'); // Hide message initially
+            clearTimeout(clickToSourceTextTimeout); // Clear any pending fade-out
+
             setTimeout(() => {
                 modalImage.src = imageUrls[currentImageIndex];
                 modalImage.onerror = function() {
@@ -214,6 +230,19 @@
                 modalImage.onload = function() {
                     loadingSpinner.classList.add('hidden');
                     modalImage.classList.remove('hidden');
+                    
+                    // Show the click-to-source text and then fade it out
+                    clickToSourceText.classList.remove('hidden'); // Ensure it's not display:none
+                    setTimeout(() => {
+                        clickToSourceText.classList.add('visible'); // Trigger fade-in
+                    }, 10); // Small delay to allow 'hidden' to register
+
+                    clickToSourceTextTimeout = setTimeout(() => {
+                        clickToSourceText.classList.remove('visible'); // Trigger fade-out
+                        setTimeout(() => {
+                            clickToSourceText.classList.add('hidden'); // Hide completely after fade
+                        }, 500); // Match CSS transition duration
+                    }, 3000); // Show for 3 seconds
                 };
             }, 50);
             imageModal.classList.remove('hidden');
@@ -225,6 +254,10 @@
 
         function closeModal() {
             imageModal.classList.add('opacity-0');
+            clearTimeout(clickToSourceTextTimeout); // Clear timeout if modal closed manually
+            clickToSourceText.classList.remove('visible'); // Hide message immediately
+            clickToSourceText.classList.add('hidden');
+
             setTimeout(() => {
                 imageModal.classList.add('hidden');
                 modalImage.src = '';
@@ -244,19 +277,20 @@
 
         closeModalBtn.addEventListener('click', closeModal);
 
-        // Add the double-click functionality
         modalImage.addEventListener('click', (e) => {
             const clickTime = new Date().getTime();
             if (clickTime - lastClickTime < DOUBLE_CLICK_TIME) {
                 e.stopPropagation();
                 if (modalImage.src && !modalImage.classList.contains('hidden')) {
                     const parts = modalImage.src.split('/');
+                    // For PostImage URLs, the ID is usually the second to last part
                     const imageId = parts[parts.length - 2]; 
                     if (imageId && imageId.length > 0) {
                         const postimgPageUrl = `https://postimg.cc/${imageId}`;
                         window.open(postimgPageUrl, '_blank');
                     } else {
                         console.error('Could not extract image ID from URL:', modalImage.src);
+                        // Fallback: open the direct image URL if ID cannot be extracted
                         window.open(modalImage.src, '_blank');
                     }
                 }
