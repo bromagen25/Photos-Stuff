@@ -72,9 +72,17 @@
             cursor: pointer;
             z-index: 55;
             transition: background-color 0.2s ease;
+            display: none; /* Hide by default for mobile */
         }
         .modal-nav-button:hover {
             background: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Show navigation buttons only on larger screens */
+        @media (min-width: 768px) {
+            .modal-nav-button {
+                display: block;
+            }
         }
         #prevButton { left: 2rem; }
         #nextButton { right: 2rem; }
@@ -107,13 +115,13 @@
             <img id="modalImage" src="" alt="Gallery Image" class="modal-content rounded-lg shadow-lg">
             
             <div id="clickToSourceText" class="absolute bottom-8 text-white text-lg bg-black bg-opacity-50 px-4 py-2 rounded-lg hidden transition-opacity duration-300 opacity-0">
-                Double Tap-Click For Hd
+                Click image to view host page
             </div>
             
-            <button id="prevButton" class="modal-nav-button hidden">
+            <button id="prevButton" class="modal-nav-button">
                 <i class="fas fa-chevron-left"></i>
             </button>
-            <button id="nextButton" class="modal-nav-button hidden">
+            <button id="nextButton" class="modal-nav-button">
                 <i class="fas fa-chevron-right"></i>
             </button>
 
@@ -135,8 +143,8 @@
         const closeModalBtn = document.getElementById('closeModal');
         const loadingSpinner = document.getElementById('loadingSpinner');
         const clickToSourceText = document.getElementById('clickToSourceText');
-        const prevButton = document.getElementById('prevButton'); // New reference
-        const nextButton = document.getElementById('nextButton'); // New reference
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
 
         async function loadGallery() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -246,15 +254,6 @@
             clickToSourceText.classList.add('hidden');
             clearTimeout(clickToSourceTextTimeout);
 
-            // Show/hide navigation buttons based on the number of images
-            if (imageUrls.length > 1) {
-                prevButton.classList.remove('hidden');
-                nextButton.classList.remove('hidden');
-            } else {
-                prevButton.classList.add('hidden');
-                nextButton.classList.add('hidden');
-            }
-
             setTimeout(() => {
                 modalImage.src = imageUrls[currentImageIndex];
                 modalImage.onerror = function() {
@@ -312,8 +311,8 @@
         }
 
         closeModalBtn.addEventListener('click', closeModal);
-        prevButton.addEventListener('click', showPrevImage); // New event listener
-        nextButton.addEventListener('click', showNextImage); // New event listener
+        prevButton.addEventListener('click', showPrevImage);
+        nextButton.addEventListener('click', showNextImage);
 
         modalImage.addEventListener('click', (e) => {
             const clickTime = new Date().getTime();
