@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bromagens Rugby Photos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styles for black background and red text */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000; /* Black background */
+            color: #FF0000; /* Red text */
+        }
+        .gallery-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .gallery-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(255, 0, 0, 0.5), 0 4px 6px -2px rgba(255, 0, 0, 0.25);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8">
+
+    <!-- Header Section -->
+    <header class="w-full max-w-7xl flex justify-between items-center mb-12 p-4 bg-gray-900 rounded-xl shadow-lg">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-red-600">Bromagens Rugby Photos</h1>
+        <nav class="flex space-x-4">
+            <a href="index.html" class="flex items-center space-x-2 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition duration-300 transform hover:scale-105">
+                <i class="fas fa-home"></i>
+                <span class="hidden sm:inline">Home</span>
+            </a>
+            <button id="shareButton" class="flex items-center space-x-2 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition duration-300 transform hover:scale-105">
+                <i class="fas fa-share-alt"></i>
+                <span class="hidden sm:inline">Share</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Gallery Section -->
+    <main id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 p-6 w-full max-w-7xl bg-gray-900 rounded-xl shadow-2xl">
+        <!-- Gallery cards will be dynamically loaded here -->
+        <div id="loadingMessage" class="col-span-full text-center text-red-500 text-lg">Loading galleries...</div>
+        <div id="errorMessage" class="col-span-full text-center text-red-500 text-lg hidden">Failed to load galleries. Please try again later.</div>
+    </main>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 p-8 rounded-lg shadow-xl border border-red-700 w-11/12 max-w-md">
+            <h2 class="text-2xl font-bold text-red-500 mb-4">Share This Page</h2>
+            <p class="text-gray-300 mb-6">Copy the link below to share this photo gallery homepage:</p>
+            <div class="flex items-center border border-gray-600 rounded-md overflow-hidden mb-6">
+                <input type="text" id="shareLinkInput" class="flex-grow p-3 bg-gray-700 text-gray-200 border-none focus:outline-none" readonly>
+                <button id="copyLinkButton" class="bg-red-600 text-white px-4 py-3 hover:bg-red-700 transition duration-300">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
+            <button id="closeShareModal" class="w-full bg-red-700 text-white py-3 rounded-lg hover:bg-red-800 transition duration-300">Close</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const galleryContainer = document.getElementById('galleryContainer');
+            const loadingMessage = document.getElementById('loadingMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const shareButton = document.getElementById('shareButton');
+            const shareModal = document.getElementById('shareModal');
+            const closeShareModal = document.getElementById('closeShareModal');
+            const shareLinkInput = document.getElementById('shareLinkInput');
+            const copyLinkButton = document.getElementById('copyLinkButton');
+
+            // Function to fetch and display galleries
+            async function loadGalleries() {
+                loadingMessage.classList.remove('hidden');
+                errorMessage.classList.add('hidden');
+                galleryContainer.innerHTML = ''; // Clear existing content
+
+                try {
+                    // Fetch the galleries.json file
+                    const response = await fetch('galleries.json');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const galleries = await response.json();
+
+                    loadingMessage.classList.add('hidden'); // Hide loading message
+
+                    if (galleries.length === 0) {
+                        galleryContainer.innerHTML = '<p class="col-span-full text-center text-gray-400 text-lg">No galleries found. Add entries to galleries.json!</p>';
+                        return;
+                    }
+
+                    // Create gallery cards
+                    galleries.forEach(gallery => {
+                        const card = document.createElement('a');
+                        card.href = gallery.link; // Link to the gallery HTML file
+                        card.className = 'gallery-card bg-gray-800 rounded-lg shadow-md p-6 flex flex-col items-center text-center transform hover:scale-105 transition duration-300 border border-red-700';
+                        
+                        let iconHtml;
+                        // Check if the icon property is a URL (starts with http) or a Font Awesome class
+                        if (gallery.icon && (gallery.icon.startsWith('http://') || gallery.icon.startsWith('https://'))) {
+                            // It's an image URL
+                            iconHtml = `<img src="${gallery.icon}" alt="${gallery.name} Icon" class="w-24 h-24 object-contain mb-4 rounded-full border-2 border-red-600">`;
+                        } else if (gallery.icon) {
+                            // It's a Font Awesome class
+                            iconHtml = `<i class="${gallery.icon} text-red-500 text-5xl mb-4"></i>`;
+                        } else {
+                            // No icon provided, use a generic placeholder
+                            iconHtml = `<img src="https://placehold.co/100x100/333333/FF0000?text=Gallery" alt="Gallery Icon" class="w-24 h-24 object-contain mb-4 rounded-full border-2 border-red-600">`;
+                        }
+                        
+                        card.innerHTML = `
+                            ${iconHtml}
+                            <h2 class="text-xl font-semibold text-red-400 mb-2">${gallery.name}</h2>
+                            <p class="text-gray-400 text-sm">${gallery.description}</p>
+                        `;
+                        galleryContainer.appendChild(card);
+                    });
+
+                } catch (error) {
+                    console.error('Error loading galleries:', error);
+                    loadingMessage.classList.add('hidden');
+                    errorMessage.classList.remove('hidden');
+                    errorMessage.textContent = `Failed to load galleries: ${error.message}. Please ensure 'galleries.json' exists and is correctly formatted.`;
+                }
+            }
+
+            // Share button functionality
+            shareButton.addEventListener('click', () => {
+                shareLinkInput.value = window.location.href; // Set the current page URL
+                shareModal.classList.remove('hidden');
+            });
+
+            closeShareModal.addEventListener('click', () => {
+                shareModal.classList.add('hidden');
+            });
+
+            copyLinkButton.addEventListener('click', () => {
+                shareLinkInput.select();
+                document.execCommand('copy'); // Use execCommand for broader compatibility in iframes
+                // Provide visual feedback
+                copyLinkButton.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyLinkButton.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                }, 2000);
+            });
+
+            // Close modal if clicked outside content
+            shareModal.addEventListener('click', (e) => {
+                if (e.target === shareModal) {
+                    shareModal.classList.add('hidden');
+                }
+            });
+
+            // Initial load of galleries
+            loadGalleries();
+        });
+    </script>
+</body>
+</html>
