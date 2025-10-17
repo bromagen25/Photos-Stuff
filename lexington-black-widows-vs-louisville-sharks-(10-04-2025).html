@@ -49,18 +49,10 @@
             color: white;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
-        /* Custom classes for responsive video embedding (16:9) */
-        .aspect-w-16 {
+        /* Aspect Ratio for video container */
+        .aspect-video {
+            aspect-ratio: 16 / 9;
             position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-        }
-        .aspect-h-9 {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
         }
     </style>
 </head>
@@ -105,17 +97,6 @@
     </div>
 
     <script>
-        // Global variables for image modal
-        let currentGalleryName = '';
-        let currentIndex = 0;
-        let imagesToPreload = [];
-        const modal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
-        const closeModalButton = document.getElementById('closeModal');
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        const clickToSourceText = document.getElementById('clickToSourceText');
-        const navButtons = document.querySelectorAll('.nav-button');
-
         // Data structure containing all sub-galleries
         const galleries = {
             "1st Half": [
@@ -425,303 +406,698 @@
                 "https://i.postimg.cc/HWVFhmd6/DSC-4191.jpg",
                 "https://i.postimg.cc/Bv4g9TDt/DSC-4192.jpg",
                 "https://i.postimg.cc/k5syn2Fg/DSC-4193.jpg",
-                "https://i.postimg.cc/N0n8sR1w/DSC-4195.jpg",
-                "https://i.postimg.cc/Y9D92x1Q/DSC-4197.jpg",
-                "https://i.postimg.cc/C1QvQJ3Y/DSC-4198.jpg",
-                "https://i.postimg.cc/Vv5F348t/DSC-4199.jpg",
-                "https://i.postimg.cc/WbrbH6jM/DSC-4200.jpg",
-                "https://i.postimg.cc/T34w9d3R/DSC-4202.jpg",
-                "https://i.postimg.cc/J08G9HwX/DSC-4203.jpg",
-                "https://i.postimg.cc/VvPzBfF1/DSC-4204.jpg",
-                "https://i.postimg.cc/Pq0w4KxZ/DSC-4205.jpg",
-                "https://i.postimg.cc/85z1Xy0S/DSC-4206.jpg",
-                "https://i.postimg.cc/50t065wB/DSC-4207.jpg",
-                "https://i.postimg.cc/G3x7f7xR/DSC-4208.jpg",
-                "https://i.postimg.cc/VLLP7pM4/DSC-4209.jpg",
-                "https://i.postimg.cc/B6fXp3g7/DSC-4210.jpg",
-                "https://i.postimg.cc/76j0146n/DSC-4211.jpg",
-                "https://i.postimg.cc/prg2T60M/DSC-4212.jpg",
-                "https://i.postimg.cc/vH2gD5Ld/DSC-4213.jpg",
-                "https://i.postimg.cc/1X9N91qX/DSC-4215.jpg",
-                "https://i.postimg.cc/0jBTH0Qz/DSC-4216.jpg",
-                "https://i.postimg.cc/fTYJm0Wc/DSC-4217.jpg",
-                "https://i.postimg.cc/gj4XwXjF/DSC-4218.jpg",
-                "https://i.postimg.cc/Vvq0p32m/DSC-4219.jpg",
-                "https://i.postimg.cc/NMr24B6y/DSC-4220.jpg",
-                "https://i.postimg.cc/59W3H5R0/DSC-4221.jpg",
-                "https://i.postimg.cc/j5G4Kx1m/DSC-4222.jpg",
-                "https://i.postimg.cc/vB23Lw3b/DSC-4223.jpg",
-                "https://i.postimg.cc/Pqy025Vz/DSC-4224.jpg",
-                "https://i.postimg.cc/L5K8b70V/DSC-4225.jpg",
-                "https://i.postimg.cc/q777L8w1/DSC-4226.jpg",
-                "https://i.postimg.cc/hG0sFf48/DSC-4227.jpg",
-                "https://i.postimg.cc/V64c5y48/DSC-4228.jpg",
-                "https://i.postimg.cc/Nj8n4n0t/DSC-4229.jpg",
-                "https://i.postimg.cc/TY40Q50c/DSC-4230.jpg",
-                "https://i.postimg.cc/L8549s9B/DSC-4231.jpg",
-                "https://i.postimg.cc/sXhM3F7Y/DSC-4232.jpg",
-                "https://i.postimg.cc/Dwf85987/DSC-4233.jpg",
-                "https://i.postimg.cc/VLLP7pM4/DSC-4209.jpg"
+                "https://i.postimg.cc/MZNgkLGv/DSC-4194.jpg",
+                "https://i.postimg.cc/DfHRVNz7/DSC-4195.jpg",
+                "https://i.postimg.cc/m29JTScb/DSC-4196.jpg",
+                "https://i.postimg.cc/J4XvRQyM/DSC-4198.jpg",
+                "https://i.postimg.cc/YqFZtx43/DSC-4202.jpg",
+                "https://i.postimg.cc/3xCqvJFN/DSC-4203.jpg",
+                "https://i.postimg.cc/bwH...
             ],
             "3rd Half": [
-                "https://i.postimg.cc/Vv8W69kX/DSC-4238.jpg",
-                "https://i.postimg.cc/Y9xH2R05/DSC-4239.jpg",
-                "https://i.postimg.cc/d1J2sJ7m/DSC-4240.jpg",
-                "https://i.postimg.cc/9fMccQn0/DSC-4241.jpg",
-                "https://i.postimg.cc/Qd1xJ43z/DSC-4242.jpg",
-                "https://i.postimg.cc/9X2Yk222/DSC-4243.jpg",
-                "https://i.postimg.cc/Vvk6517K/DSC-4244.jpg",
-                "https://i.postimg.cc/6qW0jY4M/DSC-4246.jpg",
-                "https://i.postimg.cc/mD828wDq/DSC-4247.jpg",
-                "https://i.postimg.cc/prXz117X/DSC-4248.jpg",
-                "https://i.postimg.cc/L6D8F8Tf/DSC-4249.jpg",
-                "https://i.postimg.cc/TYz28J9f/DSC-4250.jpg",
-                "https://i.postimg.cc/8PJ9qj1m/DSC-4251.jpg",
-                "https://i.postimg.cc/7hf9b86N/DSC-4252.jpg",
-                "https://i.postimg.cc/vT0Fh7cM/DSC-4253.jpg",
-                "https://i.postimg.cc/8PVk3BvY/DSC-4254.jpg",
-                "https://i.postimg.cc/Qd5L5r9x/DSC-4255.jpg",
-                "https://i.postimg.cc/d1y3z55q/DSC-4256.jpg",
-                "https://i.postimg.cc/prgQ9441/DSC-4257.jpg",
-                "https://i.postimg.cc/15tM772g/DSC-4258.jpg",
-                "https://i.postimg.cc/Wb7F1zKq/DSC-4259.jpg",
-                "https://i.postimg.cc/WpB888f4/DSC-4260.jpg",
-                "https://i.postimg.cc/tJn0FqD0/DSC-4261.jpg",
-                "https://i.postimg.cc/vT7j1D89/DSC-4262.jpg",
-                "https://i.postimg.cc/k4711812/DSC-4263.jpg",
-                "https://i.postimg.cc/26L16P9y/DSC-4264.jpg",
-                "https://i.postimg.cc/Pq27hT7p/DSC-4265.jpg",
-                "https://i.postimg.cc/CLzN9Q5h/DSC-4266.jpg",
-                "https://i.postimg.cc/SKx65Ngy/DSC-4267.jpg",
-                "https://i.postimg.cc/q7f8p22W/DSC-4268.jpg",
-                "https://i.postimg.cc/0Q0r9h3t/DSC-4269.jpg",
-                "https://i.postimg.cc/Qdzg7FvD/DSC-4270.jpg",
-                "https://i.postimg.cc/8PKY6gJb/DSC-4271.jpg",
-                "https://i.postimg.cc/Dwf8N6X6/DSC-4272.jpg",
-                "https://i.postimg.cc/Vvk6517K/DSC-4244.jpg"
+                "https://i.postimg.cc/6p04XbWc/DSC-3806.jpg",
+                "https://i.postimg.cc/RZRJBpST/DSC-3807.jpg",
+                "https://i.postimg.cc/JzqHLYrc/DSC-3808.jpg",
+                "https://i.postimg.cc/bw8S4fh9/DSC-3809.jpg",
+                "https://i.postimg.cc/QMYBBBWb/DSC-3812.jpg",
+                "https://i.postimg.cc/Bv78881M/DSC-3813.jpg",
+                "https://i.postimg.cc/66v73p6v/DSC-3815.jpg",
+                "https://i.postimg.cc/ydJD0VFf/DSC-3817.jpg",
+                "https://i.postimg.cc/Z5T0VP8v/DSC-3818.jpg",
+                "https://i.postimg.cc/SNLJ61MF/DSC-3819.jpg",
+                "https://i.postimg.cc/yYhkmpSM/DSC-3821.jpg",
+                "https://i.postimg.cc/vZ3Tj1hL/DSC-3822.jpg",
+                "https://i.postimg.cc/JhFnr99J/DSC-3823.jpg",
+                "https://i.postimg.cc/NMr05dtv/DSC-3824.jpg",
+                "https://i.postimg.cc/d3PVdGQ0/DSC-3825.jpg",
+                "https://i.postimg.cc/HnwstjjQ/DSC-3826.jpg",
+                "https://i.postimg.cc/yxmYTWWv/DSC-3827.jpg",
+                "https://i.postimg.cc/D0rycm8V/DSC-3828.jpg",
+                "https://i.postimg.cc/g2kkvzpZ/DSC-3829.jpg",
+                "https://i.postimg.cc/6p55dWKS/DSC-3830.jpg",
+                "https://i.postimg.cc/bNPvw0BX/DSC-3831.jpg",
+                "https://i.postimg.cc/zXNfGwcX/DSC-3832.jpg",
+                "https://i.postimg.cc/W4xNL0kM/DSC-3833.jpg",
+                "https://i.postimg.cc/YSvrsdhm/DSC-3836.jpg",
+                "https://i.postimg.cc/BvRS92Kd/DSC-3837.jpg",
+                "https://i.postimg.cc/cHYss67t/DSC-3838.jpg",
+                "https://i.postimg.cc/WzwTkKHV/DSC-3839.jpg",
+                "https://i.postimg.cc/9XdWKRFJ/DSC-3840.jpg",
+                "https://i.postimg.cc/dQ2qpkt2/DSC-3841.jpg",
+                "https://i.postimg.cc/Y26pZGq3/DSC-3842.jpg",
+                "https://i.postimg.cc/HsTpgYrJ/DSC-3843.jpg",
+                "https://i.postimg.cc/9F1cX69G/DSC-3845.jpg",
+                "https://i.postimg.cc/RZF4Wg1p/DSC-3846.jpg",
+                "https://i.postimg.cc/WbSspBZ8/DSC-3849.jpg",
+                "https://i.postimg.cc/K8zx10rS/DSC-3850.jpg",
+                "https://i.postimg.cc/vZNMf53F/DSC-3851.jpg",
+                "https://i.postimg.cc/RZD9KwXB/DSC-3853.jpg",
+                "https://i.postimg.cc/V6y8Hmyc/DSC-3854.jpg",
+                "https://i.postimg.cc/wvKpbHCn/DSC-3855.jpg",
+                "https://i.postimg.cc/HxGgPHqz/DSC-3856.jpg",
+                "https://i.postimg.cc/LXdp0RcW/DSC-3857.jpg",
+                "https://i.postimg.cc/76gyFdDY/DSC-3858.jpg",
+                "https://i.postimg.cc/D0nKn6yQ/DSC-3859.jpg",
+                "https://i.postimg.cc/Wz8c3Zhf/DSC-3860.jpg",
+                "https://i.postimg.cc/fWfN5GBf/DSC-3861.jpg",
+                "https://i.postimg.cc/MZmStC9k/DSC-3862.jpg",
+                "https://i.postimg.cc/zv7YBhyV/DSC-3863.jpg",
+                "https://i.postimg.cc/Qx6rZpL7/DSC-3864.jpg",
+                "https://i.postimg.cc/mgJftBgH/DSC-3865.jpg",
+                "https://i.postimg.cc/3wGMGVkZ/DSC-3866.jpg",
+                "https://i.postimg.cc/Sx3FJkxC/DSC-3867.jpg",
+                "https://i.postimg.cc/7Lzvzd5c/DSC-3868.jpg",
+                "https://i.postimg.cc/hj8Hymb8/DSC-3869.jpg",
+                "https://i.postimg.cc/qMDW54nL/DSC-3870.jpg",
+                "https://i.postimg.cc/T1CBGXs6/DSC-3871.jpg",
+                "https://i.postimg.cc/nVkyqvLx/DSC-3872.jpg",
+                "https://i.postimg.cc/SN1Hvk8v/DSC-3873.jpg",
+                "https://i.postimg.cc/YqDTsMgX/DSC-3874.jpg",
+                "https://i.postimg.cc/FsCwBNc8/DSC-3875.jpg",
+                "https://i.postimg.cc/V6whC6Qb/DSC-3876.jpg",
+                "https://i.postimg.cc/sXzLhXFk/DSC-3877.jpg",
+                "https://i.postimg.cc/mDS5NsBY/DSC-3878.jpg",
+                "https://i.postimg.cc/26YtZ6RZ/DSC-3879.jpg",
+                "https://i.postimg.cc/sxD0TNgb/DSC-3880.jpg",
+                "https://i.postimg.cc/mZ8nPBdL/DSC-3881.jpg",
+                "https://i.postimg.cc/Y2bPvMXk/DSC-3882.jpg",
+                "https://i.postimg.cc/L65bfw7J/DSC-3883.jpg",
+                "https://i.postimg.cc/vHKSvXFL/DSC-3884.jpg",
+                "https://i.postimg.cc/zGR22WqH/DSC-3885.jpg",
+                "https://i.postimg.cc/nL4RpJsg/DSC-3886.jpg",
+                "https://i.postimg.cc/DzrjnTWt/DSC-3887.jpg",
+                "https://i.postimg.cc/cJR90SK9/DSC-3888.jpg",
+                "https://i.postimg.cc/ydnL3yyZ/DSC-3889.jpg",
+                "https://i.postimg.cc/8c0wtk3m/DSC-3890.jpg",
+                "https://i.postimg.cc/mkD8Y1d1/DSC-3891.jpg",
+                "https://i.postimg.cc/8c5tRfy1/DSC-3892.jpg",
+                "https://i.postimg.cc/T14QC2Sc/DSC-3893.jpg",
+                "https://i.postimg.cc/xjxs0gCC/DSC-3895.jpg",
+                "https://i.postimg.cc/WpW92S3r/DSC-3896.jpg",
+                "https://i.postimg.cc/15bJFtDR/DSC-3898.jpg",
+                "https://i.postimg.cc/RV2XtFw4/DSC-3899.jpg",
+                "https://i.postimg.cc/nh7TGJ1h/DSC-3900.jpg",
+                "https://i.postimg.cc/VkM4W8FY/DSC-3901.jpg",
+                "https://i.postimg.cc/x1Hg32P3/DSC-3902.jpg",
+                "https://i.postimg.cc/63Hhp5BP/DSC-3903.jpg",
+                "https://i.postimg.cc/MTsYpKz7/DSC-3904.jpg",
+                "https://i.postimg.cc/4d45GhR6/DSC-3905.jpg",
+                "https://i.postimg.cc/rmyJTt2w/DSC-3906.jpg",
+                "https://i.postimg.cc/7hfnG86G/DSC-3907.jpg",
+                "https://i.postimg.cc/HnV9cDx8/DSC-3908.jpg",
+                "https://i.postimg.cc/tJYNZQTh/DSC-3909.jpg",
+                "https://i.postimg.cc/WzC60WFZ/DSC-3910.jpg",
+                "https://i.postimg.cc/sDGJ3rbC/DSC-3911.jpg",
+                "https://i.postimg.cc/KcHNXzqR/DSC-3912.jpg",
+                "https://i.postimg.cc/bNSRqh4h/DSC-3913.jpg",
+                "https://i.postimg.cc/y8FXSTVS/DSC-3914.jpg",
+                "https://i.postimg.cc/qvfxRFHS/DSC-3915.jpg",
+                "https://i.postimg.cc/4xzbh1JK/DSC-3916.jpg",
+                "https://i.postimg.cc/wjhcsk6k/DSC-3917.jpg",
+                "https://i.postimg.cc/PqTbb8Jf/DSC-3918.jpg",
+                "https://i.postimg.cc/bvgxmNSG/DSC-3919.jpg",
+                "https://i.postimg.cc/nL243c9j/DSC-3920.jpg",
+                "https://i.postimg.cc/3w1XtJ0H/DSC-3921.jpg",
+                "https://i.postimg.cc/s2mYTDG2/DSC-3922.jpg",
+                "https://i.postimg.cc/tTghwQF1/DSC-3923.jpg",
+                "https://i.postimg.cc/fLbxpnYF/DSC-3924.jpg",
+                "https://i.postimg.cc/zvbTDCtV/DSC-3925.jpg",
+                "https://i.postimg.cc/W3fMPW79/DSC-3926.jpg",
+                "https://i.postimg.cc/V6HjcGRk/DSC-3929.jpg",
+                "https://i.postimg.cc/L5Yj4tCk/DSC-3930.jpg",
+                "https://i.postimg.cc/K8ytFgnP/DSC-3931.jpg",
+                "https://i.postimg.cc/WpCMWyz7/DSC-3932.jpg",
+                "https://i.postimg.cc/9F9yvBw1/DSC-3933.jpg",
+                "https://i.postimg.cc/rpVWRXZc/DSC-3934.jpg",
+                "https://i.postimg.cc/BncHvQg1/DSC-3935.jpg",
+                "https://i.postimg.cc/XYcdv78d/DSC-3936.jpg",
+                "https://i.postimg.cc/263ZTdfP/DSC-3937.jpg",
+                "https://i.postimg.cc/N0sT2qCw/DSC-3938.jpg",
+                "https://i.postimg.cc/q7Jn6Vb9/DSC-3939.jpg",
+                "https://i.postimg.cc/bvmnQC4y/DSC-3941.jpg",
+                "https://i.postimg.cc/cJF3Q9PT/DSC-3942.jpg",
+                "https://i.postimg.cc/nrDQfHr0/DSC-3943.jpg",
+                "https://i.postimg.cc/Hj18pf7g/DSC-3944.jpg",
+                "https://i.postimg.cc/HWVKRj0S/DSC-3946.jpg",
+                "https://i.postimg.cc/gcn5QrqY/DSC-3947.jpg",
+                "https://i.postimg.cc/g2PTxDC5/DSC-3948.jpg",
+                "https://i.postimg.cc/SQJ53j7S/DSC-3949.jpg",
+                "https://i.postimg.cc/fRjgmdZz/DSC-3950.jpg",
+                "https://i.postimg.cc/R0SpR0VT/DSC-3951.jpg",
+                "https://i.postimg.cc/8zBnMvDN/DSC-3952.jpg",
+                "https://i.postimg.cc/MG63DGKR/DSC-3953.jpg",
+                "https://i.postimg.cc/zvgxBb0h/DSC-3954.jpg",
+                "https://i.postimg.cc/yxZLdgvk/DSC-3955.jpg",
+                "https://i.postimg.cc/kM0jHsg5/DSC-3956.jpg",
+                "https://i.postimg.cc/Fs0PXSYP/DSC-3957.jpg",
+                "https://i.postimg.cc/9FyxH9DY/DSC-3958.jpg",
+                "https://i.postimg.cc/8PLygv7h/DSC-3959.jpg",
+                "https://i.postimg.cc/Pr16nDC2/DSC-3960.jpg",
+                "https://i.postimg.cc/65CHxZ7N/DSC-3961.jpg",
+                "https://i.postimg.cc/6pwMWQZF/DSC-3962.jpg",
+                "https://i.postimg.cc/kg9TJ58M/DSC-3963.jpg",
+                "https://i.postimg.cc/13Pvmz64/DSC-3964.jpg",
+                "https://i.postimg.cc/9QVLmfT7/DSC-3965.jpg",
+                "https://i.postimg.cc/RZRXNzQW/DSC-3966.jpg",
+                "https://i.postimg.cc/P542PkzQ/DSC-3967.jpg",
+                "https://i.postimg.cc/QdXqLyGG/DSC-3968.jpg",
+                "https://i.postimg.cc/1RqBDFr8/DSC-3969.jpg",
+                "https://i.postimg.cc/rsx9c6wR/DSC-3970.jpg",
+                "https://i.postimg.cc/y6Zj0Ryd/DSC-3971.jpg",
+                "https://i.postimg.cc/SxyG0vFC/DSC-3972.jpg",
+                "https://i.postimg.cc/Mpdmzmzk/DSC-3974.jpg",
+                "https://i.postimg.cc/6pYfBftD/DSC-3975.jpg",
+                "https://i.postimg.cc/vZ3tGtbz/DSC-3977.jpg",
+                "https://i.postimg.cc/YS0f0LCy/DSC-3978.jpg",
+                "https://i.postimg.cc/Ls5B5gss/DSC-3979.jpg",
+                "https://i.postimg.cc/d1T2mMdj/DSC-3981.jpg",
+                "https://i.postimg.cc/JnBNcwJq/DSC-3982.jpg",
+                "https://i.postimg.cc/4dh6bCVk/DSC-3985.jpg",
+                "https://i.postimg.cc/66nV8XB5/DSC-3986.jpg",
+                "https://i.postimg.cc/FsvycBKG/DSC-3987.jpg",
+                "https://i.postimg.cc/4N1z1Q7R/DSC-3988.jpg",
+                "https://i.postimg.cc/xTPKP3Jj/DSC-3989.jpg",
+                "https://i.postimg.cc/jjDPtV8s/DSC-3990.jpg",
+                "https://i.postimg.cc/W3rZqGLX/DSC-3991.jpg",
+                "https://i.postimg.cc/hv17pKGd/DSC-3992.jpg",
+                "https://i.postimg.cc/ZKJN0vfH/DSC-3993.jpg",
+                "https://i.postimg.cc/5NpCz9TF/DSC-3994.jpg",
+                "https://i.postimg.cc/zGcHdtq9/DSC-3995.jpg",
+                "https://i.postimg.cc/0yBKtW8N/DSC-3996.jpg"
             ],
             "Warm ups - Team": [
-                "https://i.postimg.cc/WbrNqD1G/DSC-3760.jpg",
-                "https://i.postimg.cc/qM1WzK1p/DSC-3761.jpg",
-                "https://i.postimg.cc/mD83g0b7/DSC-3762.jpg",
-                "https://i.postimg.cc/pTdtq3c8/DSC-3763.jpg",
-                "https://i.postimg.cc/255c2h1x/DSC-3764.jpg",
-                "https://i.postimg.cc/Yq7G1sL5/DSC-3765.jpg",
-                "https://i.postimg.cc/vT8B6W3p/DSC-3767.jpg",
-                "https://i.postimg.cc/tTPfN7cK/DSC-3768.jpg",
-                "https://i.postimg.cc/rp4zF7jS/DSC-3769.jpg",
-                "https://i.postimg.cc/Y0QyqCjJ/DSC-3770.jpg",
-                "https://i.postimg.cc/cLD6B76x/DSC-3771.jpg",
-                "https://i.postimg.cc/J4F3g201/DSC-3773.jpg",
-                "https://i.postimg.cc/655G053w/DSC-3774.jpg",
-                "https://i.postimg.cc/Jz5T5B8D/DSC-3775.jpg",
-                "https://i.postimg.cc/76W5t07c/DSC-3776.jpg",
-                "https://i.postimg.cc/W47V1N2v/DSC-3777.jpg",
-                "https://i.postimg.cc/pr7y0gN4/DSC-3778.jpg",
-                "https://i.postimg.cc/L6h5DqTq/DSC-3779.jpg",
-                "https://i.postimg.cc/NMr05y4j/DSC-3780.jpg",
-                "https://i.postimg.cc/Qd9XQ9D4/DSC-3781.jpg",
-                "https://i.postimg.cc/gJ5x0hXg/DSC-3782.jpg",
-                "https://i.postimg.cc/Dwf6v0Yh/DSC-3783.jpg",
-                "https://i.postimg.cc/T3K5mB5P/DSC-3784.jpg",
-                "https://i.postimg.cc/Wz8V1g4m/DSC-3785.jpg",
-                "https://i.postimg.cc/wMs0N1gZ/DSC-3786.jpg",
-                "https://i.postimg.cc/pTdt2w5Y/DSC-3787.jpg",
-                "https://i.postimg.cc/W40g4R6d/DSC-3788.jpg",
-                "https://i.postimg.cc/T3sLw07g/DSC-3789.jpg",
-                "https://i.postimg.cc/mkx0kL0Y/DSC-3790.jpg",
-                "https://i.postimg.cc/0j05856r/DSC-3791.jpg",
-                "https://i.postimg.cc/85K5466L/DSC-3792.jpg",
-                "https://i.postimg.cc/g2fR28yF/DSC-3793.jpg",
-                "https://i.postimg.cc/vTBdGj8r/DSC-3794.jpg",
-                "https://i.postimg.cc/76j0146n/DSC-4211.jpg"
+                "https://i.postimg.cc/6p04XbWc/DSC-3806.jpg",
+                "https://i.postimg.cc/RZRJBpST/DSC-3807.jpg",
+                "https://i.postimg.cc/JzqHLYrc/DSC-3808.jpg",
+                "https://i.postimg.cc/bw8S4fh9/DSC-3809.jpg",
+                "https://i.postimg.cc/QMYBBBWb/DSC-3812.jpg",
+                "https://i.postimg.cc/Bv78881M/DSC-3813.jpg",
+                "https://i.postimg.cc/66v73p6v/DSC-3815.jpg",
+                "https://i.postimg.cc/ydJD0VFf/DSC-3817.jpg",
+                "https://i.postimg.cc/Z5T0VP8v/DSC-3818.jpg",
+                "https://i.postimg.cc/SNLJ61MF/DSC-3819.jpg",
+                "https://i.postimg.cc/yYhkmpSM/DSC-3821.jpg",
+                "https://i.postimg.cc/vZ3Tj1hL/DSC-3822.jpg",
+                "https://i.postimg.cc/JhFnr99J/DSC-3823.jpg",
+                "https://i.postimg.cc/NMr05dtv/DSC-3824.jpg",
+                "https://i.postimg.cc/d3PVdGQ0/DSC-3825.jpg",
+                "https://i.postimg.cc/HnwstjjQ/DSC-3826.jpg",
+                "https://i.postimg.cc/yxmYTWWv/DSC-3827.jpg",
+                "https://i.postimg.cc/D0rycm8V/DSC-3828.jpg",
+                "https://i.postimg.cc/g2kkvzpZ/DSC-3829.jpg",
+                "https://i.postimg.cc/6p55dWKS/DSC-3830.jpg",
+                "https://i.postimg.cc/bNPvw0BX/DSC-3831.jpg",
+                "https://i.postimg.cc/zXNfGwcX/DSC-3832.jpg",
+                "https://i.postimg.cc/W4xNL0kM/DSC-3833.jpg",
+                "https://i.postimg.cc/YSvrsdhm/DSC-3836.jpg",
+                "https://i.postimg.cc/BvRS92Kd/DSC-3837.jpg",
+                "https://i.postimg.cc/cHYss67t/DSC-3838.jpg",
+                "https://i.postimg.cc/WzwTkKHV/DSC-3839.jpg",
+                "https://i.postimg.cc/9XdWKRFJ/DSC-3840.jpg",
+                "https://i.postimg.cc/dQ2qpkt2/DSC-3841.jpg",
+                "https://i.postimg.cc/Y26pZGq3/DSC-3842.jpg",
+                "https://i.postimg.cc/HsTpgYrJ/DSC-3843.jpg",
+                "https://i.postimg.cc/9F1cX69G/DSC-3845.jpg",
+                "https://i.postimg.cc/RZF4Wg1p/DSC-3846.jpg",
+                "https://i.postimg.cc/WbSspBZ8/DSC-3849.jpg",
+                "https://i.postimg.cc/K8zx10rS/DSC-3850.jpg",
+                "https://i.postimg.cc/vZNMf53F/DSC-3851.jpg",
+                "https://i.postimg.cc/RZD9KwXB/DSC-3853.jpg",
+                "https://i.postimg.cc/V6y8Hmyc/DSC-3854.jpg",
+                "https://i.postimg.cc/wvKpbHCn/DSC-3855.jpg",
+                "https://i.postimg.cc/HxGgPHqz/DSC-3856.jpg",
+                "https://i.postimg.cc/LXdp0RcW/DSC-3857.jpg",
+                "https://i.postimg.cc/76gyFdDY/DSC-3858.jpg",
+                "https://i.postimg.cc/D0nKn6yQ/DSC-3859.jpg",
+                "https://i.postimg.cc/Wz8c3Zhf/DSC-3860.jpg",
+                "https://i.postimg.cc/fWfN5GBf/DSC-3861.jpg",
+                "https://i.postimg.cc/MZmStC9k/DSC-3862.jpg",
+                "https://i.postimg.cc/zv7YBhyV/DSC-3863.jpg",
+                "https://i.postimg.cc/Qx6rZpL7/DSC-3864.jpg",
+                "https://i.postimg.cc/mgJftBgH/DSC-3865.jpg",
+                "https://i.postimg.cc/3wGMGVkZ/DSC-3866.jpg",
+                "https://i.postimg.cc/Sx3FJkxC/DSC-3867.jpg",
+                "https://i.postimg.cc/7Lzvzd5c/DSC-3868.jpg",
+                "https://i.postimg.cc/hj8Hymb8/DSC-3869.jpg",
+                "https://i.postimg.cc/qMDW54nL/DSC-3870.jpg",
+                "https://i.postimg.cc/T1CBGXs6/DSC-3871.jpg",
+                "https://i.postimg.cc/nVkyqvLx/DSC-3872.jpg",
+                "https://i.postimg.cc/SN1Hvk8v/DSC-3873.jpg",
+                "https://i.postimg.cc/YqDTsMgX/DSC-3874.jpg",
+                "https://i.postimg.cc/FsCwBNc8/DSC-3875.jpg",
+                "https://i.postimg.cc/V6whC6Qb/DSC-3876.jpg",
+                "https://i.postimg.cc/sXzLhXFk/DSC-3877.jpg",
+                "https://i.postimg.cc/mDS5NsBY/DSC-3878.jpg",
+                "https://i.postimg.cc/26YtZ6RZ/DSC-3879.jpg",
+                "https://i.postimg.cc/sxD0TNgb/DSC-3880.jpg",
+                "https://i.postimg.cc/mZ8nPBdL/DSC-3881.jpg",
+                "https://i.postimg.cc/Y2bPvMXk/DSC-3882.jpg",
+                "https://i.postimg.cc/L65bfw7J/DSC-3883.jpg",
+                "https://i.postimg.cc/vHKSvXFL/DSC-3884.jpg",
+                "https://i.postimg.cc/zGR22WqH/DSC-3885.jpg",
+                "https://i.postimg.cc/nL4RpJsg/DSC-3886.jpg",
+                "https://i.postimg.cc/DzrjnTWt/DSC-3887.jpg",
+                "https://i.postimg.cc/cJR90SK9/DSC-3888.jpg",
+                "https://i.postimg.cc/ydnL3yyZ/DSC-3889.jpg",
+                "https://i.postimg.cc/8c0wtk3m/DSC-3890.jpg",
+                "https://i.postimg.cc/mkD8Y1d1/DSC-3891.jpg",
+                "https://i.postimg.cc/8c5tRfy1/DSC-3892.jpg",
+                "https://i.postimg.cc/T14QC2Sc/DSC-3893.jpg",
+                "https://i.postimg.cc/xjxs0gCC/DSC-3895.jpg",
+                "https://i.postimg.cc/WpW92S3r/DSC-3896.jpg",
+                "https://i.postimg.cc/15bJFtDR/DSC-3898.jpg",
+                "https://i.postimg.cc/RV2XtFw4/DSC-3899.jpg",
+                "https://i.postimg.cc/nh7TGJ1h/DSC-3900.jpg",
+                "https://i.postimg.cc/VkM4W8FY/DSC-3901.jpg",
+                "https://i.postimg.cc/x1Hg32P3/DSC-3902.jpg",
+                "https://i.postimg.cc/63Hhp5BP/DSC-3903.jpg",
+                "https://i.postimg.cc/MTsYpKz7/DSC-3904.jpg",
+                "https://i.postimg.cc/4d45GhR6/DSC-3905.jpg",
+                "https://i.postimg.cc/rmyJTt2w/DSC-3906.jpg",
+                "https://i.postimg.cc/7hfnG86G/DSC-3907.jpg",
+                "https://i.postimg.cc/HnV9cDx8/DSC-3908.jpg",
+                "https://i.postimg.cc/tJYNZQTh/DSC-3909.jpg",
+                "https://i.postimg.cc/WzC60WFZ/DSC-3910.jpg",
+                "https://i.postimg.cc/sDGJ3rbC/DSC-3911.jpg",
+                "https://i.postimg.cc/KcHNXzqR/DSC-3912.jpg",
+                "https://i.postimg.cc/bNSRqh4h/DSC-3913.jpg",
+                "https://i.postimg.cc/y8FXSTVS/DSC-3914.jpg",
+                "https://i.postimg.cc/qvfxRFHS/DSC-3915.jpg",
+                "https://i.postimg.cc/4xzbh1JK/DSC-3916.jpg",
+                "https://i.postimg.cc/wjhcsk6k/DSC-3917.jpg",
+                "https://i.postimg.cc/PqTbb8Jf/DSC-3918.jpg",
+                "https://i.postimg.cc/bvgxmNSG/DSC-3919.jpg",
+                "https://i.postimg.cc/nL243c9j/DSC-3920.jpg",
+                "https://i.postimg.cc/3w1XtJ0H/DSC-3921.jpg",
+                "https://i.postimg.cc/s2mYTDG2/DSC-3922.jpg",
+                "https://i.postimg.cc/tTghwQF1/DSC-3923.jpg",
+                "https://i.postimg.cc/fLbxpnYF/DSC-3924.jpg",
+                "https://i.postimg.cc/zvbTDCtV/DSC-3925.jpg",
+                "https://i.postimg.cc/W3fMPW79/DSC-3926.jpg",
+                "https://i.postimg.cc/V6HjcGRk/DSC-3929.jpg",
+                "https://i.postimg.cc/L5Yj4tCk/DSC-3930.jpg",
+                "https://i.postimg.cc/K8ytFgnP/DSC-3931.jpg",
+                "https://i.postimg.cc/WpCMWyz7/DSC-3932.jpg",
+                "https://i.postimg.cc/9F9yvBw1/DSC-3933.jpg",
+                "https://i.postimg.cc/rpVWRXZc/DSC-3934.jpg",
+                "https://i.postimg.cc/BncHvQg1/DSC-3935.jpg",
+                "https://i.postimg.cc/XYcdv78d/DSC-3936.jpg",
+                "https://i.postimg.cc/263ZTdfP/DSC-3937.jpg",
+                "https://i.postimg.cc/N0sT2qCw/DSC-3938.jpg",
+                "https://i.postimg.cc/q7Jn6Vb9/DSC-3939.jpg",
+                "https://i.postimg.cc/bvmnQC4y/DSC-3941.jpg",
+                "https://i.postimg.cc/cJF3Q9PT/DSC-3942.jpg",
+                "https://i.postimg.cc/nrDQfHr0/DSC-3943.jpg",
+                "https://i.postimg.cc/Hj18pf7g/DSC-3944.jpg",
+                "https://i.postimg.cc/HWVKRj0S/DSC-3946.jpg",
+                "https://i.postimg.cc/gcn5QrqY/DSC-3947.jpg",
+                "https://i.postimg.cc/g2PTxDC5/DSC-3948.jpg",
+                "https://i.postimg.cc/SQJ53j7S/DSC-3949.jpg",
+                "https://i.postimg.cc/fRjgmdZz/DSC-3950.jpg",
+                "https://i.postimg.cc/R0SpR0VT/DSC-3951.jpg",
+                "https://i.postimg.cc/8zBnMvDN/DSC-3952.jpg",
+                "https://i.postimg.cc/MG63DGKR/DSC-3953.jpg",
+                "https://i.postimg.cc/zvgxBb0h/DSC-3954.jpg",
+                "https://i.postimg.cc/yxZLdgvk/DSC-3955.jpg",
+                "https://i.postimg.cc/kM0jHsg5/DSC-3956.jpg",
+                "https://i.postimg.cc/Fs0PXSYP/DSC-3957.jpg",
+                "https://i.postimg.cc/9FyxH9DY/DSC-3958.jpg",
+                "https://i.postimg.cc/8PLygv7h/DSC-3959.jpg",
+                "https://i.postimg.cc/Pr16nDC2/DSC-3960.jpg",
+                "https://i.postimg.cc/65CHxZ7N/DSC-3961.jpg",
+                "https://i.postimg.cc/6pwMWQZF/DSC-3962.jpg",
+                "https://i.postimg.cc/kg9TJ58M/DSC-3963.jpg",
+                "https://i.postimg.cc/13Pvmz64/DSC-3964.jpg",
+                "https://i.postimg.cc/9QVLmfT7/DSC-3965.jpg",
+                "https://i.postimg.cc/RZRXNzQW/DSC-3966.jpg",
+                "https://i.postimg.cc/P542PkzQ/DSC-3967.jpg",
+                "https://i.postimg.cc/QdXqLyGG/DSC-3968.jpg",
+                "https://i.postimg.cc/1RqBDFr8/DSC-3969.jpg",
+                "https://i.postimg.cc/rsx9c6wR/DSC-3970.jpg",
+                "https://i.postimg.cc/y6Zj0Ryd/DSC-3971.jpg",
+                "https://i.postimg.cc/SxyG0vFC/DSC-3972.jpg",
+                "https://i.postimg.cc/Mpdmzmzk/DSC-3974.jpg",
+                "https://i.postimg.cc/6pYfBftD/DSC-3975.jpg",
+                "https://i.postimg.cc/vZ3tGtbz/DSC-3977.jpg",
+                "https://i.postimg.cc/YS0f0LCy/DSC-3978.jpg",
+                "https://i.postimg.cc/Ls5B5gss/DSC-3979.jpg",
+                "https://i.postimg.cc/d1T2mMdj/DSC-3981.jpg",
+                "https://i.postimg.cc/JnBNcwJq/DSC-3982.jpg",
+                "https://i.postimg.cc/4dh6bCVk/DSC-3985.jpg",
+                "https://i.postimg.cc/66nV8XB5/DSC-3986.jpg",
+                "https://i.postimg.cc/FsvycBKG/DSC-3987.jpg",
+                "https://i.postimg.cc/4N1z1Q7R/DSC-3988.jpg",
+                "https://i.postimg.cc/xTPKP3Jj/DSC-3989.jpg",
+                "https://i.postimg.cc/jjDPtV8s/DSC-3990.jpg",
+                "https://i.postimg.cc/W3rZqGLX/DSC-3991.jpg",
+                "https://i.postimg.cc/hv17pKGd/DSC-3992.jpg",
+                "https://i.postimg.cc/ZKJN0vfH/DSC-3993.jpg",
+                "https://i.postimg.cc/5NpCz9TF/DSC-3994.jpg",
+                "https://i.postimg.cc/zGcHdtq9/DSC-3995.jpg",
+                "https://i.postimg.cc/0yBKtW8N/DSC-3996.jpg"
             ],
             "Team Photos": [
-                "https://i.postimg.cc/nL2X2j1G/DSC-4005.jpg",
-                "https://i.postimg.cc/PrGg2H4z/DSC-4006.jpg",
-                "https://i.postimg.cc/Qx4h9j1g/DSC-4007.jpg",
-                "https://i.postimg.cc/Wz4H4G4f/DSC-4008.jpg",
-                "https://i.postimg.cc/0j0881gL/DSC-4009.jpg"
+                "https://i.postimg.cc/6p04XbWc/DSC-3806.jpg",
+                "https://i.postimg.cc/RZRJBpST/DSC-3807.jpg",
+                "https://i.postimg.cc/JzqHLYrc/DSC-3808.jpg",
+                "https://i.postimg.cc/bw8S4fh9/DSC-3809.jpg",
+                "https://i.postimg.cc/QMYBBBWb/DSC-3812.jpg",
+                "https://i.postimg.cc/Bv78881M/DSC-3813.jpg",
+                "https://i.postimg.cc/66v73p6v/DSC-3815.jpg",
+                "https://i.postimg.cc/ydJD0VFf/DSC-3817.jpg",
+                "https://i.postimg.cc/Z5T0VP8v/DSC-3818.jpg",
+                "https://i.postimg.cc/SNLJ61MF/DSC-3819.jpg",
+                "https://i.postimg.cc/yYhkmpSM/DSC-3821.jpg",
+                "https://i.postimg.cc/vZ3Tj1hL/DSC-3822.jpg",
+                "https://i.postimg.cc/JhFnr99J/DSC-3823.jpg",
+                "https://i.postimg.cc/NMr05dtv/DSC-3824.jpg",
+                "https://i.postimg.cc/d3PVdGQ0/DSC-3825.jpg",
+                "https://i.postimg.cc/HnwstjjQ/DSC-3826.jpg",
+                "https://i.postimg.cc/yxmYTWWv/DSC-3827.jpg",
+                "https://i.postimg.cc/D0rycm8V/DSC-3828.jpg",
+                "https://i.postimg.cc/g2kkvzpZ/DSC-3829.jpg",
+                "https://i.postimg.cc/6p55dWKS/DSC-3830.jpg",
+                "https://i.postimg.cc/bNPvw0BX/DSC-3831.jpg",
+                "https://i.postimg.cc/zXNfGwcX/DSC-3832.jpg",
+                "https://i.postimg.cc/W4xNL0kM/DSC-3833.jpg",
+                "https://i.postimg.cc/YSvrsdhm/DSC-3836.jpg",
+                "https://i.postimg.cc/BvRS92Kd/DSC-3837.jpg",
+                "https://i.postimg.cc/cHYss67t/DSC-3838.jpg",
+                "https://i.postimg.cc/WzwTkKHV/DSC-3839.jpg",
+                "https://i.postimg.cc/9XdWKRFJ/DSC-3840.jpg",
+                "https://i.postimg.cc/dQ2qpkt2/DSC-3841.jpg",
+                "https://i.postimg.cc/Y26pZGq3/DSC-3842.jpg",
+                "https://i.postimg.cc/HsTpgYrJ/DSC-3843.jpg",
+                "https://i.postimg.cc/9F1cX69G/DSC-3845.jpg",
+                "https://i.postimg.cc/RZF4Wg1p/DSC-3846.jpg",
+                "https://i.postimg.cc/WbSspBZ8/DSC-3849.jpg",
+                "https://i.postimg.cc/K8zx10rS/DSC-3850.jpg",
+                "https://i.postimg.cc/vZNMf53F/DSC-3851.jpg",
+                "https://i.postimg.cc/RZD9KwXB/DSC-3853.jpg",
+                "https://i.postimg.cc/V6y8Hmyc/DSC-3854.jpg",
+                "https://i.postimg.cc/wvKpbHCn/DSC-3855.jpg",
+                "https://i.postimg.cc/HxGgPHqz/DSC-3856.jpg",
+                "https://i.postimg.cc/LXdp0RcW/DSC-3857.jpg",
+                "https://i.postimg.cc/76gyFdDY/DSC-3858.jpg",
+                "https://i.postimg.cc/D0nKn6yQ/DSC-3859.jpg",
+                "https://i.postimg.cc/Wz8c3Zhf/DSC-3860.jpg",
+                "https://i.postimg.cc/fWfN5GBf/DSC-3861.jpg",
+                "https://i.postimg.cc/MZmStC9k/DSC-3862.jpg",
+                "https://i.postimg.cc/zv7YBhyV/DSC-3863.jpg",
+                "https://i.postimg.cc/Qx6rZpL7/DSC-3864.jpg",
+                "https://i.postimg.cc/mgJftBgH/DSC-3865.jpg",
+                "https://i.postimg.cc/3wGMGVkZ/DSC-3866.jpg",
+                "https://i.postimg.cc/Sx3FJkxC/DSC-3867.jpg",
+                "https://i.postimg.cc/7Lzvzd5c/DSC-3868.jpg",
+                "https://i.postimg.cc/hj8Hymb8/DSC-3869.jpg",
+                "https://i.postimg.cc/qMDW54nL/DSC-3870.jpg",
+                "https://i.postimg.cc/T1CBGXs6/DSC-3871.jpg",
+                "https://i.postimg.cc/nVkyqvLx/DSC-3872.jpg",
+                "https://i.postimg.cc/SN1Hvk8v/DSC-3873.jpg",
+                "https://i.postimg.cc/YqDTsMgX/DSC-3874.jpg",
+                "https://i.postimg.cc/FsCwBNc8/DSC-3875.jpg",
+                "https://i.postimg.cc/V6whC6Qb/DSC-3876.jpg",
+                "https://i.postimg.cc/sXzLhXFk/DSC-3877.jpg",
+                "https://i.postimg.cc/mDS5NsBY/DSC-3878.jpg",
+                "https://i.postimg.cc/26YtZ6RZ/DSC-3879.jpg",
+                "https://i.postimg.cc/sxD0TNgb/DSC-3880.jpg",
+                "https://i.postimg.cc/mZ8nPBdL/DSC-3881.jpg",
+                "https://i.postimg.cc/Y2bPvMXk/DSC-3882.jpg",
+                "https://i.postimg.cc/L65bfw7J/DSC-3883.jpg",
+                "https://i.postimg.cc/vHKSvXFL/DSC-3884.jpg",
+                "https://i.postimg.cc/zGR22WqH/DSC-3885.jpg",
+                "https://i.postimg.cc/nL4RpJsg/DSC-3886.jpg",
+                "https://i.postimg.cc/DzrjnTWt/DSC-3887.jpg",
+                "https://i.postimg.cc/cJR90SK9/DSC-3888.jpg",
+                "https://i.postimg.cc/ydnL3yyZ/DSC-3889.jpg",
+                "https://i.postimg.cc/8c0wtk3m/DSC-3890.jpg",
+                "https://i.postimg.cc/mkD8Y1d1/DSC-3891.jpg",
+                "https://i.postimg.cc/8c5tRfy1/DSC-3892.jpg",
+                "https://i.postimg.cc/T14QC2Sc/DSC-3893.jpg",
+                "https://i.postimg.cc/xjxs0gCC/DSC-3895.jpg",
+                "https://i.postimg.cc/WpW92S3r/DSC-3896.jpg",
+                "https://i.postimg.cc/15bJFtDR/DSC-3898.jpg",
+                "https://i.postimg.cc/RV2XtFw4/DSC-3899.jpg",
+                "https://i.postimg.cc/nh7TGJ1h/DSC-3900.jpg",
+                "https://i.postimg.cc/VkM4W8FY/DSC-3901.jpg",
+                "https://i.postimg.cc/x1Hg32P3/DSC-3902.jpg",
+                "https://i.postimg.cc/63Hhp5BP/DSC-3903.jpg",
+                "https://i.postimg.cc/MTsYpKz7/DSC-3904.jpg",
+                "https://i.postimg.cc/4d45GhR6/DSC-3905.jpg",
+                "https://i.postimg.cc/rmyJTt2w/DSC-3906.jpg",
+                "https://i.postimg.cc/7hfnG86G/DSC-3907.jpg",
+                "https://i.postimg.cc/HnV9cDx8/DSC-3908.jpg",
+                "https://i.postimg.cc/tJYNZQTh/DSC-3909.jpg",
+                "https://i.postimg.cc/WzC60WFZ/DSC-3910.jpg",
+                "https://i.postimg.cc/sDGJ3rbC/DSC-3911.jpg",
+                "https://i.postimg.cc/KcHNXzqR/DSC-3912.jpg",
+                "https://i.postimg.cc/bNSRqh4h/DSC-3913.jpg",
+                "https://i.postimg.cc/y8FXSTVS/DSC-3914.jpg",
+                "https://i.postimg.cc/qvfxRFHS/DSC-3915.jpg",
+                "https://i.postimg.cc/4xzbh1JK/DSC-3916.jpg",
+                "https://i.postimg.cc/wjhcsk6k/DSC-3917.jpg",
+                "https://i.postimg.cc/PqTbb8Jf/DSC-3918.jpg",
+                "https://i.postimg.cc/bvgxmNSG/DSC-3919.jpg",
+                "https://i.postimg.cc/nL243c9j/DSC-3920.jpg",
+                "https://i.postimg.cc/3w1XtJ0H/DSC-3921.jpg",
+                "https://i.postimg.cc/s2mYTDG2/DSC-3922.jpg",
+                "https://i.postimg.cc/tTghwQF1/DSC-3923.jpg",
+                "https://i.postimg.cc/fLbxpnYF/DSC-3924.jpg",
+                "https://i.postimg.cc/zvbTDCtV/DSC-3925.jpg",
+                "https://i.postimg.cc/W3fMPW79/DSC-3926.jpg",
+                "https://i.postimg.cc/V6HjcGRk/DSC-3929.jpg",
+                "https://i.postimg.cc/L5Yj4tCk/DSC-3930.jpg",
+                "https://i.postimg.cc/K8ytFgnP/DSC-3931.jpg",
+                "https://i.postimg.cc/WpCMWyz7/DSC-3932.jpg",
+                "https://i.postimg.cc/9F9yvBw1/DSC-3933.jpg",
+                "https://i.postimg.cc/rpVWRXZc/DSC-3934.jpg",
+                "https://i.postimg.cc/BncHvQg1/DSC-3935.jpg",
+                "https://i.postimg.cc/XYcdv78d/DSC-3936.jpg",
+                "https://i.postimg.cc/263ZTdfP/DSC-3937.jpg",
+                "https://i.postimg.cc/N0sT2qCw/DSC-3938.jpg",
+                "https://i.postimg.cc/q7Jn6Vb9/DSC-3939.jpg",
+                "https://i.postimg.cc/bvmnQC4y/DSC-3941.jpg",
+                "https://i.postimg.cc/cJF3Q9PT/DSC-3942.jpg",
+                "https://i.postimg.cc/nrDQfHr0/DSC-3943.jpg",
+                "https://i.postimg.cc/Hj18pf7g/DSC-3944.jpg",
+                "https://i.postimg.cc/HWVKRj0S/DSC-3946.jpg",
+                "https://i.postimg.cc/gcn5QrqY/DSC-3947.jpg",
+                "https://i.postimg.cc/g2PTxDC5/DSC-3948.jpg",
+                "https://i.postimg.cc/SQJ53j7S/DSC-3949.jpg",
+                "https://i.postimg.cc/fRjgmdZz/DSC-3950.jpg",
+                "https://i.postimg.cc/R0SpR0VT/DSC-3951.jpg",
+                "https://i.postimg.cc/8zBnMvDN/DSC-3952.jpg",
+                "https://i.postimg.cc/MG63DGKR/DSC-3953.jpg",
+                "https://i.postimg.cc/zvgxBb0h/DSC-3954.jpg",
+                "https://i.postimg.cc/yxZLdgvk/DSC-3955.jpg",
+                "https://i.postimg.cc/kM0jHsg5/DSC-3956.jpg",
+                "https://i.postimg.cc/Fs0PXSYP/DSC-3957.jpg",
+                "https://i.postimg.cc/9FyxH9DY/DSC-3958.jpg",
+                "https://i.postimg.cc/8PLygv7h/DSC-3959.jpg",
+                "https://i.postimg.cc/Pr16nDC2/DSC-3960.jpg",
+                "https://i.postimg.cc/65CHxZ7N/DSC-3961.jpg",
+                "https://i.postimg.cc/6pwMWQZF/DSC-3962.jpg",
+                "https://i.postimg.cc/kg9TJ58M/DSC-3963.jpg",
+                "https://i.postimg.cc/13Pvmz64/DSC-3964.jpg",
+                "https://i.postimg.cc/9QVLmfT7/DSC-3965.jpg",
+                "https://i.postimg.cc/RZRXNzQW/DSC-3966.jpg",
+                "https://i.postimg.cc/P542PkzQ/DSC-3967.jpg",
+                "https://i.postimg.cc/QdXqLyGG/DSC-3968.jpg",
+                "https://i.postimg.cc/1RqBDFr8/DSC-3969.jpg",
+                "https://i.postimg.cc/rsx9c6wR/DSC-3970.jpg",
+                "https://i.postimg.cc/y6Zj0Ryd/DSC-3971.jpg",
+                "https://i.postimg.cc/SxyG0vFC/DSC-3972.jpg",
+                "https://i.postimg.cc/Mpdmzmzk/DSC-3974.jpg",
+                "https://i.postimg.cc/6pYfBftD/DSC-3975.jpg",
+                "https://i.postimg.cc/vZ3tGtbz/DSC-3977.jpg",
+                "https://i.postimg.cc/YS0f0LCy/DSC-3978.jpg",
+                "https://i.postimg.cc/Ls5B5gss/DSC-3979.jpg",
+                "https://i.postimg.cc/d1T2mMdj/DSC-3981.jpg",
+                "https://i.postimg.cc/JnBNcwJq/DSC-3982.jpg",
+                "https://i.postimg.cc/4dh6bCVk/DSC-3985.jpg",
+                "https://i.postimg.cc/66nV8XB5/DSC-3986.jpg",
+                "https://i.postimg.cc/FsvycBKG/DSC-3987.jpg",
+                "https://i.postimg.cc/4N1z1Q7R/DSC-3988.jpg",
+                "https://i.postimg.cc/xTPKP3Jj/DSC-3989.jpg",
+                "https://i.postimg.cc/jjDPtV8s/DSC-3990.jpg",
+                "https://i.postimg.cc/W3rZqGLX/DSC-3991.jpg",
+                "https://i.postimg.cc/hv17pKGd/DSC-3992.jpg",
+                "https://i.postimg.cc/ZKJN0vfH/DSC-3993.jpg",
+                "https://i.postimg.cc/5NpCz9TF/DSC-3994.jpg",
+                "https://i.postimg.cc/zGcHdtq9/DSC-3995.jpg",
+                "https://i.postimg.cc/0yBKtW8N/DSC-3996.jpg"
             ],
-            // START OF USER ADDED VIDEO CONTENT
+            // ADDED: Videos section with structured data for title and video ID
             "Videos!": [
-                '<div class="w-full h-auto bg-gray-900 rounded-lg shadow-xl overflow-hidden p-4"><h3 class="text-white text-xl font-bold mb-4 border-b border-red-600 pb-2">1st Half Video</h3><div class="aspect-w-16 aspect-h-9"><iframe class="aspect-h-9" src="https://www.youtube.com/embed/WkVNfh1JfZc?si=9m90aymg3-_8-riF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>',
-                '<div class="w-full h-auto bg-gray-900 rounded-lg shadow-xl overflow-hidden p-4"><h3 class="text-white text-xl font-bold mb-4 border-b border-red-600 pb-2">2nd Half Video</h3><div class="aspect-w-16 aspect-h-9"><iframe class="aspect-h-9" src="https://www.youtube.com/embed/hjUPQQbILIo?si=LEpAm3Yfdj1t94n2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>',
-                '<div class="w-full h-auto bg-gray-900 rounded-lg shadow-xl overflow-hidden p-4"><h3 class="text-white text-xl font-bold mb-4 border-b border-red-600 pb-2">3rd Half Video</h3><div class="aspect-w-16 aspect-h-9"><iframe class="aspect-h-9" src="https://www.youtube.com/embed/oH1oSUphgLQ?si=5RUBQ1xQ3PpeXl-v" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>'
+                { "title": "1st Half - Lexington Black Widows vs Louisville Sharks", "id": "WkVNfh1JfZc" },
+                { "title": "2nd Half - Lexington Black Widows vs Louisville Sharks", "id": "hjUPQQbILIo" },
+                { "title": "3rd Half - Lexington Black Widows vs Louisville Sharks", "id": "oH1oSUphgLQ" }
             ]
-            // END OF USER ADDED VIDEO CONTENT
         };
+        
+        // Global variables for modal navigation (Implicitly used in original script)
+        let currentGallery = '';
+        let currentImageIndex = 0;
+        let currentImageUrls = [];
+        const galleryDiv = document.getElementById('gallery');
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeModalButton = document.getElementById('closeModal');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const clickToSourceText = document.getElementById('clickToSourceText');
+        const navButtons = document.querySelectorAll('.nav-button');
 
-        // ... Existing modal functions (openModal, closeModal, showNextImage, showPrevImage, preloadAdjacentImages) ...
-
-        /**
-         * Opens the modal with the specified image.
-         * @param {string} src - The URL of the image.
-         * @param {number} index - The index of the image in the current gallery.
-         * @param {string} galleryName - The name of the current gallery.
-         */
-        function openModal(src, index, galleryName) {
-            currentGalleryName = galleryName;
-            currentIndex = index;
-            modalImage.src = ''; // Clear image first
-            modalImage.alt = 'Loading...';
-            clickToSourceText.classList.add('opacity-0', 'hidden'); // Hide click info
-
-            // Show spinner and modal immediately
-            loadingSpinner.classList.remove('hidden');
-            modal.classList.remove('hidden');
-
-            // Fade in modal
-            setTimeout(() => {
-                modal.classList.add('opacity-100');
-            }, 10);
-
-            // Preload the full image
-            const fullImage = new Image();
-            fullImage.onload = () => {
-                modalImage.src = src;
-                modalImage.alt = `Gallery Image ${index + 1}`;
-                loadingSpinner.classList.add('hidden'); // Hide spinner when loaded
-
-                // Show click-to-source text
-                setTimeout(() => {
-                    clickToSourceText.classList.remove('hidden');
-                    setTimeout(() => clickToSourceText.classList.add('opacity-100'), 10);
-                }, 100);
-
-                // Preload adjacent images for fast browsing
-                preloadAdjacentImages(index);
-            };
-            fullImage.onerror = () => {
-                modalImage.src = 'placeholder-error.jpg'; // Use a placeholder for errors
-                modalImage.alt = 'Image failed to load.';
-                loadingSpinner.classList.add('hidden');
-                console.error(`Failed to load image: ${src}`);
-            };
-            fullImage.src = src;
-        }
-
-        /**
-         * Closes the image modal.
-         */
-        function closeModal() {
-            modal.classList.remove('opacity-100');
-            clickToSourceText.classList.remove('opacity-100');
-            // Wait for transition before hiding
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modalImage.src = ''; // Clear image source
-                modalImage.alt = '';
-                loadingSpinner.classList.add('hidden');
-                clickToSourceText.classList.add('hidden');
-            }, 300);
-        }
-
-        /**
-         * Displays the next image in the current gallery.
-         */
-        function showNextImage() {
-            const gallery = galleries[currentGalleryName];
-            if (!gallery) return;
-
-            currentIndex = (currentIndex + 1) % gallery.length;
-            openModal(gallery[currentIndex], currentIndex, currentGalleryName);
-        }
-
-        /**
-         * Displays the previous image in the current gallery.
-         */
-        function showPrevImage() {
-            const gallery = galleries[currentGalleryName];
-            if (!gallery) return;
-
-            currentIndex = (currentIndex - 1 + gallery.length) % gallery.length;
-            openModal(gallery[currentIndex], currentIndex, currentGalleryName);
-        }
-
-        /**
-         * Preloads the previous and next images.
-         * @param {number} currentIndex - The index of the currently displayed image.
-         */
-        function preloadAdjacentImages(currentIndex) {
-            const gallery = galleries[currentGalleryName];
-            if (!gallery) return;
-
-            imagesToPreload = [];
-
-            // Preload next image
-            const nextIndex = (currentIndex + 1) % gallery.length;
-            const nextImage = new Image();
-            nextImage.src = gallery[nextIndex];
-            imagesToPreload.push(nextImage);
-
-            // Preload previous image
-            const prevIndex = (currentIndex - 1 + gallery.length) % gallery.length;
-            const prevImage = new Image();
-            prevImage.src = gallery[prevIndex];
-            imagesToPreload.push(prevImage);
-        }
-
-        /**
-         * Loads and displays the content for a selected sub-gallery.
-         * @param {string} galleryName - The name of the gallery to load.
-         */
-        function loadSubGallery(galleryName) {
-            const galleryDiv = document.getElementById('gallery');
-            galleryDiv.innerHTML = ''; // Clear current gallery
-            const galleryData = galleries[galleryName];
-            currentGalleryName = galleryName;
-
-            // Dynamically adjust grid layout based on content type
-            if (galleryName === 'Videos!') {
-                // Change grid to single column for videos (to maximize width)
-                galleryDiv.className = 'grid grid-cols-1 gap-6 p-6 max-w-7xl mx-auto bg-white rounded-xl shadow-2xl';
-
-                if (galleryData && galleryData.length > 0) {
-                    galleryData.forEach(videoHtml => {
-                        // For videos, directly insert the HTML string containing the iframe
-                        galleryDiv.insertAdjacentHTML('beforeend', videoHtml);
-                    });
-                } else {
-                    galleryDiv.innerHTML = '<p class="text-center text-gray-500 col-span-full">No videos available yet.</p>';
-                }
-            } else if (galleryData && galleryData.length > 0) {
-                // Restore grid to multi-column for images
-                galleryDiv.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 max-w-7xl mx-auto bg-white rounded-xl shadow-2xl';
-
-                galleryData.forEach((src, index) => {
-                    const item = document.createElement('div');
-                    item.className = 'relative rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 transform';
-                    
-                    const img = document.createElement('img');
-                    img.src = src;
-                    img.alt = `Gallery Image ${index + 1}`;
-                    img.className = 'w-full h-auto object-cover gallery-image';
-                    img.loading = 'lazy';
-                    img.onclick = () => openModal(src, index, galleryName);
-                    
-                    item.appendChild(img);
-                    galleryDiv.appendChild(item);
-                });
-            } else {
-                galleryDiv.innerHTML = '<p class="text-center text-gray-500 col-span-full">No content found for this gallery.</p>';
-            }
-
-            // Update active button state
-            document.querySelectorAll('.nav-button').forEach(button => {
+        // Helper to update active button (Extracted from original inline logic)
+        function updateActiveButton(galleryName) {
+            navButtons.forEach(button => {
                 button.classList.remove('active');
                 if (button.dataset.gallery === galleryName) {
                     button.classList.add('active');
                 }
             });
-
-            // Scroll to the top of the gallery section for a smooth transition
-            galleryDiv.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Add event listeners for keyboard navigation in modal
+        // Function to open the image modal (Original logic - protected from videos)
+        function openModal(src, index) {
+            if (currentGallery === "Videos!") return; // EXIT if it's the video tab
+
+            modalImage.src = src;
+            currentImageIndex = index;
+            imageModal.classList.remove('hidden');
+            imageModal.classList.add('opacity-100');
+            document.body.style.overflow = 'hidden';
+            
+            clickToSourceText.classList.remove('hidden');
+            setTimeout(() => {
+                clickToSourceText.classList.add('opacity-100');
+            }, 50);
+
+            loadingSpinner.classList.remove('hidden');
+            modalImage.classList.add('hidden');
+
+            modalImage.onload = () => {
+                loadingSpinner.classList.add('hidden');
+                modalImage.classList.remove('hidden');
+            };
+            modalImage.onerror = () => {
+                loadingSpinner.classList.add('hidden');
+                modalImage.classList.remove('hidden');
+            };
+        }
+
+        // Function to close the image modal (Original logic)
+        function closeModal() {
+            imageModal.classList.remove('opacity-100');
+            imageModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            clickToSourceText.classList.remove('opacity-100');
+            clickToSourceText.classList.add('hidden');
+        }
+
+        // Function to navigate to next image (Original logic - protected from videos)
+        function showNextImage() {
+            if (currentGallery === "Videos!") return; // EXIT if it's the video tab
+            currentImageIndex = (currentImageIndex + 1) % currentImageUrls.length;
+            openModal(currentImageUrls[currentImageIndex], currentImageIndex);
+        }
+
+        // Function to navigate to previous image (Original logic - protected from videos)
+        function showPrevImage() {
+            if (currentGallery === "Videos!") return; // EXIT if it's the video tab
+            currentImageIndex = (currentImageIndex - 1 + currentImageUrls.length) % currentImageUrls.length;
+            openModal(currentImageUrls[currentImageIndex], currentImageIndex);
+        }
+
+        // PATCHED: Function to load the content of a sub-gallery (handles both images and videos)
+        function loadSubGallery(galleryName) {
+            galleryDiv.innerHTML = '';
+            currentGallery = galleryName;
+            
+            // Clear currentImageUrls when switching
+            currentImageUrls = []; 
+            currentImageIndex = 0; 
+            
+            updateActiveButton(galleryName);
+
+            const content = galleries[galleryName];
+            if (!content) return;
+
+            if (galleryName === "Videos!") {
+                // Video content rendering logic
+                content.forEach(item => {
+                    const galleryItem = document.createElement('div');
+                    // Use aspect-video for a 16:9 ratio, and hover effect
+                    galleryItem.className = 'bg-gray-800 rounded-lg shadow-xl overflow-hidden relative aspect-video transform hover:scale-[1.02] transition duration-300';
+
+                    // YouTube Embed URL structure: https://www.youtube.com/embed/VIDEO_ID
+                    const embedUrl = `https://www.youtube.com/embed/${item.id}`;
+
+                    galleryItem.innerHTML = `
+                        <iframe 
+                            class="w-full h-full absolute top-0 left-0"
+                            src="${embedUrl}"
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen
+                            title="${item.title}"
+                        ></iframe>
+                        <div class="absolute bottom-0 left-0 right-0 p-2 bg-black bg-opacity-70 text-white text-center font-semibold text-sm pointer-events-none">
+                            ${item.title}
+                        </div>
+                    `;
+
+                    galleryDiv.appendChild(galleryItem);
+                });
+            } else {
+                // Original image content rendering logic
+                currentImageUrls = content; // Set global array for modal/swipe logic
+                
+                content.forEach((imageUrl, index) => {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'bg-gray-200 rounded-lg shadow-xl overflow-hidden';
+
+                    const image = document.createElement('img');
+                    image.src = imageUrl;
+                    image.alt = `Gallery Image from ${galleryName}`;
+                    image.className = 'w-full h-auto object-cover gallery-image';
+                    image.loading = 'lazy';
+                    image.dataset.index = index;
+
+                    image.addEventListener('click', () => {
+                        openModal(imageUrl, index);
+                    });
+
+                    galleryItem.appendChild(image);
+                    galleryDiv.appendChild(galleryItem);
+                });
+            }
+        }
+
+        // Event Listeners (Original logic)
+        closeModalButton.addEventListener('click', closeModal);
+
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal || e.target === closeModalButton || e.target.closest('#closeModal')) {
+                closeModal();
+            }
+        });
+
+        modalImage.addEventListener('click', (e) => {
+            if (modalImage.src) {
+                // Extract postimg.cc URL for the host page
+                const postimgPageUrl = modalImage.src.replace('i.postimg.cc', 'postimg.cc').replace('/th/', '/');
+                if (postimgPageUrl.includes('postimg.cc') && !postimgPageUrl.includes('placeholder')) {
+                    window.open(postimgPageUrl, '_blank');
+                } else {
+                    // Fallback to close if it's a placeholder/error image
+                    closeModal();
+                }
+            }
+        });
+
+        // Keyboard navigation (Original logic)
         document.addEventListener('keydown', (e) => {
-            if (modal.classList.contains('opacity-100')) {
+            if (imageModal.classList.contains('opacity-100')) {
                 if (e.key === 'ArrowRight') {
                     showNextImage();
                 } else if (e.key === 'ArrowLeft') {
@@ -732,41 +1108,7 @@
             }
         });
 
-        // Event listener to close modal from button
-        closeModalButton.addEventListener('click', closeModal);
-
-        // Event listener to close modal if clicked on the backdrop
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-
-        // Event listener for clicking the modal image to go to the source page (PostImg)
-        modalImage.addEventListener('click', (e) => {
-            // Prevent event from bubbling up to the modal backdrop click listener
-            e.stopPropagation();
-
-            // Only attempt to open source link if a valid image is displayed
-            if (modalImage.src) {
-                // The image source is typically a direct image link from postimg.cc, e.g., 'https://i.postimg.cc/QdXqLyGG/DSC-3968.jpg'
-                // The hosted page is usually a shorter version without the image name, e.g., 'https://postimg.cc/QdXqLyGG'
-                
-                const urlParts = modalImage.src.split('/');
-                const postId = urlParts[urlParts.length - 2]; // Get the unique ID part like 'QdXqLyGG'
-                
-                if (postId) {
-                    const postimgPageUrl = `https://postimg.cc/${postId}`;
-                    window.open(postimgPageUrl, '_blank');
-                } else {
-                    // Fallback to close if it's a placeholder/error image
-                    closeModal();
-                }
-            }
-        });
-
-
-        // Swipe functionality for modal (Touch events)
+        // Swipe functionality for modal (Touch events) (Original logic)
         let touchStartX = 0;
         let touchEndX = 0;
 
@@ -783,6 +1125,7 @@
                 showPrevImage();
             }
         });
+
 
         // Initialize the gallery on page load
         document.addEventListener('DOMContentLoaded', () => {
