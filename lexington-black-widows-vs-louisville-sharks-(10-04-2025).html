@@ -1,5 +1,14 @@
 <script>
-    // Data structure containing all sub-galleries
+        const galleryDiv = document.getElementById('gallery');
+        const imageModal = document.getElementById('imageModal');
+        const closeModalButton = document.getElementById('closeModal');
+        const modalImage = document.getElementById('modalImage');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const navButtons = document.querySelectorAll('.nav-button');
+        const clickToSourceText = document.getElementById('clickToSourceText');
+
+        // Data structure containing all sub-galleries
+        // NOTE: 'youtube:' prefix indicates a video and should be followed by the video ID.
     const galleries = {
         "1st Half": [
             // Your existing image links for 1st Half
@@ -789,185 +798,206 @@
         ]
     };
 
-    // Global variables for image modal control
-    const galleryDiv = document.getElementById('gallery');
-    const imageModal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-    const closeModalButton = document.getElementById('closeModal');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-    const clickToSourceText = document.getElementById('clickToSourceText');
-    // navButtons will be selected inside DOMContentLoaded to ensure they exist
-    let navButtons; 
+    // Global variables for modal state
+        let currentGalleryData = [];
+        let currentImageIndex = -1;
 
-    let currentGalleryData = [];
-    let currentImageIndex = 0;
-    let currentGalleryName = "";
+        // Function to create either an image or a video item
+        const createGalleryItem = (mediaSource, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'rounded-xl overflow-hidden shadow-xl hover:shadow-2xl relative transform transition-all duration-300';
 
-    // Function to show the loading spinner
-    function showSpinner() {
-        loadingSpinner.classList.remove('hidden');
-    }
-
-    // Function to hide the loading spinner
-    function hideSpinner() {
-        loadingSpinner.classList.add('hidden');
-    }
-
-    // Function to open the image modal (only used for IMAGES)
-    function openModal(url, data, index, galleryName) {
-        // If the gallery is "Videos!" or the URL is a video embed, do NOT open the modal.
-        if (galleryName === 'Videos!') {
-             return; 
-        }
-        
-        currentGalleryData = data;
-        currentImageIndex = index;
-        currentGalleryName = galleryName;
-        
-        showSpinner();
-        imageModal.classList.remove('hidden');
-        setTimeout(() => {
-            imageModal.classList.add('opacity-100');
-        }, 10); 
-
-        modalImage.src = url;
-        modalImage.onload = () => {
-            hideSpinner();
-            clickToSourceText.classList.remove('hidden');
-            setTimeout(() => {
-                clickToSourceText.classList.add('opacity-100');
-            }, 50); 
-        };
-        modalImage.onerror = () => {
-            hideSpinner();
-            console.error("Image failed to load:", url);
-        };
-    }
-
-    // Function to close the image modal
-    function closeModal() {
-        imageModal.classList.remove('opacity-100');
-        clickToSourceText.classList.remove('opacity-100');
-        setTimeout(() => {
-            imageModal.classList.add('hidden');
-            modalImage.src = "";
-            clickToSourceText.classList.add('hidden');
-        }, 300);
-    }
-
-    // Function to switch to the previous image
-    function showPrevImage() {
-        if (currentGalleryData.length === 0 || currentGalleryName === 'Videos!') return;
-        currentImageIndex = (currentImageIndex - 1 + currentGalleryData.length) % currentGalleryData.length;
-        openModal(currentGalleryData[currentImageIndex], currentGalleryData, currentImageIndex, currentGalleryName);
-    }
-
-    // Function to switch to the next image
-    function showNextImage() {
-        if (currentGalleryData.length === 0 || currentGalleryName === 'Videos!') return;
-        currentImageIndex = (currentImageIndex + 1) % currentGalleryData.length;
-        openModal(currentGalleryData[currentImageIndex], currentGalleryData, currentImageIndex, currentGalleryName);
-    }
-
-    // Function to display the gallery content (images or videos)
-    function displayGallery(galleryData, galleryName) {
-        galleryDiv.innerHTML = ''; // Clear existing content
-
-        galleryData.forEach((url, index) => {
-            const galleryItem = document.createElement('div');
-            // Check if the URL is an embed link (YouTube, Vimeo, etc.)
-            const isVideo = url.includes('youtube.com/embed') || url.includes('vimeo.com/video');
-
-            if (isVideo) {
-                // **VIDEO EMBED LOGIC**
-                // pt-[56.25%] ensures a 16:9 aspect ratio for the video player
-                galleryItem.className = 'relative overflow-hidden shadow-md hover:shadow-xl transition duration-300 ease-in-out bg-black rounded-xl pt-[56.25%]'; 
-
+            // Check if the item is a YouTube video
+            if (mediaSource.startsWith('youtube:')) {
+                const videoId = mediaSource.substring('youtube:'.length);
                 const iframe = document.createElement('iframe');
-                iframe.src = url;
-                iframe.title = 'Embedded Video';
-                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-                iframe.allowFullscreen = true;
-                iframe.frameBorder = '0';
-                iframe.className = 'absolute top-0 left-0 w-full h-full';
+                iframe.setAttribute('width', '100%');
+                iframe.setAttribute('height', '100%');
+                // Use modest branding (rel=0) and allow fullscreen
+                iframe.setAttribute('src', `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`);
+                iframe.setAttribute('frameborder', '0');
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                iframe.setAttribute('allowfullscreen', 'true');
+                iframe.className = 'w-full h-full object-cover aspect-video';
 
-                galleryItem.appendChild(iframe);
+                // Use a wrapping div to ensure a consistent video aspect ratio in the grid
+                const videoWrapper = document.createElement('div');
+                // The existing grid layout with tailwindcss classes already manages the item size
+                videoWrapper.className = 'aspect-video'; // Use aspect-video to force 16:9 ratio
+                itemDiv.classList.add('aspect-video'); // Adjust the container to match the video
+                itemDiv.classList.remove('gallery-image'); // Videos don't use the image modal logic
+
+                videoWrapper.appendChild(iframe);
+                itemDiv.appendChild(videoWrapper);
+
             } else {
-                // **IMAGE GALLERY LOGIC**
-                galleryItem.className = 'relative rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 ease-in-out';
+                // Original Image Logic
+                itemDiv.classList.add('gallery-image'); // Re-add image-specific class
 
                 const img = document.createElement('img');
-                img.src = url;
-                img.alt = `Gallery Image ${index + 1}`;
-                img.className = 'w-full h-full object-cover gallery-image';
-
-                img.addEventListener('click', () => {
-                    openModal(url, galleryData, index, galleryName);
-                });
-
-                galleryItem.appendChild(img);
+                img.src = mediaSource;
+                img.alt = 'Gallery Image';
+                img.className = 'w-full h-full object-cover transition duration-500 ease-in-out hover:opacity-75';
+                img.loading = 'lazy';
+                img.dataset.index = index; // Store index for navigation
+                
+                // Add event listener to open modal for images
+                img.addEventListener('click', () => showModal(index));
+                
+                itemDiv.appendChild(img);
             }
 
-            galleryDiv.appendChild(galleryItem);
-        });
-    }
+            return itemDiv;
+        };
 
 
-    // Function to load the content for a specific sub-gallery
-    function loadSubGallery(galleryName) {
-        // Ensure navButtons is populated before use
-        if (!navButtons) {
-             navButtons = document.querySelectorAll('.nav-button');
-        }
-        
-        // Clear old active state and set new active state for buttons
-        navButtons.forEach(button => {
-            button.classList.remove('active');
-            if (button.dataset.gallery === galleryName) {
-                button.classList.add('active');
+        const loadSubGallery = (galleryName) => {
+            currentGalleryData = galleries[galleryName].filter(item => !item.startsWith('youtube:')); // Only track images for modal navigation
+            const allMediaData = galleries[galleryName];
+
+            const titleElement = document.getElementById('mainTitle');
+
+            // 1. Clear current content and update title/active button
+            galleryDiv.innerHTML = '';
+            titleElement.textContent = `Lexington Black Widows Vs Louisville River Sharks (10-04-2025) Gallery - ${galleryName}`;
+
+            navButtons.forEach(button => {
+                button.classList.remove('active');
+                if (button.dataset.gallery === galleryName) {
+                    button.classList.add('active');
+                }
+            });
+
+            // 2. Load the content
+            if (!allMediaData || allMediaData.length === 0) {
+                galleryDiv.innerHTML = `<div class="col-span-full text-center p-10 bg-white rounded-lg shadow-inner">
+                    <p class="text-2xl text-gray-500 font-semibold">No content available for "${galleryName}" yet.</p>
+                    <p class="text-gray-400 mt-2">Add images or videos to the data array for this section to appear.</p>
+                </div>`;
+                return;
+            }
+
+            allMediaData.forEach((mediaSource, index) => {
+                const item = createGalleryItem(mediaSource, index);
+                galleryDiv.appendChild(item);
+            });
+        };
+
+        const showModal = (index) => {
+            currentImageIndex = index;
+            const imageUrl = currentGalleryData[currentImageIndex];
+            
+            if (!imageUrl) return;
+
+            loadingSpinner.classList.remove('hidden');
+            modalImage.onload = () => {
+                loadingSpinner.classList.add('hidden');
+                // Ensure the click-to-source text is visible only after load
+                clickToSourceText.classList.remove('hidden', 'opacity-0');
+                clickToSourceText.classList.add('opacity-100');
+            };
+            modalImage.onerror = () => {
+                loadingSpinner.classList.add('hidden');
+            };
+            
+            modalImage.src = imageUrl;
+            imageModal.classList.remove('hidden', 'opacity-0');
+            imageModal.classList.add('opacity-100');
+
+            // Preload next/prev images for faster navigation
+            preloadImage(currentImageIndex + 1);
+            preloadImage(currentImageIndex - 1);
+        };
+
+        const closeModal = () => {
+            imageModal.classList.remove('opacity-100');
+            imageModal.classList.add('opacity-0');
+            // Hide the click-to-source text immediately when closing
+            clickToSourceText.classList.remove('opacity-100');
+            clickToSourceText.classList.add('opacity-0', 'hidden');
+
+            setTimeout(() => {
+                imageModal.classList.add('hidden');
+                modalImage.src = ''; // Clear source to stop potential loading
+            }, 300); // Match CSS transition duration
+        };
+
+        const showNextImage = () => {
+            let nextIndex = currentImageIndex + 1;
+            if (nextIndex >= currentGalleryData.length) {
+                nextIndex = 0; // Wrap around to the first image
+            }
+            showModal(nextIndex);
+        };
+
+        const showPrevImage = () => {
+            let prevIndex = currentImageIndex - 1;
+            if (prevIndex < 0) {
+                prevIndex = currentGalleryData.length - 1; // Wrap around to the last image
+            }
+            showModal(prevIndex);
+        };
+
+        const preloadImage = (index) => {
+            if (index >= 0 && index < currentGalleryData.length) {
+                const img = new Image();
+                img.src = currentGalleryData[index];
+            }
+        };
+
+        // Event Listeners for Modal
+        closeModalButton.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside the image
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal || e.target === closeModalButton.parentNode || e.target.closest('#closeModal')) {
+                closeModal();
             }
         });
-        
-        const galleryData = galleries[galleryName];
-        if (galleryData && galleryData.length > 0) {
-            displayGallery(galleryData, galleryName);
-        } else {
-            document.getElementById('gallery').innerHTML = '<p class="text-center text-gray-500 col-span-full py-10">No content available for this section yet.</p>';
-        }
-    }
+
+        // Keyboard navigation for modal
+        document.addEventListener('keydown', (e) => {
+            if (imageModal.classList.contains('opacity-100')) {
+                if (e.key === 'ArrowRight') {
+                    showNextImage();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevImage();
+                } else if (e.key === 'Escape') {
+                    closeModal();
+                }
+            }
+        });
+
+        // Click on modal image logic
+        modalImage.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent the click from bubbling up and closing the modal
+            if (modalImage.src && !modalImage.src.includes('placeholder')) {
+                // Extract the host page URL from the postimg direct image URL
+                // e.g., from 'https://i.postimg.cc/RZRJBpST/DSC-3807.jpg' to 'https://postimg.cc/RZRJBpST'
+                const urlParts = modalImage.src.split('/');
+                const hostPageId = urlParts[urlParts.length - 2];
+                const postimgPageUrl = `https://postimg.cc/${hostPageId}`;
+
+                // Check for a known host pattern (postimg.cc is used in your image list)
+                if (modalImage.src.includes('postimg.cc')) {
+                    window.open(postimgPageUrl, '_blank');
+                } else {
+                    // Fallback to close if it's a placeholder/error image
+                    closeModal();
+                }
+            }
+        });
 
 
-    // Event listeners for modal control
-    closeModalButton.addEventListener('click', closeModal);
+        // Swipe functionality for modal (Touch events)
+        let touchStartX = 0;
+        let touchEndX = 0;
 
-    // Click listener on the modal image to open the source page
-    modalImage.addEventListener('click', (e) => {
-        // Only open source if the image is from postimg.cc
-        const currentUrl = modalImage.src;
-        if (currentUrl && currentUrl.includes('postimg.cc')) {
-            const parts = currentUrl.split('/');
-            const imageName = parts[parts.length - 1].split('.')[0];
-            const postimgPageUrl = `https://postimg.cc/image/${imageName}`;
-            window.open(postimgPageUrl, '_blank');
-        } else {
-            closeModal();
-        }
-    });
-
-
-    // Swipe functionality for modal (Touch events)
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    modalImage.addEventListener('touchstart', (e) => {
-        // Only enable swipe if the modal is showing an image (not for video gallery)
-        if (currentGalleryName !== 'Videos!') {
+        modalImage.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
-        }
-    });
+        });
 
-    modalImage.addEventListener('touchend', (e) => {
-        if (currentGalleryName !== 'Videos!') {
+        modalImage.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].clientX;
             const swipeThreshold = 50;
             if (touchEndX < touchStartX - swipeThreshold) {
@@ -975,23 +1005,19 @@
             } else if (touchEndX > touchStartX + swipeThreshold) {
                 showPrevImage();
             }
-        }
-    });
-
-    // Initialize the gallery on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        // **Crucial Fix:** Populate navButtons after the DOM is ready
-        navButtons = document.querySelectorAll('.nav-button'); 
-        
-        // Add click listeners to navigation buttons
-        navButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const galleryName = button.dataset.gallery;
-                loadSubGallery(galleryName);
-            });
         });
 
-        // Load the first sub-gallery by default when the page loads
-        loadSubGallery("1st Half");
-    });
-</script>
+        // Initialize the gallery on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click listeners to navigation buttons
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const galleryName = button.dataset.gallery;
+                    loadSubGallery(galleryName); // Call loadSubGallery for internal navigation
+                });
+            });
+
+            // Load the first sub-gallery by default when the page loads
+            loadSubGallery("1st Half");
+        });
+    </script>
