@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexington Black Widows Vs Louisville River Sharks (10-04-2025) Photo Gallery</title>
+    <title>Lexington Black Widows vs Louisville Sharks (10-04-2025) Photo Gallery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -54,7 +54,7 @@
 <body class="bg-gray-100 min-h-screen flex flex-col items-center py-8">
 
     <header class="w-full max-w-7xl flex justify-between items-center mb-12 p-4 bg-gray-900 rounded-xl shadow-lg">
-        <h1 id="mainTitle" class="text-3xl sm:text-4xl font-extrabold text-red-600">Lexington Black Widows Vs Louisville River Sharks (10-04-2025) Gallery</h1>
+        <h1 id="mainTitle" class="text-3xl sm:text-4xl font-extrabold text-red-600">Lexington Black Widows vs Louisville Sharks (10-04-2025) Gallery</h1>
         <nav class="flex space-x-4">
             <a href="index.html" class="flex items-center space-x-2 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition duration-300 transform hover:scale-105">
                 <i class="fas fa-home"></i>
@@ -69,6 +69,11 @@
         <button class="nav-button bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="3rd Half">3rd Half</button>
         <button class="nav-button bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Warmups - Team">Warmups - Team</button>
         <button class="nav-button bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Team Photos">Team Photos</button>
+        
+        <a href="videos.html" class="flex items-center space-x-2 bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
+            <i class="fas fa-video"></i>
+            <span>Videos</span>
+        </a>
     </nav>
 
     <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 max-w-7xl mx-auto bg-white rounded-xl shadow-2xl">
@@ -91,8 +96,8 @@
     </div>
 
     <script>
-        // Data structure containing all sub-galleries for Lexington Black Widows Vs Louisville River Sharks (10-04-2025)
-        const bourbon10sSubGalleries = {
+        // Data structure containing all sub-galleries for the event
+        const subGalleries = {
             "1st Half": [
                 "https://i.postimg.cc/6p04XbWc/DSC-3806.jpg",
                 "https://i.postimg.cc/RZRJBpST/DSC-3807.jpg",
@@ -122,6 +127,7 @@
 
         let currentImageUrls = []; // This will hold the URLs for the currently active sub-gallery
         let currentImageIndex = 0; // Tracks the currently displayed image in the modal
+        const galleryTitleBase = "Lexington Black Widows vs Louisville Sharks (10-04-2025) Gallery";
 
         // Get DOM elements
         const mainTitle = document.getElementById('mainTitle');
@@ -138,15 +144,14 @@
          * @param {string} subGalleryName - The name of the sub-gallery to load.
          */
         function loadSubGallery(subGalleryName) {
-            console.log(`Loading sub-gallery: ${subGalleryName}`); // Debugging: Confirm sub-gallery load
             // Update the main title to reflect the current sub-gallery
-            mainTitle.textContent = `Lexington Black Widows Vs Louisville River Sharks (10-04-2025) Gallery - ${subGalleryName}`;
+            mainTitle.textContent = `${galleryTitleBase} - ${subGalleryName}`;
 
             // Clear existing images
             galleryDiv.innerHTML = '';
             
             // Set the current image URLs to the selected sub-gallery's data
-            currentImageUrls = bourbon10sSubGalleries[subGalleryName];
+            currentImageUrls = subGalleries[subGalleryName];
 
             // If no images found for the selected sub-gallery
             if (!currentImageUrls || currentImageUrls.length === 0) {
@@ -167,7 +172,6 @@
                 img.onerror = function() {
                     this.src = 'https://placehold.co/400x300/cccccc/333333?text=Image+Error';
                     this.alt = 'Image failed to load';
-                    console.error(`Error loading image: ${url}`); // Debugging: Image load error
                 };
 
                 const overlay = document.createElement('div');
@@ -197,7 +201,6 @@
          * @param {number} index - The index of the image to display.
          */
         function openModal(index) {
-            console.log('Opening modal...'); // Debugging: Modal open attempt
             currentImageIndex = index;
             
             loadingSpinner.classList.remove('hidden');
@@ -215,7 +218,6 @@
                     this.alt = 'Image failed to load';
                     loadingSpinner.classList.add('hidden');
                     modalImage.classList.remove('hidden');
-                    console.error(`Error loading modal image: ${currentImageUrls[currentImageIndex]}`); // Debugging: Modal image error
                 };
 
                 modalImage.onload = function() {
@@ -225,14 +227,12 @@
                         clickToSourceText.classList.remove('hidden');
                         setTimeout(() => clickToSourceText.classList.remove('opacity-0'), 10);
                     }, 200);
-                    console.log('Modal image loaded.'); // Debugging: Modal image loaded
                 };
             }, 50); // Small delay before setting new image source
 
             imageModal.classList.remove('hidden');
             setTimeout(() => {
                 imageModal.classList.remove('opacity-0');
-                console.log('Modal display state after opening:', window.getComputedStyle(imageModal).display, window.getComputedStyle(imageModal).opacity);
             }, 10);
             document.body.style.overflow = 'hidden'; // Prevent scrolling background
         }
@@ -241,15 +241,12 @@
          * Closes the image modal.
          */
         function closeModal() {
-            console.log('Attempting to close modal...'); // Debugging: Close modal attempt
             imageModal.classList.add('opacity-0');
             // Hide after transition
             setTimeout(() => {
                 imageModal.classList.add('hidden');
-                console.log('Modal display state after hiding:', window.getComputedStyle(imageModal).display, window.getComputedStyle(imageModal).opacity);
                 modalImage.src = ''; // Reset image src to prevent flickering on next open
                 document.body.style.overflow = ''; // Restore scrolling
-                console.log('Modal hidden and scrolling restored.'); // Debugging: Modal closed
             }, 300);
         }
 
@@ -257,7 +254,6 @@
          * Displays the next image in the modal using currentImageUrls.
          */
         function showNextImage() {
-            console.log('Showing next image...'); // Debugging: Next image
             currentImageIndex = (currentImageIndex + 1) % currentImageUrls.length;
             openModal(currentImageIndex);
         }
@@ -266,22 +262,17 @@
          * Displays the previous image in the modal using currentImageUrls.
          */
         function showPrevImage() {
-            console.log('Showing previous image...'); // Debugging: Previous image
             currentImageIndex = (currentImageIndex - 1 + currentImageUrls.length) % currentImageUrls.length;
             openModal(currentImageIndex);
         }
 
         // Event Listeners for modal
-        closeModalBtn.addEventListener('click', () => {
-            console.log('Close button clicked!'); // Debugging: Close button click
-            closeModal();
-        });
+        closeModalBtn.addEventListener('click', closeModal);
 
         // Add a click listener to the modal background to close it
         imageModal.addEventListener('click', (e) => {
             // Only close if the click was directly on the modal background, not on the image or close button
             if (e.target === imageModal) { 
-                console.log('Modal background clicked.');
                 closeModal();
             }
         });
@@ -290,8 +281,6 @@
         modalImage.addEventListener('click', (e) => {
             e.stopPropagation(); // Stop event from bubbling up to the modal background
             if (modalImage.src && !modalImage.classList.contains('hidden')) {
-                console.log('Modal image clicked.'); // Debugging: Click detected
-
                 // Extract the unique image ID from the direct link (e.g., s2GRRZTG from https://i.postimg.cc/s2GRRZTG/DSC-0042.jpg)
                 const parts = modalImage.src.split('/');
                 // The image ID is typically the second-to-last part before the filename
@@ -300,11 +289,9 @@
                 if (imageId && imageId.length > 0) {
                     // Construct the Postimg.cc page URL
                     const postimgPageUrl = `https://postimg.cc/${imageId}`;
-                    console.log('Opening Postimg.cc page:', postimgPageUrl); // Debugging: Page link
                     window.open(postimgPageUrl, '_blank');
                 } else {
-                    console.error('Could not extract image ID from URL:', modalImage.src);
-                    // Fallback to opening the direct link if ID extraction fails (though this is less ideal for original access)
+                    // Fallback to opening the direct link if ID extraction fails 
                     window.open(modalImage.src, '_blank');
                 }
             }
@@ -313,7 +300,6 @@
 
         document.addEventListener('keydown', (e) => {
             if (!imageModal.classList.contains('hidden')) {
-                console.log('Key pressed in modal:', e.key); // Debugging: Key press
                 if (e.key === 'ArrowRight') {
                     showNextImage();
                 } else if (e.key === 'ArrowLeft') {
@@ -330,18 +316,14 @@
 
         modalImage.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
-            console.log('Touch start:', touchStartX); // Debugging: Touch start
         });
 
         modalImage.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].clientX;
-            console.log('Touch end:', touchEndX); // Debugging: Touch end
             const swipeThreshold = 50;
             if (touchEndX < touchStartX - swipeThreshold) {
-                console.log('Swipe left detected.'); // Debugging: Swipe left
                 showNextImage();
             } else if (touchEndX > touchStartX + swipeThreshold) {
-                console.log('Swipe right detected.'); // Debugging: Swipe right
                 showPrevImage();
             }
         });
@@ -356,7 +338,7 @@
                 });
             });
 
-            // Load the first sub-gallery by default when the page loads
+            // Load the first sub-gallery ("1st Half") by default when the page loads
             loadSubGallery("1st Half"); 
         });
     </script>
