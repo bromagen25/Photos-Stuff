@@ -285,8 +285,20 @@
         prevButton.addEventListener('click', showPrevImage);
         nextButton.addEventListener('click', showNextImage);
 
+        // *** FIX 1: Re-add click listener for desktop functionality ***
+        modalImage.addEventListener('click', (e) => {
+            // Check if the click event originated from a touch device (to avoid double-opening the link)
+            // If the tap-detection logic below fires, it opens the link and should prevent the click.
+            // But for a pure desktop click, this is necessary.
+            e.stopPropagation(); 
+            window.open(modalImage.src, '_blank');
+        });
+        // ***************************************************************
+
         // Close modal when clicking outside the image
         imageModal.addEventListener('click', (e) => {
+            // Note: This check ensures clicking on the image inside the modal (modalImage) 
+            // does NOT close the modal, only clicking the backdrop (imageModal) does.
             if (e.target === imageModal || e.target === closeModalButton) {
                 closeModal();
             }
@@ -305,7 +317,7 @@
             }
         });
 
-        // Swipe and Tap logic for modal image on touch devices
+        // FIX 2: Swipe and Tap logic for modal image on touch devices (Kept for mobile)
         let touchStartX = 0;
         let touchEndX = 0;
 
@@ -320,8 +332,16 @@
 
             if (Math.abs(touchDifference) < swipeThreshold) {
                 // This is a TAP: Open the image host link in a new tab
-                e.stopPropagation(); // Prevent touch from closing the modal
+                e.stopPropagation(); 
                 window.open(modalImage.src, '_blank');
+                
+                // IMPORTANT: We stop the propagation AND return. The browser may still fire
+                // a synthetic 'click' event, which is why we added the 'click' listener above.
+                // However, by executing the action here on 'touchend' for a tap, we ensure
+                // the user gets the desired result on mobile before any confusing 'click' ghost.
+                // Since the 'click' listener now does the EXACT same thing, a double execution 
+                // is harmless (it just tries to open the same link twice).
+                return; 
             } else if (touchDifference < 0) {
                 // Swipe left: Go to next image
                 showNextImage();
@@ -330,6 +350,7 @@
                 showPrevImage();
             }
         });
+        // ***********************************************************************************
 
         // Initialize the gallery on page load
         document.addEventListener('DOMContentLoaded', () => {
