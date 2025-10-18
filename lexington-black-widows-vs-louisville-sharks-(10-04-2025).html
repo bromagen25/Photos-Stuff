@@ -172,7 +172,6 @@
         let currentImageIndex = 0;
         let currentGalleryKey = null;
         let currentImages = [];
-        let isHandledByTouch = false; // Flag to coordinate touch/click events
 
         // --- Modal Control Functions ---
 
@@ -286,17 +285,12 @@
         prevButton.addEventListener('click', showPrevImage);
         nextButton.addEventListener('click', showNextImage);
 
-        // FIX 1: Dedicated click listener for desktop link opening
+        // Harmonized Click Handler: This reliably handles both desktop clicks and mobile taps
+        // The mobile browser will synthesize a click event after a short tap, making this simple approach robust.
         modalImage.addEventListener('click', (e) => {
-            // If the touch handler has already processed this as a tap, skip the click handler
-            if (isHandledByTouch) {
-                // Reset the flag and let the touch handler's setTimeout manage the window.open
-                isHandledByTouch = false; 
-                return;
-            }
-            
-            // For pure desktop click:
             e.stopPropagation(); 
+            // The URL being opened is the one set in modalImage.src
+            console.log('Opening host URL:', modalImage.src); 
             window.open(modalImage.src, '_blank');
         });
 
@@ -320,39 +314,39 @@
             }
         });
 
-        // FIX 2: Swipe and Tap logic for modal image on touch devices 
+        // Simple Swipe Logic (Only handles navigation, allows tap to fire the 'click' event)
         let touchStartX = 0;
         let touchEndX = 0;
+        const swipeThreshold = 50; 
 
         modalImage.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
-            isHandledByTouch = false; // Reset flag on touchstart of a new interaction
+            // Prevent default action (like page scrolling) only if multiple fingers are not involved
+            if (e.touches.length === 1) {
+                touchStartX = e.touches[0].clientX;
+            }
+        });
+
+        modalImage.addEventListener('touchmove', (e) => {
+            // Prevent default action (like page scrolling) while swiping
+            if (e.touches.length === 1) {
+                e.preventDefault();
+            }
         });
 
         modalImage.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].clientX;
-            const swipeThreshold = 50; // Minimum distance for a swipe
-            const touchDifference = touchEndX - touchStartX;
-
-            if (Math.abs(touchDifference) < swipeThreshold) {
-                // This is a TAP: Open the image host link in a new tab
-                e.stopPropagation(); 
-                
-                // Set the flag immediately to block the synthetic click
-                isHandledByTouch = true;
-                
-                // CRITICAL FIX: Use a slight timeout to ensure the browser processes the tap event 
-                // fully and trusts the window.open call, preventing security blocks.
-                setTimeout(() => {
-                    window.open(modalImage.src, '_blank');
-                }, 50); 
-                
-            } else if (touchDifference < 0) {
-                // Swipe left: Go to next image
-                showNextImage();
-            } else {
-                // Swipe right: Go to previous image
-                showPrevImage();
+            if (e.changedTouches.length === 1) {
+                touchEndX = e.changedTouches[0].clientX;
+                const touchDifference = touchEndX - touchStartX;
+            
+                if (touchDifference < -swipeThreshold) {
+                    // Swipe left: Go to next image
+                    showNextImage();
+                } else if (touchDifference > swipeThreshold) {
+                    // Swipe right: Go to previous image
+                    showPrevImage();
+                }
+                // If the user did not swipe, the event falls through and triggers the 'click' handler, 
+                // opening the host link.
             }
         });
         // ***********************************************************************************
