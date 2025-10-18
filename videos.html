@@ -18,6 +18,10 @@
             position: relative;
             width: 100%;
             padding-bottom: 56.25%; /* 9/16 * 100% */
+            margin-bottom: 1.5rem; /* Space between videos */
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3); /* Red glow effect */
+            border-radius: 0.5rem;
+            overflow: hidden; /* Ensure rounded corners are applied */
         }
         .video-container iframe {
             position: absolute;
@@ -29,8 +33,10 @@
         }
         /* Style for active tab button */
         .tab-button.active {
-            background-color: #991b1b; /* A darker red for active state */
-            box-shadow: 0 4px 6px -1px rgba(255, 0, 0, 0.5), 0 2px 4px -2px rgba(255, 0, 0, 0.25);
+            background-color: #FF0000; /* Red background for active */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(255, 0, 0, 0.5), 0 2px 4px -2px rgba(255, 0, 0, 0.5);
         }
     </style>
 </head>
@@ -38,53 +44,62 @@
 
     <header class="w-full max-w-7xl flex justify-between items-center mb-12 p-4 bg-gray-900 rounded-xl shadow-lg">
         <h1 class="text-3xl sm:text-4xl font-extrabold text-red-600">Lexington Black Widows Videos</h1>
-        <a href="lexington-black-widows-vs-louisville-sharks-(10-04-2025).html" class="flex items-center space-x-2 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition duration-300 transform hover:scale-105">
-            <i class="fas fa-arrow-left"></i>
-            <span class="hidden sm:inline">Back to Match Gallery</span>
-        </a>
+        <nav class="flex space-x-4">
+            <a href="index.html" class="flex items-center space-x-2 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition duration-300 transform hover:scale-105">
+                <i class="fas fa-home"></i>
+                <span class="hidden sm:inline">Home</span>
+            </a>
+            <a href="lexington-black-widows-vs-louisville-sharks-(10-04-2025).html" class="flex items-center space-x-2 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition duration-300 transform hover:scale-105">
+                <i class="fas fa-camera"></i>
+                <span class="hidden sm:inline">Photos</span>
+            </a>
+        </nav>
     </header>
 
-    <main class="w-full max-w-7xl p-6 bg-gray-900 rounded-xl shadow-2xl">
+    <div class="mb-8 p-4 bg-gray-900 rounded-xl shadow-xl flex flex-wrap justify-center gap-4 w-full max-w-4xl">
+        <button class="tab-button text-red-600 font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-red-700 hover:text-white" data-tab="vs-louisville-sharks">Louisville Sharks (10-04-2025)</button>
+        </div>
 
-        <nav class="mb-10 p-4 bg-gray-800 rounded-lg shadow-xl flex flex-wrap justify-center gap-4">
-            <button class="tab-button bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 active" data-tab="vs-louisville-sharks">Louisville Sharks Match</button>
-            <button class="tab-button bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-tab="vs-knoxville-minx">Knoxville Minx Match</button>
-            <button class="tab-button bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-tab="highlights">Season Highlights</button>
-        </nav>
-
-        <div id="video-content">
+    <div id="tab-content-container" class="w-full max-w-4xl">
+        
+        <div id="vs-louisville-sharks" class="tab-content">
+            <h2 class="text-2xl font-bold mb-6 text-center text-red-600">Louisville Sharks (10-04-2025) Videos</h2>
             
-            <div id="vs-louisville-sharks" class="tab-content grid grid-cols-1 md:grid-cols-2 gap-8">
-                <h2 class="col-span-full text-2xl font-bold text-red-500 mb-4 border-b border-red-800 pb-2">Full Game & Highlights</h2>
-                
-                <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
-                    <h3 class="text-lg font-semibold text-white mb-2">Game 1 Full Match (10-04-2025)</h3>
-                    <div class="video-container">
-                        <iframe src="YOUR_FULL_MATCH_VIDEO_EMBED_URL" title="Louisville Sharks Full Match Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <p class="text-sm text-gray-400 mt-2">The complete match footage.</p>
-                </div>
-
-                <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
-                    <h3 class="text-lg font-semibold text-white mb-2">Best Tries Compilation</h3>
-                    <div class="video-container">
-                        <iframe src="YOUR_TRIES_COMPILATION_EMBED_URL" title="Louisville Sharks Tries Compilation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <p class="text-sm text-gray-400 mt-2">Compilation of the best tries from the match.</p>
-                </div>
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/WkVNfh1JfZc?si=7BnEBVYTTbWJDJP5" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+                </iframe>
             </div>
 
-            <div id="vs-knoxville-minx" class="tab-content hidden grid grid-cols-1 md:grid-cols-2 gap-8">
-                <h2 class="col-span-full text-2xl font-bold text-red-500 mb-4 border-b border-red-800 pb-2">Knoxville Minx Match Videos</h2>
-                <p class="col-span-full text-white text-center p-8">Add your Knoxville Minx match videos here (e.g., using the structure above).</p>
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/hjUPQQbILIo?si=znICospPQTt5GoNT" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+                </iframe>
             </div>
 
-            <div id="highlights" class="tab-content hidden grid grid-cols-1 md:grid-cols-2 gap-8">
-                <h2 class="col-span-full text-2xl font-bold text-red-500 mb-4 border-b border-red-800 pb-2">Season Highlights</h2>
-                <p class="col-span-full text-white text-center p-8">Add your overall season highlight videos here.</p>
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/oH1oSUphgLQ?si=tNLiy8yeaj-JmUI8" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+                </iframe>
             </div>
         </div>
-    </main>
+
+        </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -100,7 +115,7 @@
 
                 // 3. Show the selected content
                 const selectedContent = document.getElementById(tabId);
-                const selectedButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+                const selectedButton = document.querySelector(`.tab-button[data-tab=\"${tabId}\"]`);
                 
                 if (selectedContent) {
                     selectedContent.classList.remove('hidden');
