@@ -116,43 +116,51 @@
         </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
 
-            function showTab(tabId) {
-                // 1. Hide all content containers
-                tabContents.forEach(content => content.classList.add('hidden'));
-                
-                // 2. Remove 'active' class from all buttons
-                tabButtons.forEach(button => button.classList.remove('active'));
+        function showTab(tabId) {
+            // 1. Hide all content containers
+            tabContents.forEach(content => content.classList.add('hidden'));
+            
+            // 2. Remove 'active' class from all buttons
+            tabButtons.forEach(button => button.classList.remove('active'));
 
-                // 3. Show the selected content
-                const selectedContent = document.getElementById(tabId);
-                const selectedButton = document.querySelector(`.tab-button[data-tab=\"${tabId}\"]`);
-                
-                if (selectedContent) {
-                    selectedContent.classList.remove('hidden');
-                }
-                
-                // 4. Set the active button style
-                if (selectedButton) {
-                    selectedButton.classList.add('active');
-                }
+            // 3. Show the selected content
+            const selectedContent = document.getElementById(tabId);
+            const selectedButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+            
+            if (selectedContent) {
+                selectedContent.classList.remove('hidden');
             }
+            
+            // 4. Set the active button style
+            if (selectedButton) {
+                selectedButton.classList.add('active');
+            }
+        }
 
-            // Add click listeners to buttons
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabId = button.dataset.tab;
-                    showTab(tabId);
-                });
+        // Add click listeners to buttons
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.dataset.tab;
+                showTab(tabId);
+                
+                // OPTIONAL: Update the URL hash when a user clicks a tab
+                window.location.hash = tabId; 
             });
-
-            // Show the default tab on load (Louisville Sharks)
-            showTab('all-videos'); // Changed default to 'all-videos'
         });
-    </script>
-</body>
-</html>
 
+        // NEW LOGIC: Check for a hash fragment in the URL
+        const urlHash = window.location.hash.substring(1); // Get the hash without the '#'
+
+        if (urlHash && document.getElementById(urlHash)) {
+            // If a valid hash exists (like #vs-louisville-sharks), show that tab
+            showTab(urlHash);
+        } else {
+            // Otherwise, show the default tab (which is currently 'all-videos')
+            showTab('all-videos');
+        }
+    });
+</script>
