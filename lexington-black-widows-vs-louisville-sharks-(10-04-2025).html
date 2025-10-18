@@ -77,7 +77,7 @@
 
     <div id="imageModal" class="fixed inset-0 flex items-center justify-center z-50 hidden modal opacity-0">
         <div class="relative flex flex-col items-center justify-center w-full h-full">
-            <button id="closeModal" class="absolute top-4 right-4 text-white text-4xl p-2 rounded-full bg-gray-700 bg-opacity-50 hover:bg-opacity-75 focus:outline-none z-55" aria-label="Close image modal">
+            <button id="closeModal" onclick="closeModal()" class="absolute top-4 right-4 text-white text-4xl p-2 rounded-full bg-gray-700 bg-opacity-50 hover:bg-opacity-75 focus:outline-none z-55" aria-label="Close image modal">
                 <i class="fas fa-times"></i>
             </button>
 
@@ -859,9 +859,7 @@
     // ALL LISTENERS ARE PLACED INSIDE DOMContentLoaded FOR MAXIMUM RELIABILITY
 
     document.addEventListener('DOMContentLoaded', () => {
-        // 1. Close modal via X button (FIX)
-        closeModalButton.addEventListener('click', closeModal); 
-
+       
         // 2. Close modal by clicking on the dark background (FIX)
         imageModal.addEventListener('click', (e) => {
             if (e.target === imageModal) {
@@ -883,22 +881,28 @@
         }); 
 
         // 4. Handle click on the image (inside the modal) to view source (FIX for "Not Found")
-        modalImage.addEventListener('click', (e) => {
-            e.stopPropagation(); 
-            
-            const currentItem = galleries[currentGalleryName][currentIndex];
-            const isImage = !(typeof currentItem === 'object' && currentItem.type === 'youtube');
+modalImage.addEventListener('click', (e) => {
+    // 1. Stop the click from traveling to the background and closing the modal
+    e.stopPropagation(); 
+    
+    const currentItem = galleries[currentGalleryName][currentIndex];
+    const isImage = !(typeof currentItem === 'object' && currentItem.type === 'youtube');
 
-            if (isImage) {
-                const currentUrl = modalImage.src;
-                const postimgPageUrl = currentUrl.replace('i.postimg.cc', 'postimg.cc');
-                if (postimgPageUrl.startsWith('https://postimg.cc')) {
-                    window.open(postimgPageUrl, '_blank');
-                } else {
-                    closeModal();
-                }
-            }
-        });
+    if (isImage) {
+        // 2. Fetch the URL from the currently loaded image source
+        const currentUrl = modalImage.src; 
+        
+        // 3. Check if the URL is valid and attempt to open the host page
+        if (currentUrl && currentUrl.includes('i.postimg.cc')) {
+            // Transform the direct image URL to the host page URL
+            const postimgPageUrl = currentUrl.replace('i.postimg.cc', 'postimg.cc');
+            window.open(postimgPageUrl, '_blank');
+        } else {
+            // If the URL is missing or incorrect, just close the modal.
+            closeModal();
+        }
+    }
+});
         
         // 5. Swipe functionality for modal (Touch events)
         let touchStartX = 0;
@@ -934,3 +938,4 @@
         loadSubGallery("1st Half");
     });
 </script>
+
