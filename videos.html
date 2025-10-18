@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Custom styles for consistency (Assuming a dark theme based on previous context) */
+        /* Custom styles for consistency */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #000000; /* Black background */
@@ -57,24 +57,89 @@
     </header>
 
     <div class="mb-8 p-4 bg-gray-900 rounded-xl shadow-xl flex flex-wrap justify-center gap-4 w-full max-w-4xl">
-        <button class="tab-button text-red-600 font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-red-700 hover:text-white" data-tab="all-videos">All Videos</button> <button class="tab-button text-red-600 font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-red-700 hover:text-white" data-tab="vs-louisville-sharks">Louisville Sharks (10-04-2025)</button>
+        <button class="tab-button text-red-600 font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-red-700 hover:text-white" data-tab="all-videos">All Videos</button>
+        <button class="tab-button text-red-600 font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-red-700 hover:text-white" data-tab="vs-louisville-sharks">Louisville Sharks (10-04-2025)</button>
         </div>
 
     <div id="tab-content-container" class="w-full max-w-4xl">
         
-       <div id="all-videos" class="tab-content hidden">
-    <h2 class="text-2xl font-bold mb-6 text-center text-red-600">All Videos (Full Playlist)</h2>
-    <div class="video-container">
-        <iframe 
-            src="https://www.youtube.com/embed/videoseries?list=PLyN7rEj167lycY3oc5zwo64QjJ92IHrjk&disable_polymer=true" 
-            title="YouTube playlist player" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            referrerpolicy="strict-origin-when-cross-origin" 
-            allowfullscreen>
-        </iframe>
-    </div>
-</div>
+        <div id="all-videos" class="tab-content hidden">
+            <h2 class="text-2xl font-bold mb-6 text-center text-red-600">All Videos (Click Thumbnail to Watch)</h2>
+            
+            <div class="grid grid-cols-2 gap-6 sm:grid-cols-3">
+                
+                <a href="https://youtu.be/WkVNfh1JfZc" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
+                    <img src="https://img.youtube.com/vi/WkVNfh1JfZc/mqdefault.jpg" alt="Video 1 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <i class="fas fa-play text-4xl text-white"></i>
+                    </div>
+                </a>
+
+                <a href="https://youtu.be/hjUPQQbILIo" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
+                    <img src="https://img.youtube.com/vi/hjUPQQbILIo/mqdefault.jpg" alt="Video 2 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <i class="fas fa-play text-4xl text-white"></i>
+                    </div>
+                </a>
+
+                <a href="https://youtu.be/oH1oSUphgLQ" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
+                    <img src="https://img.youtube.com/vi/oH1oSUphgLQ/mqdefault.jpg" alt="Video 3 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <i class="fas fa-play text-4xl text-white"></i>
+                    </div>
+                </a>
+                
+                <a href="https://youtu.be/v5zr_DUQ0Vo" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
+                    <img src="https://img.youtube.com/vi/v5zr_DUQ0Vo/mqdefault.jpg" alt="Video 4 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <i class="fas fa-play text-4xl text-white"></i>
+                    </div>
+                </a>
+                
+                <a href="https://youtu.be/SJaY9MiKXmU" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
+                    <img src="https://img.youtube.com/vi/SJaY9MiKXmU/mqdefault.jpg" alt="Video 5 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <i class="fas fa-play text-4xl text-white"></i>
+                    </div>
+                </a>
+                
+                <a href="https://youtu.be/cJnXSQx3wR8" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
+                    <img src="https://img.youtube.com/vi/cJnXSQx3wR8/mqdefault.jpg" alt="Video 6 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <i class="fas fa-play text-4xl text-white"></i>
+                    </div>
+                </a>
+                
+                <a href="https://youtu.be/2qzRA2jnmOY" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
+                    <img src="https://img.youtube.com/vi/2qzRA2jnmOY/mqdefault.jpg" alt="Video 7 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <i class="fas fa-play text-4xl text-white"></i>
+                    </div>
+                </a>
+                
+                <a href="https://youtu.be/DXFKpuqe7sI" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
+                    <img src="https://img.youtube.com/vi/DXFKpuqe7sI/mqdefault.jpg" alt="Video 8 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <i class="fas fa-play text-4xl text-white"></i>
+                    </div>
+                </a>
+                
+                <a href="https://youtu.be/NkCNHmjueVI" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
+                    <img src="https://img.youtube.com/vi/NkCNHmjueVI/mqdefault.jpg" alt="Video 9 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <i class="fas fa-play text-4xl text-white"></i>
+                    </div>
+                </a>
+                
+                <a href="https://youtu.be/Wx_E58EulEg" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
+                    <img src="https://img.youtube.com/vi/Wx_E58EulEg/mqdefault.jpg" alt="Video 10 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <i class="fas fa-play text-4xl text-white"></i>
+                    </div>
+                </a>
+                
+            </div>
+        </div>
         
         <div id="vs-louisville-sharks" class="tab-content">
             <h2 class="text-2xl font-bold mb-6 text-center text-red-600">Louisville Sharks (10-04-2025) Videos</h2>
@@ -113,54 +178,56 @@
             </div>
         </div>
 
-        </div>
+    </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const tabContents = document.querySelectorAll('.tab-content');
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
 
-        function showTab(tabId) {
-            // 1. Hide all content containers
-            tabContents.forEach(content => content.classList.add('hidden'));
-            
-            // 2. Remove 'active' class from all buttons
-            tabButtons.forEach(button => button.classList.remove('active'));
-
-            // 3. Show the selected content
-            const selectedContent = document.getElementById(tabId);
-            const selectedButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-            
-            if (selectedContent) {
-                selectedContent.classList.remove('hidden');
-            }
-            
-            // 4. Set the active button style
-            if (selectedButton) {
-                selectedButton.classList.add('active');
-            }
-        }
-
-        // Add click listeners to buttons
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const tabId = button.dataset.tab;
-                showTab(tabId);
+            function showTab(tabId) {
+                // 1. Hide all content containers
+                tabContents.forEach(content => content.classList.add('hidden'));
                 
-                // OPTIONAL: Update the URL hash when a user clicks a tab
-                window.location.hash = tabId; 
+                // 2. Remove 'active' class from all buttons
+                tabButtons.forEach(button => button.classList.remove('active'));
+
+                // 3. Show the selected content
+                const selectedContent = document.getElementById(tabId);
+                const selectedButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+                
+                if (selectedContent) {
+                    selectedContent.classList.remove('hidden');
+                }
+                
+                // 4. Set the active button style
+                if (selectedButton) {
+                    selectedButton.classList.add('active');
+                }
+            }
+
+            // Add click listeners to buttons
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.dataset.tab;
+                    showTab(tabId);
+                    
+                    // OPTIONAL: Update the URL hash when a user clicks a tab
+                    window.location.hash = tabId; 
+                });
             });
+
+            // NEW LOGIC: Check for a hash fragment in the URL
+            const urlHash = window.location.hash.substring(1); // Get the hash without the '#'
+
+            if (urlHash && document.getElementById(urlHash)) {
+                // If a valid hash exists (e.g., #vs-louisville-sharks), show that tab
+                showTab(urlHash);
+            } else {
+                // Otherwise, show the default tab 
+                showTab('all-videos');
+            }
         });
-
-        // NEW LOGIC: Check for a hash fragment in the URL
-        const urlHash = window.location.hash.substring(1); // Get the hash without the '#'
-
-        if (urlHash && document.getElementById(urlHash)) {
-            // If a valid hash exists (like #vs-louisville-sharks), show that tab
-            showTab(urlHash);
-        } else {
-            // Otherwise, show the default tab (which is currently 'all-videos')
-            showTab('all-videos');
-        }
-    });
-</script>
+    </script>
+</body>
+</html>
