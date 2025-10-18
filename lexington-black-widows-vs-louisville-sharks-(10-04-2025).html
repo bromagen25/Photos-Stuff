@@ -29,6 +29,7 @@
             max-height: 90vh;
             max-width: 90vw;
             object-fit: contain;
+            cursor: pointer; /* Indicate that the modal image is now clickable */
         }
         .nav-button {
             transition: background-color 0.1s;
@@ -108,7 +109,7 @@
                 <i class="fas fa-chevron-left"></i>
             </button>
 
-            <!-- Modal Image -->
+            <!-- Modal Image (Now clickable to open original host link) -->
             <img id="modal-image" class="modal-content rounded-xl shadow-2xl max-h-full max-w-full" src="" alt="Full size image">
             
             <!-- Next Button -->
@@ -283,6 +284,16 @@
         closeModalButton.addEventListener('click', closeModal);
         prevButton.addEventListener('click', showPrevImage);
         nextButton.addEventListener('click', showNextImage);
+
+        // *** NEW FUNCTIONALITY: Click on the modal image to open the host link ***
+        modalImage.addEventListener('click', (e) => {
+            // Stop propagation so the click doesn't close the modal
+            e.stopPropagation(); 
+            
+            // Open the image source URL in a new tab
+            window.open(modalImage.src, '_blank');
+        });
+        // *************************************************************************
 
         // Close modal when clicking outside the image
         imageModal.addEventListener('click', (e) => {
