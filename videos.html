@@ -57,10 +57,24 @@
     </header>
 
     <div class="mb-8 p-4 bg-gray-900 rounded-xl shadow-xl flex flex-wrap justify-center gap-4 w-full max-w-4xl">
-        <button class="tab-button text-red-600 font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-red-700 hover:text-white" data-tab="vs-louisville-sharks">Louisville Sharks (10-04-2025)</button>
+        <button class="tab-button text-red-600 font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-red-700 hover:text-white" data-tab="all-videos">All Videos</button> <button class="tab-button text-red-600 font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-red-700 hover:text-white" data-tab="vs-louisville-sharks">Louisville Sharks (10-04-2025)</button>
         </div>
 
     <div id="tab-content-container" class="w-full max-w-4xl">
+        
+        <div id="all-videos" class="tab-content hidden">
+            <h2 class="text-2xl font-bold mb-6 text-center text-red-600">All Videos (Full Playlist)</h2>
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/videoseries?list=PLyN7rEj167lycY3oc5zwo64QjJ92IHrjk" 
+                    title="YouTube playlist player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
         
         <div id="vs-louisville-sharks" class="tab-content">
             <h2 class="text-2xl font-bold mb-6 text-center text-red-600">Louisville Sharks (10-04-2025) Videos</h2>
@@ -136,7 +150,7 @@
             });
 
             // Show the default tab on load (Louisville Sharks)
-            showTab('vs-louisville-sharks');
+            showTab('all-videos'); // Changed default to 'all-videos'
         });
     </script>
 </body>
