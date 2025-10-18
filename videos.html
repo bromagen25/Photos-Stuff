@@ -38,6 +38,10 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 6px -1px rgba(255, 0, 0, 0.5), 0 2px 4px -2px rgba(255, 0, 0, 0.5);
         }
+        /* Hidden class to control tab content display */
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8">
@@ -58,11 +62,12 @@
 
     <div class="mb-8 p-4 bg-gray-900 rounded-xl shadow-xl flex flex-wrap justify-center gap-4 w-full max-w-4xl">
         <button class="tab-button text-red-600 font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-red-700 hover:text-white" data-tab="vs-louisville-sharks">Louisville Sharks (10-04-2025)</button>
-        </div>
+        <button class="tab-button text-red-600 font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-red-700 hover:text-white" data-tab="vs-knoxville-minx">Knoxville Minx Home (09-06-2025)</button>
+    </div>
 
     <div id="tab-content-container" class="w-full max-w-4xl">
         
-        <div id="vs-louisville-sharks" class="tab-content">
+        <div id="vs-louisville-sharks" class="tab-content hidden">
             <h2 class="text-2xl font-bold mb-6 text-center text-red-600">Louisville Sharks (10-04-2025) Videos</h2>
             
             <div class="video-container">
@@ -98,8 +103,44 @@
                 </iframe>
             </div>
         </div>
+        
+        <div id="vs-knoxville-minx" class="tab-content hidden">
+            <h2 class="text-2xl font-bold mb-6 text-center text-red-600">Knoxville Minx Home (09-06-2025) Videos</h2>
+            
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/v5zr_DUQ0Vo?si=uThQY4L52zQ-wnzi" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+                </iframe>
+            </div>
 
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/SJaY9MiKXmU?si=wILerhfGMiHKROAe" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/cJnXSQx3wR8?si=DwPr2qTXGaBWyE5i" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+                </iframe>
+            </div>
         </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -127,16 +168,32 @@
                 }
             }
 
+            // Function to determine which tab to show on load
+            function initializeTabs() {
+                // 1. Check for a hash fragment in the URL (e.g., #vs-knoxville-minx)
+                const hashTabId = window.location.hash.substring(1); 
+                
+                // 2. If a valid tab ID is found in the hash, use it.
+                if (hashTabId && document.getElementById(hashTabId)) {
+                    showTab(hashTabId);
+                } else {
+                    // 3. Otherwise, default to the first tab (Louisville Sharks)
+                    showTab('vs-louisville-sharks');
+                }
+            }
+
             // Add click listeners to buttons
             tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const tabId = button.dataset.tab;
                     showTab(tabId);
+                    // Update the URL hash without reloading the page
+                    window.location.hash = tabId;
                 });
             });
 
-            // Show the default tab on load (Louisville Sharks)
-            showTab('vs-louisville-sharks');
+            // Run the tab initialization function
+            initializeTabs();
         });
     </script>
 </body>
