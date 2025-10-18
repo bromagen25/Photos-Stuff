@@ -83,8 +83,8 @@
 
             <div id="loadingSpinner" class="spinner absolute z-50 hidden"></div>
 
-            <div id="modalContentContainer" class="relative w-full h-full flex items-center justify-center">
-    <img id="modalImage" src="" alt="Gallery Image" class="modal-content rounded-lg shadow-lg">
+          <div id="modalContentContainer" class="relative w-full h-full flex items-center justify-center">
+<img id="modalImage" src="" alt="Gallery Image" class="modal-content rounded-lg shadow-lg">
 </div>
 
             <div id="clickToSourceText" class="absolute bottom-8 text-white text-lg bg-black bg-opacity-50 px-4 py-2 rounded-lg hidden transition-opacity duration-300 opacity-0">
@@ -704,7 +704,7 @@
         ]
     };
 
-    // DOM Elements
+   // DOM Elements (Keep these outside for global access)
     const galleryDiv = document.getElementById('gallery');
     const imageModal = document.getElementById('imageModal');
     const modalImage = document.getElementById('modalImage');
@@ -719,10 +719,7 @@
     // --- Core Functions ---
 
     function loadSubGallery(galleryName) {
-        // Remove active class from all buttons
         navButtons.forEach(button => button.classList.remove('active'));
-
-        // Add active class to the selected button
         const activeNavButton = document.querySelector(`[data-gallery="${galleryName}"]`);
         if (activeNavButton) {
             activeNavButton.classList.add('active');
@@ -730,25 +727,21 @@
 
         const currentGallery = galleries[galleryName] || [];
         currentGalleryName = galleryName;
-        currentIndex = -1; // Reset index
-
+        currentIndex = -1; 
         galleryDiv.innerHTML = '';
 
         currentGallery.forEach((item, index) => {
-            // Determine if the item is an old-format string (image) or a new-format object (video/image)
             const isObject = typeof item === 'object' && item !== null;
             const itemType = isObject ? item.type : 'image';
             const url = isObject ? item.url || item : item;
             
             const galleryItem = document.createElement('div');
-            // Set up common classes for all items
             galleryItem.className = 'rounded-lg shadow-md overflow-hidden bg-gray-200 aspect-square flex items-center justify-center';
             galleryItem.dataset.index = index;
 
             if (itemType === 'youtube') {
                 const videoId = item.id;
                 const title = item.title || 'Video';
-                // Use YouTube high-quality thumbnail as the preview image
                 const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
                 galleryItem.innerHTML = `
@@ -759,25 +752,17 @@
                         </div>
                     </div>
                 `;
-            } else { // Handle traditional image (string URL or object with type 'image')
-                galleryItem.innerHTML = `
-                    <img src="${url}" alt="Gallery Image ${index + 1}" class="w-full h-full object-cover gallery-image">
-                `;
+            } else { 
+                galleryItem.innerHTML = `<img src="${url}" alt="Gallery Image ${index + 1}" class="w-full h-full object-cover gallery-image">`;
             }
             
-            // Add click listener to open modal for both images and videos
-            galleryItem.addEventListener('click', () => {
-                openModal(index);
-            });
-
+            galleryItem.addEventListener('click', () => { openModal(index); });
             galleryDiv.appendChild(galleryItem);
         });
     }
 
     function openModal(index) {
-        if (!galleries[currentGalleryName] || galleries[currentGalleryName].length === 0) {
-            return;
-        }
+        if (!galleries[currentGalleryName] || galleries[currentGalleryName].length === 0) { return; }
 
         currentIndex = index;
         const item = galleries[currentGalleryName][currentIndex];
@@ -785,37 +770,28 @@
         const itemType = isObject ? item.type : 'image';
         const itemUrl = isObject ? item.url || item : item;
 
-        // Reset modal state
         imageModal.classList.remove('hidden');
         imageModal.classList.add('opacity-100');
         document.body.style.overflow = 'hidden';
         
-        // Remove any existing video iframe (from a previous view)
         const existingIframe = document.getElementById('modalVideoIframe');
-        if (existingIframe) {
-            existingIframe.remove();
-        }
+        if (existingIframe) { existingIframe.remove(); }
 
-        // Always show the spinner initially
         loadingSpinner.classList.remove('hidden');
 
         if (itemType === 'youtube') {
             const videoId = item.id;
             const videoTitle = item.title || 'YouTube Video';
             
-            // Hide the image element
             modalImage.classList.add('hidden');
 
-            // Create and display the video iframe
             const iframe = document.createElement('iframe');
             iframe.id = 'modalVideoIframe';
-            // Use fixed aspect ratio for video embed to fit nicely
             iframe.style.width = '800px';
             iframe.style.height = '450px';
             iframe.style.maxWidth = '90vw';
             iframe.style.maxHeight = '90vh';
             
-            // YouTube embed URL with autoplay
             iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
             iframe.title = videoTitle;
             iframe.frameBorder = '0';
@@ -823,33 +799,19 @@
             iframe.allowFullscreen = true;
             iframe.classList.add('modal-content', 'rounded-lg', 'shadow-lg');
             
-            // Insert the iframe into the modal container
             document.getElementById('modalContentContainer').appendChild(iframe);
 
-            // Hide spinner after a short delay (iframe loading is harder to track reliably)
-            setTimeout(() => {
-                 loadingSpinner.classList.add('hidden');
-            }, 800);
+            setTimeout(() => { loadingSpinner.classList.add('hidden'); }, 800);
             
-            // Hide image click text for videos
             clickToSourceText.classList.add('hidden', 'opacity-0');
 
         } else { // Handle image
-            // Show image element, hide iframe logic
             modalImage.classList.remove('hidden');
-
-            // Set image source
             modalImage.src = itemUrl;
             
-            // Hide spinner on image load
-            modalImage.onload = () => {
-                loadingSpinner.classList.add('hidden');
-            };
-            modalImage.onerror = () => {
-                loadingSpinner.classList.add('hidden');
-            };
+            modalImage.onload = () => { loadingSpinner.classList.add('hidden'); };
+            modalImage.onerror = () => { loadingSpinner.classList.add('hidden'); };
 
-            // Show image click text
             clickToSourceText.classList.remove('hidden');
             setTimeout(() => clickToSourceText.classList.add('opacity-100'), 50);
         }
@@ -861,168 +823,110 @@
         imageModal.classList.add('opacity-0');
         document.body.style.overflow = '';
         
-        // Remove active video iframe (stops the video when closing)
         const existingIframe = document.getElementById('modalVideoIframe');
-        if (existingIframe) {
-            existingIframe.remove();
-        }
+        if (existingIframe) { existingIframe.remove(); }
         
-        // Use a timeout to fully hide the modal after the transition ends
         setTimeout(() => {
             imageModal.classList.add('hidden');
-            modalImage.src = ''; // Clear image source
+            modalImage.src = ''; 
         }, 300);
     }
 
     function showNextImage() {
-        // Only allow navigation for galleries that are exclusively images
         if (currentGalleryName === "Videos!") return; 
 
         const currentGallery = galleries[currentGalleryName];
         let nextIndex = currentIndex + 1;
-        if (nextIndex >= currentGallery.length) {
-            nextIndex = 0; // Loop back to the start
-        }
+        if (nextIndex >= currentGallery.length) { nextIndex = 0; }
         
-        // Close and reopen the modal with the new image
         closeModal();
-        // Wait for the transition to finish before opening the next one
-        setTimeout(() => {
-            openModal(nextIndex);
-        }, 100); 
+        setTimeout(() => { openModal(nextIndex); }, 100); 
     }
 
     function showPrevImage() {
-        // Only allow navigation for galleries that are exclusively images
         if (currentGalleryName === "Videos!") return;
 
         const currentGallery = galleries[currentGalleryName];
         let prevIndex = currentIndex - 1;
-        if (prevIndex < 0) {
-            prevIndex = currentGallery.length - 1; // Loop back to the end
-        }
+        if (prevIndex < 0) { prevIndex = currentGallery.length - 1; }
         
-        // Close and reopen the modal with the new image
         closeModal();
-        // Wait for the transition to finish before opening the previous one
-        setTimeout(() => {
-            openModal(prevIndex);
-        }, 100);
+        setTimeout(() => { openModal(prevIndex); }, 100);
     }
 
 
-   // --- Event Listeners and Initialization ---
+    // --- Event Listeners and Initialization ---
+    // ALL LISTENERS ARE PLACED INSIDE DOMContentLoaded FOR MAXIMUM RELIABILITY
 
-    // Close modal via X button
-    closeModalButton.addEventListener('click', closeModal); 
-
-    // Close modal by clicking on the dark background
-    imageModal.addEventListener('click', (e) => {
-        // Only close if the click target is the modal backdrop itself, not content inside it
-        if (e.target === imageModal) {
-            closeModal();
-        }
-    });
-
-    // Close modal via ESC key and keyboard navigation
-    document.addEventListener('keydown', (e) => {
-        if (imageModal.classList.contains('opacity-100')) {
-            if (e.key === 'Escape') {
-                closeModal();
-            } else if (e.key === 'ArrowRight') {
-                showNextImage();
-            } else if (e.key === 'ArrowLeft') {
-                showPrevImage();
-            }
-        }
-    }); // <-- This closing parenthesis and semicolon was missing in your last attempt
-
-    // Handle click on the image (inside the modal) to view source
-    modalImage.addEventListener('click', (e) => {
-        // Stop the event from bubbling up to the modal backdrop
-        e.stopPropagation(); 
-        
-        const currentItem = galleries[currentGalleryName][currentIndex];
-        const isImage = !(typeof currentItem === 'object' && currentItem.type === 'youtube');
-
-        if (isImage) {
-            const currentUrl = modalImage.src;
-            // The original logic to open the postimg.cc host page
-            const postimgPageUrl = currentUrl.replace('i.postimg.cc', 'postimg.cc');
-            if (postimgPageUrl.startsWith('https://postimg.cc')) {
-                window.open(postimgPageUrl, '_blank');
-            } else {
-                // Fallback to close if it's a placeholder/error image
-                closeModal();
-            }
-        }
-    });
-
-    // Swipe functionality for modal (Touch events)
-    // ... (rest of the script)
-
-    // Close modal via ESC key and keyboard navigation
-    document.addEventListener('keydown', (e) => {
-        if (imageModal.classList.contains('opacity-100')) {
-            if (e.key === 'Escape') {
-                closeModal();
-            } else if (e.key === 'ArrowRight') {
-                showNextImage();
-            } else if (e.key === 'ArrowLeft') {
-                showPrevImage();
-            }
-        }
-    });
-
-    // Handle click on the modal image to view source (only for images)
-    modalImage.addEventListener('click', () => {
-        const currentItem = galleries[currentGalleryName][currentIndex];
-        const isImage = !(typeof currentItem === 'object' && currentItem.type === 'youtube');
-
-        if (isImage) {
-            const currentUrl = modalImage.src;
-            // The original logic to open the postimg.cc host page
-            const postimgPageUrl = currentUrl.replace('i.postimg.cc', 'postimg.cc');
-            if (postimgPageUrl.startsWith('https://postimg.cc')) {
-                window.open(postimgPageUrl, '_blank');
-            } else {
-                // Fallback to close if it's a placeholder/error image
-                closeModal();
-            }
-        }
-        // Note: Clicks on videos will be handled by the iframe itself (i.e., playing the video).
-    });
-
-    // Swipe functionality for modal (Touch events)
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    imageModal.addEventListener('touchstart', (e) => {
-        // Prevent swipe on videos, only for image galleries
-        if (currentGalleryName !== "Videos!") {
-            touchStartX = e.touches[0].clientX;
-        }
-    });
-
-    imageModal.addEventListener('touchend', (e) => {
-        if (currentGalleryName !== "Videos!") {
-            touchEndX = e.changedTouches[0].clientX;
-            const swipeThreshold = 50;
-            if (touchEndX < touchStartX - swipeThreshold) {
-                showNextImage();
-            } else if (touchEndX > touchStartX + swipeThreshold) {
-                showPrevImage();
-            }
-        }
-    });
-
-    // Initialize the gallery on page load
     document.addEventListener('DOMContentLoaded', () => {
-        // Add click listeners to navigation buttons
+        // 1. Close modal via X button (FIX)
+        closeModalButton.addEventListener('click', closeModal); 
+
+        // 2. Close modal by clicking on the dark background (FIX)
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                closeModal();
+            }
+        });
+
+        // 3. Close modal via ESC key and keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (imageModal.classList.contains('opacity-100')) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                } else if (e.key === 'ArrowRight') {
+                    showNextImage();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevImage();
+                }
+            }
+        }); 
+
+        // 4. Handle click on the image (inside the modal) to view source (FIX for "Not Found")
+        modalImage.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            
+            const currentItem = galleries[currentGalleryName][currentIndex];
+            const isImage = !(typeof currentItem === 'object' && currentItem.type === 'youtube');
+
+            if (isImage) {
+                const currentUrl = modalImage.src;
+                const postimgPageUrl = currentUrl.replace('i.postimg.cc', 'postimg.cc');
+                if (postimgPageUrl.startsWith('https://postimg.cc')) {
+                    window.open(postimgPageUrl, '_blank');
+                } else {
+                    closeModal();
+                }
+            }
+        });
+        
+        // 5. Swipe functionality for modal (Touch events)
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        imageModal.addEventListener('touchstart', (e) => {
+            if (currentGalleryName !== "Videos!") {
+                touchStartX = e.touches[0].clientX;
+            }
+        });
+
+        imageModal.addEventListener('touchend', (e) => {
+            if (currentGalleryName !== "Videos!") {
+                touchEndX = e.changedTouches[0].clientX;
+                const swipeThreshold = 50;
+                if (touchEndX < touchStartX - swipeThreshold) {
+                    showNextImage();
+                } else if (touchEndX > touchStartX + swipeThreshold) {
+                    showPrevImage();
+                }
+            }
+        });
+        
+        // Add click listeners to navigation buttons (Your original code)
         navButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const galleryName = button.dataset.gallery;
-                loadSubGallery(galleryName); // Call loadSubGallery for internal navigation
+                loadSubGallery(galleryName); 
             });
         });
 
@@ -1030,4 +934,3 @@
         loadSubGallery("1st Half");
     });
 </script>
-
