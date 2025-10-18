@@ -172,6 +172,7 @@
         let currentImageIndex = 0;
         let currentGalleryKey = null;
         let currentImages = [];
+        let isHandledByTouch = false; // NEW FLAG: Prevents double-firing of link opening on mobile
 
         // --- Modal Control Functions ---
 
@@ -285,11 +286,15 @@
         prevButton.addEventListener('click', showPrevImage);
         nextButton.addEventListener('click', showNextImage);
 
-        // *** FIX 1: Re-add click listener for desktop functionality ***
+        // FIX 1: Dedicated click listener for desktop link opening, uses flag to avoid double-firing after a mobile tap
         modalImage.addEventListener('click', (e) => {
-            // Check if the click event originated from a touch device (to avoid double-opening the link)
-            // If the tap-detection logic below fires, it opens the link and should prevent the click.
-            // But for a pure desktop click, this is necessary.
+            // If the touch handler has already processed this as a tap, skip the click handler
+            if (isHandledByTouch) {
+                isHandledByTouch = false; // Reset the flag for the next interaction
+                return;
+            }
+            
+            // For pure desktop click:
             e.stopPropagation(); 
             window.open(modalImage.src, '_blank');
         });
@@ -317,7 +322,7 @@
             }
         });
 
-        // FIX 2: Swipe and Tap logic for modal image on touch devices (Kept for mobile)
+        // FIX 2: Swipe and Tap logic for modal image on touch devices 
         let touchStartX = 0;
         let touchEndX = 0;
 
@@ -335,12 +340,12 @@
                 e.stopPropagation(); 
                 window.open(modalImage.src, '_blank');
                 
-                // IMPORTANT: We stop the propagation AND return. The browser may still fire
-                // a synthetic 'click' event, which is why we added the 'click' listener above.
-                // However, by executing the action here on 'touchend' for a tap, we ensure
-                // the user gets the desired result on mobile before any confusing 'click' ghost.
-                // Since the 'click' listener now does the EXACT same thing, a double execution 
-                // is harmless (it just tries to open the same link twice).
+                // Set the flag to prevent the synthetic click event from opening the link again
+                isHandledByTouch = true;
+                
+                // Prevent the browser from generating a click event immediately (optional but helps)
+                e.preventDefault(); 
+                
                 return; 
             } else if (touchDifference < 0) {
                 // Swipe left: Go to next image
