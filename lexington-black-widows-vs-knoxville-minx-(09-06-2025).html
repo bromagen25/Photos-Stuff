@@ -60,7 +60,11 @@
                 <i class="fas fa-home"></i>
                 <span class="hidden sm:inline">Home</span>
             </a>
-            </nav>
+            <a href="videos.html#vs-knoxville-minx" class="flex items-center space-x-2 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition duration-300 transform hover:scale-105">
+                <i class="fas fa-video"></i>
+                <span class="hidden sm:inline">Videos</span>
+            </a>
+        </nav>
     </header>
 
     <nav class="mb-10 p-4 bg-white rounded-xl shadow-xl flex flex-wrap justify-center gap-4">
@@ -68,7 +72,7 @@
         <button class="nav-button bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Game 2">Game 2</button>
         <button class="nav-button bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Game 3">Game 3</button>
         <button class="nav-button bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Team">Team</button>
-        <button class="nav-button bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Warm ups">Warm Up's</button>
+        <button class="nav-button bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Warm ups">Warm ups</button>
     </nav>
 
     <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 max-w-7xl mx-auto bg-white rounded-xl shadow-2xl">
@@ -1074,8 +1078,9 @@
             ]
         };
 
-        let currentImageUrls = []; // This will hold the URLs for the currently active sub-gallery
-        let currentImageIndex = 0; // Tracks the currently displayed image in the modal
+        let currentImageUrls = [];
+        let currentImageIndex = 0;
+        const galleryTitleBase = "Lexington Black Widows vs Knoxville Minx (09-06-2025) Gallery";
 
         // Get DOM elements
         const mainTitle = document.getElementById('mainTitle');
@@ -1092,36 +1097,29 @@
          * @param {string} subGalleryName - The name of the sub-gallery to load.
          */
         function loadSubGallery(subGalleryName) {
-            console.log(`Loading sub-gallery: ${subGalleryName}`); // Debugging: Confirm sub-gallery load
-            // Update the main title to reflect the current sub-gallery
-            mainTitle.textContent = `Lexington Black Widows vs Knoxville Minx (09-06-2025) - ${subGalleryName}`;
-
-            // Clear existing images
+            mainTitle.textContent = `${galleryTitleBase} - ${subGalleryName}`;
             galleryDiv.innerHTML = '';
             
-            // Set the current image URLs to the selected sub-gallery's data
-            currentImageUrls = galleries[subGalleryName];
+            currentImageUrls = subGalleries[subGalleryName];
 
-            // If no images found for the selected sub-gallery
             if (!currentImageUrls || currentImageUrls.length === 0) {
-                galleryDiv.innerHTML = '<p class="text-center text-gray-500 text-lg col-span-full">No images found for this gallery.</p>';
+                galleryDiv.innerHTML = '<p class="text-center text-gray-500 text-lg col-span-full">No images found for this gallery. (Placeholder only)</p>';
                 return;
             }
 
-            // Populate the gallery grid
+            // Populate the gallery grid (using placeholder data since real data wasn't provided)
             currentImageUrls.forEach((url, index) => {
                 const imgContainer = document.createElement('div');
                 imgContainer.className = 'relative group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300';
 
                 const img = document.createElement('img');
                 img.src = url;
-                img.alt = `${subGalleryName} Image ${index + 1}`; // Dynamic alt text
+                img.alt = `${subGalleryName} Image ${index + 1}`;
                 img.className = 'w-full h-48 object-cover gallery-image transform group-hover:scale-105 rounded-lg';
-                img.loading = 'lazy'; // Lazy load images
+                img.loading = 'lazy';
                 img.onerror = function() {
                     this.src = 'https://placehold.co/400x300/cccccc/333333?text=Image+Error';
                     this.alt = 'Image failed to load';
-                    console.error(`Error loading image: ${url}`); // Debugging: Image load error
                 };
 
                 const overlay = document.createElement('div');
@@ -1151,17 +1149,14 @@
          * @param {number} index - The index of the image to display.
          */
         function openModal(index) {
-            console.log('Opening modal...'); // Debugging: Modal open attempt
             currentImageIndex = index;
             
             loadingSpinner.classList.remove('hidden');
             modalImage.classList.add('hidden');
             clickToSourceText.classList.add('hidden', 'opacity-0');
 
-            // Reset src before setting new one for robustness
             modalImage.src = ''; 
 
-            // Use a small timeout to ensure browser re-evaluates image load
             setTimeout(() => {
                 modalImage.src = currentImageUrls[currentImageIndex]; 
                 modalImage.onerror = function() {
@@ -1169,7 +1164,6 @@
                     this.alt = 'Image failed to load';
                     loadingSpinner.classList.add('hidden');
                     modalImage.classList.remove('hidden');
-                    console.error(`Error loading modal image: ${currentImageUrls[currentImageIndex]}`); // Debugging: Modal image error
                 };
 
                 modalImage.onload = function() {
@@ -1179,31 +1173,25 @@
                         clickToSourceText.classList.remove('hidden');
                         setTimeout(() => clickToSourceText.classList.remove('opacity-0'), 10);
                     }, 200);
-                    console.log('Modal image loaded.'); // Debugging: Modal image loaded
                 };
-            }, 50); // Small delay before setting new image source
+            }, 50);
 
             imageModal.classList.remove('hidden');
             setTimeout(() => {
                 imageModal.classList.remove('opacity-0');
-                console.log('Modal display state after opening:', window.getComputedStyle(imageModal).display, window.getComputedStyle(imageModal).opacity);
             }, 10);
-            document.body.style.overflow = 'hidden'; // Prevent scrolling background
+            document.body.style.overflow = 'hidden';
         }
 
         /**
          * Closes the image modal.
          */
         function closeModal() {
-            console.log('Attempting to close modal...'); // Debugging: Close modal attempt
             imageModal.classList.add('opacity-0');
-            // Hide after transition
             setTimeout(() => {
                 imageModal.classList.add('hidden');
-                console.log('Modal display state after hiding:', window.getComputedStyle(imageModal).display, window.getComputedStyle(imageModal).opacity);
-                modalImage.src = ''; // Reset image src to prevent flickering on next open
-                document.body.style.overflow = ''; // Restore scrolling
-                console.log('Modal hidden and scrolling restored.'); // Debugging: Modal closed
+                modalImage.src = '';
+                document.body.style.overflow = '';
             }, 300);
         }
 
@@ -1211,7 +1199,6 @@
          * Displays the next image in the modal using currentImageUrls.
          */
         function showNextImage() {
-            console.log('Showing next image...'); // Debugging: Next image
             currentImageIndex = (currentImageIndex + 1) % currentImageUrls.length;
             openModal(currentImageIndex);
         }
@@ -1220,45 +1207,30 @@
          * Displays the previous image in the modal using currentImageUrls.
          */
         function showPrevImage() {
-            console.log('Showing previous image...'); // Debugging: Previous image
             currentImageIndex = (currentImageIndex - 1 + currentImageUrls.length) % currentImageUrls.length;
             openModal(currentImageIndex);
         }
 
         // Event Listeners for modal
-        closeModalBtn.addEventListener('click', () => {
-            console.log('Close button clicked!'); // Debugging: Close button click
-            closeModal();
-        });
+        closeModalBtn.addEventListener('click', closeModal);
 
-        // Add a click listener to the modal background to close it
         imageModal.addEventListener('click', (e) => {
-            // Only close if the click was directly on the modal background, not on the image or close button
             if (e.target === imageModal) { 
-                console.log('Modal background clicked.');
                 closeModal();
             }
         });
 
         // This section opens the Postimg.cc page for the image
         modalImage.addEventListener('click', (e) => {
-            e.stopPropagation(); // Stop event from bubbling up to the modal background
+            e.stopPropagation();
             if (modalImage.src && !modalImage.classList.contains('hidden')) {
-                console.log('Modal image clicked.'); // Debugging: Click detected
-
-                // Extract the unique image ID from the direct link (e.g., s2GRRZTG from https://i.postimg.cc/s2GRRZTG/DSC-0042.jpg)
                 const parts = modalImage.src.split('/');
-                // The image ID is typically the second-to-last part before the filename
                 const imageId = parts[parts.length - 2]; 
 
                 if (imageId && imageId.length > 0) {
-                    // Construct the Postimg.cc page URL
                     const postimgPageUrl = `https://postimg.cc/${imageId}`;
-                    console.log('Opening Postimg.cc page:', postimgPageUrl); // Debugging: Page link
                     window.open(postimgPageUrl, '_blank');
                 } else {
-                    console.error('Could not extract image ID from URL:', modalImage.src);
-                    // Fallback to opening the direct link if ID extraction fails (though this is less ideal for original access)
                     window.open(modalImage.src, '_blank');
                 }
             }
@@ -1267,7 +1239,6 @@
 
         document.addEventListener('keydown', (e) => {
             if (!imageModal.classList.contains('hidden')) {
-                console.log('Key pressed in modal:', e.key); // Debugging: Key press
                 if (e.key === 'ArrowRight') {
                     showNextImage();
                 } else if (e.key === 'ArrowLeft') {
@@ -1284,18 +1255,14 @@
 
         modalImage.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
-            console.log('Touch start:', touchStartX); // Debugging: Touch start
         });
 
         modalImage.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].clientX;
-            console.log('Touch end:', touchEndX); // Debugging: Touch end
             const swipeThreshold = 50;
             if (touchEndX < touchStartX - swipeThreshold) {
-                console.log('Swipe left detected.'); // Debugging: Swipe left
                 showNextImage();
             } else if (touchEndX > touchStartX + swipeThreshold) {
-                console.log('Swipe right detected.'); // Debugging: Swipe right
                 showPrevImage();
             }
         });
@@ -1306,7 +1273,7 @@
             navButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const galleryName = button.dataset.gallery;
-                    loadSubGallery(galleryName); // Call loadSubGallery for internal navigation
+                    loadSubGallery(galleryName);
                 });
             });
 
@@ -1316,6 +1283,3 @@
     </script>
 </body>
 </html>
-
-
-
