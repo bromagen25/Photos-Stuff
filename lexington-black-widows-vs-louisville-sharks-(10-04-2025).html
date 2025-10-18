@@ -286,7 +286,6 @@
         nextButton.addEventListener('click', showNextImage);
 
         // Harmonized Click Handler: This reliably handles both desktop clicks and mobile taps
-        // The mobile browser will synthesize a click event after a short tap, making this simple approach robust.
         modalImage.addEventListener('click', (e) => {
             e.stopPropagation(); 
             // The URL being opened is the one set in modalImage.src
@@ -296,7 +295,8 @@
 
         // Close modal when clicking outside the image
         imageModal.addEventListener('click', (e) => {
-            if (e.target === imageModal || e.target === closeModalButton) {
+            // Check if the click target is the modal backdrop or the close button
+            if (e.target === imageModal || e.target.closest('#close-modal')) {
                 closeModal();
             }
         });
@@ -318,20 +318,17 @@
         let touchStartX = 0;
         let touchEndX = 0;
         const swipeThreshold = 50; 
-
+        
         modalImage.addEventListener('touchstart', (e) => {
-            // Prevent default action (like page scrolling) only if multiple fingers are not involved
             if (e.touches.length === 1) {
+                // Store the starting X coordinate
                 touchStartX = e.touches[0].clientX;
             }
         });
 
-        modalImage.addEventListener('touchmove', (e) => {
-            // Prevent default action (like page scrolling) while swiping
-            if (e.touches.length === 1) {
-                e.preventDefault();
-            }
-        });
+        // *** REMOVED touchmove LISTENER ***
+        // By removing touchmove with preventDefault(), we ensure a simple tap 
+        // is NOT blocked from generating a 'click' event.
 
         modalImage.addEventListener('touchend', (e) => {
             if (e.changedTouches.length === 1) {
@@ -339,17 +336,16 @@
                 const touchDifference = touchEndX - touchStartX;
             
                 if (touchDifference < -swipeThreshold) {
-                    // Swipe left: Go to next image
+                    // Swipe left (finger moved right-to-left): Go to next image
                     showNextImage();
                 } else if (touchDifference > swipeThreshold) {
-                    // Swipe right: Go to previous image
+                    // Swipe right (finger moved left-to-right): Go to previous image
                     showPrevImage();
                 }
-                // If the user did not swipe, the event falls through and triggers the 'click' handler, 
-                // opening the host link.
+                // If the user did not swipe (touchDifference is small), the event falls through 
+                // and the mobile browser synthesizes the 'click' event, which opens the link.
             }
         });
-        // ***********************************************************************************
 
         // Initialize the gallery on page load
         document.addEventListener('DOMContentLoaded', () => {
