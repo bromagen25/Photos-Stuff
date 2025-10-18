@@ -172,7 +172,7 @@
         let currentImageIndex = 0;
         let currentGalleryKey = null;
         let currentImages = [];
-        let isHandledByTouch = false; // NEW FLAG: Prevents double-firing of link opening on mobile
+        let isHandledByTouch = false; // Flag to coordinate touch/click events
 
         // --- Modal Control Functions ---
 
@@ -262,7 +262,7 @@
                 // Image error handler
                 img.onerror = () => {
                     console.error(`Failed to load image: ${url}`);
-                    // Optionally replace with a local placeholder if external URL fails
+                    // Fallback to placeholder image on error
                     img.src = "https://placehold.co/400x225/333333/AAAAAA?text=Image+Error";
                 };
 
@@ -286,11 +286,12 @@
         prevButton.addEventListener('click', showPrevImage);
         nextButton.addEventListener('click', showNextImage);
 
-        // FIX 1: Dedicated click listener for desktop link opening, uses flag to avoid double-firing after a mobile tap
+        // FIX 1: Dedicated click listener for desktop link opening
         modalImage.addEventListener('click', (e) => {
             // If the touch handler has already processed this as a tap, skip the click handler
             if (isHandledByTouch) {
-                isHandledByTouch = false; // Reset the flag for the next interaction
+                // Reset the flag and let the touch handler's setTimeout manage the window.open
+                isHandledByTouch = false; 
                 return;
             }
             
@@ -298,12 +299,9 @@
             e.stopPropagation(); 
             window.open(modalImage.src, '_blank');
         });
-        // ***************************************************************
 
         // Close modal when clicking outside the image
         imageModal.addEventListener('click', (e) => {
-            // Note: This check ensures clicking on the image inside the modal (modalImage) 
-            // does NOT close the modal, only clicking the backdrop (imageModal) does.
             if (e.target === imageModal || e.target === closeModalButton) {
                 closeModal();
             }
@@ -328,6 +326,7 @@
 
         modalImage.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
+            isHandledByTouch = false; // Reset flag on touchstart of a new interaction
         });
 
         modalImage.addEventListener('touchend', (e) => {
@@ -338,15 +337,16 @@
             if (Math.abs(touchDifference) < swipeThreshold) {
                 // This is a TAP: Open the image host link in a new tab
                 e.stopPropagation(); 
-                window.open(modalImage.src, '_blank');
                 
-                // Set the flag to prevent the synthetic click event from opening the link again
+                // Set the flag immediately to block the synthetic click
                 isHandledByTouch = true;
                 
-                // Prevent the browser from generating a click event immediately (optional but helps)
-                e.preventDefault(); 
+                // CRITICAL FIX: Use a slight timeout to ensure the browser processes the tap event 
+                // fully and trusts the window.open call, preventing security blocks.
+                setTimeout(() => {
+                    window.open(modalImage.src, '_blank');
+                }, 50); 
                 
-                return; 
             } else if (touchDifference < 0) {
                 // Swipe left: Go to next image
                 showNextImage();
