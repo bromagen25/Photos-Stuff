@@ -568,17 +568,23 @@
         modalImage.addEventListener('click', () => {
             const currentUrl = currentImages[currentImageIndex];
             if (currentUrl) {
+                // IMPORTANT: Use window.open(currentUrl, '_blank') to open in a new tab 
+                // like your provided code, or window.location.href = currentUrl to redirect 
+                // the current tab (like my original suggestion). I'll use your provided code:
                 window.open(currentUrl, '_blank');
             }
         });
-
-        // Show "Click image to view host page" text on hover
+        
+        // Show "Click image to view host page" text on hover (If you have this element)
+        // If you don't have the clickToSourceText element, you can skip this block
         modalImage.addEventListener('mouseenter', () => {
             if (!modalImage.classList.contains('opacity-0')) {
                 clickToSourceText.classList.remove('hidden');
                 setTimeout(() => clickToSourceText.classList.remove('opacity-0'), 10);
             }
         });
+        
+        // ... rest of your script, including document.addEventListener('keydown', ...);
 
         modalImage.addEventListener('mouseleave', () => {
             clickToSourceText.classList.add('opacity-0');
@@ -636,5 +642,6 @@
     </script>
 </body>
 </html>
+
 
 
