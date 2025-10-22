@@ -50,7 +50,8 @@
             <p class="text-xl text-red-400">Lexington Black Widows vs Louisville Sharks</p>
         </header>
 
-        <!-- Back Button -->
+        <!-- Back Button - Placeholder for generic back link, using the last known context file (lexington-black-widows) -->
+        <!-- NOTE: A proper multi-page app would manage the "Back" link contextually. For simplicity, retaining the original back link. -->
         <div class="mb-6">
             <!-- CHANGED: text-white to text-red-400 -->
             <a href="lexington-black-widows-vs-louisville-sharks-(10-04-2025).html" class="inline-flex items-center space-x-2 text-red-400 hover:text-red-500 transition duration-300">
@@ -62,7 +63,7 @@
         <!-- Tab Navigation -->
         <div class="border-b border-gray-700 mb-8">
             <nav class="flex flex-wrap -mb-px" id="video-tabs">
-                <!-- Tab for the current video group. The 'id' matches the hash fragment from the photo gallery's 'videos.html#vs-louisville-sharks' link. -->
+                <!-- Tab for Louisville Sharks (Existing) -->
                 <button 
                     class="tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out"
                     data-tab="vs-louisville-sharks"
@@ -71,13 +72,21 @@
                     Louisville Sharks (10-04-2025)
                 </button>
                 
-                <!-- Placeholder for future tabs - Initial red styling -->
-                <!-- CHANGED all color classes to red hues and updated JS to handle active/inactive states -->
+                <!-- NEW TAB ADDED -->
+                <button 
+                    class="tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out"
+                    data-tab="vs-knoxville-tns-7"
+                    id="tab-vs-knoxville-tns-7"
+                >
+                    Knoxville TNS 7 (06/12/2025)
+                </button>
+
+                <!-- Placeholder for future tabs (Moved the old placeholder to the end) -->
                 <button 
                     class="tab-button py-2 px-4 text-sm md:text-base font-medium text-red-200 border-b-2 border-transparent hover:text-red-500 hover:border-red-400 transition duration-300 ease-in-out"
                     data-tab="future-group-1"
                 >
-                    Future Group 1
+                    Future Group
                 </button>
             </nav>
         </div>
@@ -85,14 +94,11 @@
         <!-- Tab Content Containers -->
         <div id="tab-contents">
             
-            <!-- Content for Louisville Sharks (10-04-2025) -->
-            <!-- UPDATED bg-gray-900 to bg-black and border-gray-700 to border-red-900 for full black effect -->
+            <!-- Content for Louisville Sharks (Existing) -->
             <div id="vs-louisville-sharks" class="tab-content rounded-xl shadow-2xl p-4 md:p-8 bg-black border border-red-900">
-                <!-- REMOVED: <h2 class="text-3xl font-bold text-red-500 mb-6">Match Highlights</h2> -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                     
                     <!-- Video 1: https://youtu.be/WkVNfh1JfZc -->
-                    <!-- UPDATED bg-gray-800 to bg-black -->
                     <div class="video-card bg-black rounded-lg p-3">
                         <div class="video-container mb-3">
                             <!-- YouTube Embed URL format: https://www.youtube.com/embed/VIDEO_ID -->
@@ -107,7 +113,6 @@
                     </div>
 
                     <!-- Video 2: https://youtu.be/hjUPQQbILIo -->
-                    <!-- UPDATED bg-gray-800 to bg-black -->
                     <div class="video-card bg-black rounded-lg p-3">
                         <div class="video-container mb-3">
                             <iframe 
@@ -121,7 +126,6 @@
                     </div>
 
                     <!-- Video 3: https://youtu.be/oH1oSUphgLQ -->
-                    <!-- UPDATED bg-gray-800 to bg-black -->
                     <div class="video-card bg-black rounded-lg p-3">
                         <div class="video-container mb-3">
                             <iframe 
@@ -137,11 +141,67 @@
                 </div>
             </div>
 
+            <!-- CONTENT FOR KNOXVILLE TNS 7 (UPDATED with new videos) -->
+            <div id="vs-knoxville-tns-7" class="tab-content rounded-xl shadow-2xl p-4 md:p-8 bg-black border border-red-900">
+                <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    
+                    <!-- Video 1: https://youtu.be/v5zr_DUQ0Vo -->
+                    <div class="video-card bg-black rounded-lg p-3">
+                        <div class="video-container mb-3">
+                            <iframe 
+                                src="https://www.youtube.com/embed/v5zr_DUQ0Vo" 
+                                title="Knoxville TNS 7 Highlight 1" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <!-- Video 2: https://youtu.be/SJaY9MiKXmU -->
+                    <div class="video-card bg-black rounded-lg p-3">
+                        <div class="video-container mb-3">
+                            <iframe 
+                                src="https://www.youtube.com/embed/SJaY9MiKXmU" 
+                                title="Knoxville TNS 7 Highlight 2" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <!-- Video 3: https://youtu.be/cJnXSQx3wR8 -->
+                    <div class="video-card bg-black rounded-lg p-3">
+                        <div class="video-container mb-3">
+                            <iframe 
+                                src="https://www.youtube.com/embed/cJnXSQx3wR8" 
+                                title="Knoxville TNS 7 Highlight 3" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                    
+                    <!-- Video 4: https://youtu.be/2qzRA2jnmOY -->
+                    <div class="video-card bg-black rounded-lg p-3">
+                        <div class="video-container mb-3">
+                            <iframe 
+                                src="https://www.youtube.com/embed/2qzRA2jnmOY" 
+                                title="Knoxville TNS 7 Highlight 4" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Placeholder for Future Content -->
-            <!-- UPDATED bg-gray-900 to bg-black and border-gray-700 to border-red-900 for full black effect -->
             <div id="future-group-1" class="tab-content rounded-xl shadow-2xl p-4 md:p-8 bg-black border border-red-900">
-                <!-- CHANGED: text-white to text-red-300 -->
-                <p class="text-red-300">Content for Future Group 1 will go here. Add your video embeds when ready!</p>
+                <p class="text-red-300">Content for Future Group will go here. Add your video embeds when ready!</p>
             </div>
             
         </div>
@@ -149,24 +209,16 @@
     </div>
 
     <script>
-        /**
-         * Converts YouTube watch URLs (e.g., https://youtu.be/VIDEO_ID) 
-         * to the embed URL format (https://www.youtube.com/embed/VIDEO_ID).
-         */
+        // Note: getEmbedUrl function is no longer strictly necessary since URLs are hardcoded, but keeping it for context
         function getEmbedUrl(youtubeUrl) {
             let videoId = '';
-            // Handle standard watch URL
             const watchRegex = /watch\?v=([a-zA-Z0-9_-]+)/;
-            const watchMatch = youtubeUrl.match(watchRegex);
-            if (watchMatch) {
-                videoId = watchMatch[1];
-            } else {
-                // Handle short-form URL (youtu.be)
-                const shortRegex = /(?:youtu\.be\/|embed\/)([a-zA-Z0-9_-]+)/;
-                const shortMatch = youtubeUrl.match(shortRegex);
-                if (shortMatch) {
-                    videoId = shortMatch[1];
-                }
+            const shortRegex = /(?:youtu\.be\/|embed\/)([a-zA-Z0-9_-]+)/;
+            
+            let match = youtubeUrl.match(watchRegex) || youtubeUrl.match(shortRegex);
+            
+            if (match) {
+                videoId = match[1];
             }
             return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
         }
@@ -205,9 +257,11 @@
                 targetContent.classList.add('active');
             } else {
                 // Fallback to the first tab if the target doesn't exist (e.g., an incorrect hash)
-                const firstTabId = buttons[0].getAttribute('data-tab');
-                document.getElementById(firstTabId)?.classList.add('active');
-                buttons[0]?.classList.add('text-red-500', 'border-red-500');
+                const firstTabId = buttons[0]?.getAttribute('data-tab');
+                if (firstTabId) {
+                    document.getElementById(firstTabId)?.classList.add('active');
+                    buttons[0]?.classList.add('text-red-500', 'border-red-500');
+                }
             }
         }
 
@@ -224,7 +278,7 @@
 
         // Initialize on page load
         window.addEventListener('load', () => {
-            // Check for hash in URL (e.g., #vs-louisville-sharks) to load the correct tab
+            // Check for hash in URL (e.g., #vs-louisville-sharks or #vs-knoxville-tns-7) to load the correct tab
             const initialHash = window.location.hash.substring(1); // Remove '#'
             const defaultTab = 'vs-louisville-sharks'; // Default tab if no hash is present
 
