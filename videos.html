@@ -54,11 +54,12 @@
         <!-- NOTE: A proper multi-page app would manage the "Back" link contextually. For simplicity, retaining the original back link. -->
         <div class="mb-6">
             <!-- CHANGED: text-white to text-red-400 -->
-            <a href="lexington-black-widows-vs-louisville-sharks-(10-04-2025).html" class="inline-flex items-center space-x-2 text-red-400 hover:text-red-500 transition duration-300">
-                <i class="fas fa-arrow-left"></i>
-                <span>Back to Photo Gallery</span>
-            </a>
-        </div>
+            <div class="mb-6">
+    <a id="backToGalleryLink" href="lexington-black-widows-vs-louisville-sharks-(10-04-2025).html" class="inline-flex items-center space-x-2 text-red-400 hover:text-red-500 transition duration-300">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to Photo Gallery</span>
+    </a>
+</div>
 
         <!-- Tab Navigation -->
         <div class="border-b border-gray-700 mb-8">
@@ -209,87 +210,73 @@
     </div>
 
     <script>
-        // Note: getEmbedUrl function is no longer strictly necessary since URLs are hardcoded, but keeping it for context
-        function getEmbedUrl(youtubeUrl) {
-            let videoId = '';
-            const watchRegex = /watch\?v=([a-zA-Z0-9_-]+)/;
-            const shortRegex = /(?:youtu\.be\/|embed\/)([a-zA-Z0-9_-]+)/;
-            
-            let match = youtubeUrl.match(watchRegex) || youtubeUrl.match(shortRegex);
-            
-            if (match) {
-                videoId = match[1];
-            }
-            return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
+    // Map tab IDs to their corresponding photo gallery HTML file
+    const galleryMap = {
+        // EXISTING MAPPING
+        "vs-louisville-sharks": "lexington-black-widows-vs-louisville-sharks-(10-04-2025).html",
+        // NEW MAPPING
+        "knoxville-tns-7-06-12-2025": "knoxville-tns-7.html" 
+        // Add more mappings here as you add more tabs
+    };
+
+    const backLink = document.getElementById('backToGalleryLink');
+
+    function activateTab(tabId) {
+        // 1. Deactivate all tabs and buttons
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.classList.remove('text-red-500', 'border-red-500');
+            button.classList.add('text-red-200', 'border-transparent', 'hover:text-red-500', 'hover:border-red-400');
+        });
+
+        // Determine the actual tab ID to use (from hash or default)
+        let activeTabId = tabId || Object.keys(galleryMap)[0]; // Fallback to first map key
+
+        // 2. Activate the requested tab content and button
+        const activeContent = document.getElementById(activeTabId);
+        const activeButton = document.getElementById(`tab-${activeTabId}`);
+
+        if (activeContent && activeButton) {
+            activeContent.classList.add('active');
+            activeButton.classList.remove('text-red-200', 'border-transparent', 'hover:text-red-500', 'hover:border-red-400');
+            activeButton.classList.add('text-red-500', 'border-red-500');
+        } else {
+            // If the hash didn't match a tab, default to the first one and update the ID
+            activeTabId = Object.keys(galleryMap)[0];
+            document.getElementById(activeTabId)?.classList.add('active');
+            document.getElementById(`tab-${activeTabId}`)?.classList.remove('text-red-200', 'border-transparent', 'hover:text-red-500', 'hover:border-red-400');
+            document.getElementById(`tab-${activeTabId}`)?.classList.add('text-red-500', 'border-red-500');
         }
-
-        /**
-         * Handles the tab switching logic and ensures the correct tab is active on load,
-         * especially when navigating via a hash fragment (like #vs-louisville-sharks).
-         */
-        function activateTab(tabId) {
-            // Get all tab buttons and content areas
-            const buttons = document.querySelectorAll('.tab-button');
-            const contents = document.querySelectorAll('.tab-content');
-            
-            // Deactivate all
-            buttons.forEach(button => {
-                const isActive = button.getAttribute('data-tab') === tabId;
-                // Remove all possible combination of red/gray classes to reset the style
-                button.classList.remove('text-red-500', 'border-red-500', 'text-gray-500', 'border-transparent', 'hover:text-gray-300', 'hover:border-gray-500', 'text-red-200', 'hover:text-red-500', 'hover:border-red-400');
-
-                if (isActive) {
-                    // Activate selected tab (red highlight)
-                    button.classList.add('text-red-500', 'border-red-500');
-                } else {
-                    // Style inactive tabs using red hues for all letters
-                    button.classList.add('text-red-200', 'border-transparent', 'hover:text-red-500', 'hover:border-red-400');
-                }
-            });
-
-            contents.forEach(content => {
-                content.classList.remove('active');
-            });
-
-            // Activate the target content
-            const targetContent = document.getElementById(tabId);
-            if (targetContent) {
-                targetContent.classList.add('active');
-            } else {
-                // Fallback to the first tab if the target doesn't exist (e.g., an incorrect hash)
-                const firstTabId = buttons[0]?.getAttribute('data-tab');
-                if (firstTabId) {
-                    document.getElementById(firstTabId)?.classList.add('active');
-                    buttons[0]?.classList.add('text-red-500', 'border-red-500');
-                }
-            }
+        
+        // 3. **CRUCIAL: Update the Back Link**
+        const galleryFile = galleryMap[activeTabId];
+        if (galleryFile && backLink) {
+            backLink.href = galleryFile;
         }
+    }
 
-        // Event listeners for tab switching
-        document.getElementById('video-tabs').addEventListener('click', (e) => {
-            const button = e.target.closest('.tab-button');
-            if (button) {
-                const tabId = button.getAttribute('data-tab');
-                // Update the URL hash to reflect the current tab (optional but good for sharing/refreshing)
-                history.pushState(null, '', `#${tabId}`);
-                activateTab(tabId);
-            }
-        });
+    // Event listeners for tab switching
+    document.getElementById('video-tabs').addEventListener('click', (e) => {
+        const button = e.target.closest('.tab-button');
+        if (button) {
+            const tabId = button.getAttribute('data-tab');
+            // Update the URL hash and activate the tab
+            history.pushState(null, '', `#${tabId}`);
+            activateTab(tabId);
+        }
+    });
 
-        // Initialize on page load
-        window.addEventListener('load', () => {
-            // Check for hash in URL (e.g., #vs-louisville-sharks or #vs-knoxville-tns-7) to load the correct tab
-            const initialHash = window.location.hash.substring(1); // Remove '#'
-            const defaultTab = 'vs-louisville-sharks'; // Default tab if no hash is present
+    // Initialize on page load
+    window.addEventListener('load', () => {
+        const initialHash = window.location.hash.substring(1); // Remove '#'
+        activateTab(initialHash);
+    });
 
-            activateTab(initialHash || defaultTab);
-        });
-
-        // Handle navigation when the hash changes (e.g., back/forward button)
-        window.addEventListener('hashchange', () => {
-            const newHash = window.location.hash.substring(1);
-            activateTab(newHash);
-        });
-    </script>
-</body>
-</html>
+    // Handle navigation when the hash changes (e.g., back/forward button)
+    window.addEventListener('hashchange', () => {
+        const newHash = window.location.hash.substring(1);
+        activateTab(newHash);
+    });
+</script>
