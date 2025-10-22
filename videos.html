@@ -3,25 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexington Black Widows Videos</title>
+    <title>Video Gallery - Lexington Black Widows vs Louisville Sharks</title>
+    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Custom styles for consistency */
+        /* Custom styles for black background and Inter font */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #000000; /* Black background */
-            color: #FF0000; /* Red text */
+            background-color: #000000; /* Deep black background */
         }
-        /* Style for the video embed (16:9 aspect ratio) */
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        /* Custom responsive iframe container to maintain 16:9 aspect ratio */
         .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* 9/16 * 100% */
-            margin-bottom: 1.5rem; /* Space between videos */
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3); /* Red glow effect */
-            border-radius: 0.5rem;
-            overflow: hidden; /* Ensure rounded corners are applied */
+            padding-bottom: 56.25%; /* 16:9 aspect ratio (9/16 * 100) */
+            height: 0;
         }
         .video-container iframe {
             position: absolute;
@@ -29,230 +33,208 @@
             left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 0.5rem;
-        }
-        /* Style for active tab button */
-        .tab-button.active {
-            background-color: #FF0000; /* Red background for active */
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(255, 0, 0, 0.5), 0 2px 4px -2px rgba(255, 0, 0, 0.5);
+            border-radius: 0.5rem; /* Match Tailwind rounded-lg */
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8">
+<body class="min-h-screen">
 
-    <header class="w-full max-w-7xl flex justify-between items-center mb-12 p-4 bg-gray-900 rounded-xl shadow-lg">
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-red-600">Lexington Black Widows Videos</h1>
-        <nav class="flex space-x-4">
-            <a href="index.html" class="flex items-center space-x-2 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition duration-300 transform hover:scale-105">
-                <i class="fas fa-home"></i>
-                <span class="hidden sm:inline">Home</span>
+    <div class="container mx-auto p-4 md:p-8">
+
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-red-600 mb-2">
+                Match Video Highlights
+            </h1>
+            <!-- CHANGED: text-gray-400 to text-red-400 -->
+            <p class="text-xl text-red-400">Lexington Black Widows vs Louisville Sharks</p>
+        </header>
+
+        <!-- Back Button -->
+        <div class="mb-6">
+            <!-- CHANGED: text-white to text-red-400 -->
+            <a href="lexington-black-widows-vs-louisville-sharks-(10-04-2025).html" class="inline-flex items-center space-x-2 text-red-400 hover:text-red-500 transition duration-300">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Photo Gallery</span>
             </a>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="border-b border-gray-700 mb-8">
+            <nav class="flex flex-wrap -mb-px" id="video-tabs">
+                <!-- Tab for the current video group. The 'id' matches the hash fragment from the photo gallery's 'videos.html#vs-louisville-sharks' link. -->
+                <button 
+                    class="tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out"
+                    data-tab="vs-louisville-sharks"
+                    id="tab-vs-louisville-sharks"
+                >
+                    Louisville Sharks (10-04-2025)
+                </button>
+                
+                <!-- Placeholder for future tabs - Initial red styling -->
+                <!-- CHANGED all color classes to red hues and updated JS to handle active/inactive states -->
+                <button 
+                    class="tab-button py-2 px-4 text-sm md:text-base font-medium text-red-200 border-b-2 border-transparent hover:text-red-500 hover:border-red-400 transition duration-300 ease-in-out"
+                    data-tab="future-group-1"
+                >
+                    Future Group 1
+                </button>
             </nav>
-    </header>
-
-    <div class="mb-8 p-4 bg-gray-900 rounded-xl shadow-xl flex flex-wrap justify-center gap-4 w-full max-w-4xl">
-        <button class="tab-button text-red-600 font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-red-700 hover:text-white" data-tab="all-videos">All Videos</button>
-        <button class="tab-button text-red-600 font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-red-700 hover:text-white" data-tab="vs-louisville-sharks">Louisville Sharks (10-04-2025)</button>
         </div>
 
-    <div id="tab-content-container" class="w-full max-w-4xl">
-        
-       <div id="all-videos" class="tab-content hidden">
-    <h2 class="text-2xl font-bold mb-6 text-center text-red-600">Lexington Black Widows (Rugby)</h2>
-    
-    <div class="grid grid-cols-2 gap-6 sm:grid-cols-3">
-        
-        <div class="thumbnail-item">
-            <a href="https://youtu.be/WkVNfh1JfZc" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
-                <img src="https://img.youtube.com/vi/WkVNfh1JfZc/mqdefault.jpg" alt="Video 1 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <i class="fas fa-play text-4xl text-white"></i>
-                </div>
-            </a>
-            <p class="text-white text-center text-sm font-semibold mt-2 px-1">LBW Vs Louisville Sharks 1st Half</p>
-        </div>
-
-        <div class="thumbnail-item">
-            <a href="https://youtu.be/hjUPQQbILIo" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
-                <img src="https://img.youtube.com/vi/hjUPQQbILIo/mqdefault.jpg" alt="Video 2 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <i class="fas fa-play text-4xl text-white"></i>
-                </div>
-            </a>
-            <p class="text-white text-center text-sm font-semibold mt-2 px-1">LBW Vs Louisville Sharks 2nd Half</p>
-        </div>
-
-        <div class="thumbnail-item">
-            <a href="https://youtu.be/oH1oSUphgLQ" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
-                <img src="https://img.youtube.com/vi/oH1oSUphgLQ/mqdefault.jpg" alt="Video 3 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <i class="fas fa-play text-4xl text-white"></i>
-                </div>
-            </a>
-            <p class="text-white text-center text-sm font-semibold mt-2 px-1">LBW Vs Louisville Sharks 3rd Half</p>
-        </div>
-        
-        <div class="thumbnail-item">
-            <a href="https://youtu.be/v5zr_DUQ0Vo" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
-                <img src="https://img.youtube.com/vi/v5zr_DUQ0Vo/mqdefault.jpg" alt="Video 4 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <i class="fas fa-play text-4xl text-white"></i>
-                </div>
-            </a>
-            <p class="text-white text-center text-sm font-semibold mt-2 px-1">LBW vs Knoxville Minx - G1 - (Knoxville TNS 7)</p>
-        </div>
-        
-        <div class="thumbnail-item">
-            <a href="https://youtu.be/SJaY9MiKXmU" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
-                <img src="https://img.youtube.com/vi/SJaY9MiKXmU/mqdefault.jpg" alt="Video 5 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <i class="fas fa-play text-4xl text-white"></i>
-                </div>
-            </a>
-            <p class="text-white text-center text-sm font-semibold mt-2 px-1">LBW vs Knoxville Minx - G2 - (Knoxville TNS 7)</p>
-        </div>
-        
-        <div class="thumbnail-item">
-            <a href="https://youtu.be/cJnXSQx3wR8" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
-                <img src="https://img.youtube.com/vi/cJnXSQx3wR8/mqdefault.jpg" alt="Video 6 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <i class="fas fa-play text-4xl text-white"></i>
-                </div>
-            </a>
-            <p class="text-white text-center text-sm font-semibold mt-2 px-1">LBW vs ATL Select - G3 - (Knoxville TNS 7)</p>
-        </div>
-        
-        <div class="thumbnail-item">
-            <a href="https://youtu.be/2qzRA2jnmOY" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
-                <img src="https://img.youtube.com/vi/2qzRA2jnmOY/mqdefault.jpg" alt="Video 7 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <i class="fas fa-play text-4xl text-white"></i>
-                </div>
-            </a>
-            <p class="text-white text-center text-sm font-semibold mt-2 px-1">LBW - G4 - (Knoxville TNS 7)</p>
-        </div>
-        
-        <div class="thumbnail-item">
-            <a href="https://youtu.be/DXFKpuqe7sI" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
-                <img src="https://img.youtube.com/vi/DXFKpuqe7sI/mqdefault.jpg" alt="Video 8 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
-                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <i class="fas fa-play text-4xl text-white"></i>
-                </div>
-            </a>
-            <p class="text-white text-center text-sm font-semibold mt-2 px-1">LBW vs Knoxville Minx Game 1</p>
-        </div>
-        
-        <div class="thumbnail-item">
-            <a href="https://youtu.be/NkCNHmjueVI" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
-                <img src="https://img.youtube.com/vi/NkCNHmjueVI/mqdefault.jpg" alt="Video 9 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <i class="fas fa-play text-4xl text-white"></i>
-                </div>
-            </a>
-            <p class="text-white text-center text-sm font-semibold mt-2 px-1">LBW vs Knoxville Minx Game 2</p>
-        </div>
-        
-        <div class="thumbnail-item">
-            <a href="https://youtu.be/Wx_E58EulEg" target="_blank" class="block group relative overflow-hidden rounded-lg shadow-lg hover:shadow-red-500/50 transition duration-300">
-                <img src="https://img.youtube.com/vi/Wx_E58EulEg/mqdefault.jpg" alt="Video 10 Thumbnail" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-300">
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <i class="fas fa-play text-4xl text-white"></i>
-                </div>
-            </a>
-            <p class="text-white text-center text-sm font-semibold mt-2 px-1">LBW vs Knoxville Minx Game 3</p>
-        </div>
-        
-    </div>
-</div>
-        
-        <div id="vs-louisville-sharks" class="tab-content">
-            <h2 class="text-2xl font-bold mb-6 text-center text-red-600">Louisville Sharks (10-04-2025) Videos</h2>
+        <!-- Tab Content Containers -->
+        <div id="tab-contents">
             
-            <div class="video-container">
-                <iframe 
-                    src="https://www.youtube.com/embed/WkVNfh1JfZc?si=7BnEBVYTTbWJDJP5" 
-                    title="YouTube video player" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    referrerpolicy="strict-origin-when-cross-origin" 
-                    allowfullscreen>
-                </iframe>
+            <!-- Content for Louisville Sharks (10-04-2025) -->
+            <!-- UPDATED bg-gray-900 to bg-black and border-gray-700 to border-red-900 for full black effect -->
+            <div id="vs-louisville-sharks" class="tab-content rounded-xl shadow-2xl p-4 md:p-8 bg-black border border-red-900">
+                <!-- REMOVED: <h2 class="text-3xl font-bold text-red-500 mb-6">Match Highlights</h2> -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    
+                    <!-- Video 1: https://youtu.be/WkVNfh1JfZc -->
+                    <!-- UPDATED bg-gray-800 to bg-black -->
+                    <div class="video-card bg-black rounded-lg p-3">
+                        <div class="video-container mb-3">
+                            <!-- YouTube Embed URL format: https://www.youtube.com/embed/VIDEO_ID -->
+                            <iframe 
+                                src="https://www.youtube.com/embed/WkVNfh1JfZc" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <!-- Video 2: https://youtu.be/hjUPQQbILIo -->
+                    <!-- UPDATED bg-gray-800 to bg-black -->
+                    <div class="video-card bg-black rounded-lg p-3">
+                        <div class="video-container mb-3">
+                            <iframe 
+                                src="https://www.youtube.com/embed/hjUPQQbILIo" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <!-- Video 3: https://youtu.be/oH1oSUphgLQ -->
+                    <!-- UPDATED bg-gray-800 to bg-black -->
+                    <div class="video-card bg-black rounded-lg p-3">
+                        <div class="video-container mb-3">
+                            <iframe 
+                                src="https://www.youtube.com/embed/oH1oSUphgLQ" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
-            <div class="video-container">
-                <iframe 
-                    src="https://www.youtube.com/embed/hjUPQQbILIo?si=znICospPQTt5GoNT" 
-                    title="YouTube video player" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    referrerpolicy="strict-origin-when-cross-origin" 
-                    allowfullscreen>
-                </iframe>
+            <!-- Placeholder for Future Content -->
+            <!-- UPDATED bg-gray-900 to bg-black and border-gray-700 to border-red-900 for full black effect -->
+            <div id="future-group-1" class="tab-content rounded-xl shadow-2xl p-4 md:p-8 bg-black border border-red-900">
+                <!-- CHANGED: text-white to text-red-300 -->
+                <p class="text-red-300">Content for Future Group 1 will go here. Add your video embeds when ready!</p>
             </div>
-
-            <div class="video-container">
-                <iframe 
-                    src="https://www.youtube.com/embed/oH1oSUphgLQ?si=tNLiy8yeaj-JmUI8" 
-                    title="YouTube video player" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    referrerpolicy="strict-origin-when-cross-origin" 
-                    allowfullscreen>
-                </iframe>
-            </div>
+            
         </div>
 
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            function showTab(tabId) {
-                // 1. Hide all content containers
-                tabContents.forEach(content => content.classList.add('hidden'));
-                
-                // 2. Remove 'active' class from all buttons
-                tabButtons.forEach(button => button.classList.remove('active'));
-
-                // 3. Show the selected content
-                const selectedContent = document.getElementById(tabId);
-                const selectedButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-                
-                if (selectedContent) {
-                    selectedContent.classList.remove('hidden');
-                }
-                
-                // 4. Set the active button style
-                if (selectedButton) {
-                    selectedButton.classList.add('active');
+        /**
+         * Converts YouTube watch URLs (e.g., https://youtu.be/VIDEO_ID) 
+         * to the embed URL format (https://www.youtube.com/embed/VIDEO_ID).
+         */
+        function getEmbedUrl(youtubeUrl) {
+            let videoId = '';
+            // Handle standard watch URL
+            const watchRegex = /watch\?v=([a-zA-Z0-9_-]+)/;
+            const watchMatch = youtubeUrl.match(watchRegex);
+            if (watchMatch) {
+                videoId = watchMatch[1];
+            } else {
+                // Handle short-form URL (youtu.be)
+                const shortRegex = /(?:youtu\.be\/|embed\/)([a-zA-Z0-9_-]+)/;
+                const shortMatch = youtubeUrl.match(shortRegex);
+                if (shortMatch) {
+                    videoId = shortMatch[1];
                 }
             }
+            return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
+        }
 
-            // Add click listeners to buttons
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabId = button.dataset.tab;
-                    showTab(tabId);
-                    
-                    // OPTIONAL: Update the URL hash when a user clicks a tab
-                    window.location.hash = tabId; 
-                });
+        /**
+         * Handles the tab switching logic and ensures the correct tab is active on load,
+         * especially when navigating via a hash fragment (like #vs-louisville-sharks).
+         */
+        function activateTab(tabId) {
+            // Get all tab buttons and content areas
+            const buttons = document.querySelectorAll('.tab-button');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            // Deactivate all
+            buttons.forEach(button => {
+                const isActive = button.getAttribute('data-tab') === tabId;
+                // Remove all possible combination of red/gray classes to reset the style
+                button.classList.remove('text-red-500', 'border-red-500', 'text-gray-500', 'border-transparent', 'hover:text-gray-300', 'hover:border-gray-500', 'text-red-200', 'hover:text-red-500', 'hover:border-red-400');
+
+                if (isActive) {
+                    // Activate selected tab (red highlight)
+                    button.classList.add('text-red-500', 'border-red-500');
+                } else {
+                    // Style inactive tabs using red hues for all letters
+                    button.classList.add('text-red-200', 'border-transparent', 'hover:text-red-500', 'hover:border-red-400');
+                }
             });
 
-            // NEW LOGIC: Check for a hash fragment in the URL
-            const urlHash = window.location.hash.substring(1); // Get the hash without the '#'
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
 
-            if (urlHash && document.getElementById(urlHash)) {
-                // If a valid hash exists (e.g., #vs-louisville-sharks), show that tab
-                showTab(urlHash);
+            // Activate the target content
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.classList.add('active');
             } else {
-                // Otherwise, show the default tab 
-                showTab('all-videos');
+                // Fallback to the first tab if the target doesn't exist (e.g., an incorrect hash)
+                const firstTabId = buttons[0].getAttribute('data-tab');
+                document.getElementById(firstTabId)?.classList.add('active');
+                buttons[0]?.classList.add('text-red-500', 'border-red-500');
             }
+        }
+
+        // Event listeners for tab switching
+        document.getElementById('video-tabs').addEventListener('click', (e) => {
+            const button = e.target.closest('.tab-button');
+            if (button) {
+                const tabId = button.getAttribute('data-tab');
+                // Update the URL hash to reflect the current tab (optional but good for sharing/refreshing)
+                history.pushState(null, '', `#${tabId}`);
+                activateTab(tabId);
+            }
+        });
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            // Check for hash in URL (e.g., #vs-louisville-sharks) to load the correct tab
+            const initialHash = window.location.hash.substring(1); // Remove '#'
+            const defaultTab = 'vs-louisville-sharks'; // Default tab if no hash is present
+
+            activateTab(initialHash || defaultTab);
+        });
+
+        // Handle navigation when the hash changes (e.g., back/forward button)
+        window.addEventListener('hashchange', () => {
+            const newHash = window.location.hash.substring(1);
+            activateTab(newHash);
         });
     </script>
 </body>
