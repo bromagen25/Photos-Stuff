@@ -209,16 +209,17 @@
 
     </div>
 
-    <script>
+   <script>
     // Map tab IDs to their corresponding photo gallery HTML file
     const galleryMap = {
-        // EXISTING MAPPING
+        // MAPPING 1: Louisville Sharks tab links to Louisville Sharks gallery page
         "vs-louisville-sharks": "lexington-black-widows-vs-louisville-sharks-(10-04-2025).html",
-        // NEW MAPPING - CORRECTED KEY
+        // MAPPING 2: Knoxville TNS 7 tab links to Knoxville TNS 7 gallery page
         "vs-knoxville-tns-7": "knoxville-tns-7.html" 
         // Add more mappings here as you add more tabs
     };
 
+    // Define backLink globally
     const backLink = document.getElementById('backToGalleryLink');
 
     function activateTab(tabId) {
@@ -231,8 +232,13 @@
             button.classList.add('text-red-200', 'border-transparent', 'hover:text-red-500', 'hover:border-red-400');
         });
 
-        // Determine the actual tab ID to use (from hash or default)
-        let activeTabId = tabId || Object.keys(galleryMap)[0]; // Fallback to first map key
+        // Determine the tab ID to use (from hash, or default to the first one if hash is empty/invalid)
+        let activeTabId = tabId;
+
+        // Fallback to the first map key if the requested tab is not found or is empty
+        if (!galleryMap[activeTabId]) {
+             activeTabId = Object.keys(galleryMap)[0];
+        }
 
         // 2. Activate the requested tab content and button
         const activeContent = document.getElementById(activeTabId);
@@ -242,12 +248,6 @@
             activeContent.classList.add('active');
             activeButton.classList.remove('text-red-200', 'border-transparent', 'hover:text-red-500', 'hover:border-red-400');
             activeButton.classList.add('text-red-500', 'border-red-500');
-        } else {
-            // If the hash didn't match a tab, default to the first one and update the ID
-            activeTabId = Object.keys(galleryMap)[0];
-            document.getElementById(activeTabId)?.classList.add('active');
-            document.getElementById(`tab-${activeTabId}`)?.classList.remove('text-red-200', 'border-transparent', 'hover:text-red-500', 'hover:border-red-400');
-            document.getElementById(`tab-${activeTabId}`)?.classList.add('text-red-500', 'border-red-500');
         }
         
         // 3. **CRUCIAL: Update the Back Link**
@@ -257,7 +257,7 @@
         }
     }
 
-    // Event listeners for tab switching
+    // Event listeners for manual tab switching
     document.getElementById('video-tabs').addEventListener('click', (e) => {
         const button = e.target.closest('.tab-button');
         if (button) {
@@ -268,8 +268,9 @@
         }
     });
 
-    // Initialize on page load
-    window.addEventListener('load', () => {
+    // Initialize on page load using DOMContentLoaded (runs as soon as HTML is loaded)
+    window.addEventListener('DOMContentLoaded', () => {
+        // Check for hash in URL (e.g., #vs-knoxville-tns-7)
         const initialHash = window.location.hash.substring(1); // Remove '#'
         activateTab(initialHash);
     });
@@ -280,4 +281,3 @@
         activateTab(newHash);
     });
 </script>
-
