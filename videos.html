@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Gallery - Lexington Black Widows vs Louisville Sharks</title>
-    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Custom styles for black background and Inter font */
@@ -41,19 +39,11 @@
 
     <div class="container mx-auto p-4 md:p-8">
 
-        <!-- Header -->
         <header class="text-center mb-8">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-red-600 mb-2">
-                Match Video Highlights
-            </h1>
-            <!-- CHANGED: text-gray-400 to text-red-400 -->
-            <p class="text-xl text-red-400">Lexington Black Widows vs Louisville Sharks</p>
+            <p class="text-2xl font-extrabold text-red-400">Lexington Black Widows vs Louisville Sharks</p>
         </header>
 
-        <!-- Back Button - Placeholder for generic back link, using the last known context file (lexington-black-widows) -->
-        <!-- NOTE: A proper multi-page app would manage the "Back" link contextually. For simplicity, retaining the original back link. -->
         <div class="mb-6">
-            <!-- CHANGED: text-white to text-red-400 -->
             <div class="mb-6">
     <a id="backToGalleryLink" href="lexington-black-widows-vs-louisville-sharks-(10-04-2025).html" class="inline-flex items-center space-x-2 text-red-400 hover:text-red-500 transition duration-300">
         <i class="fas fa-arrow-left"></i>
@@ -61,10 +51,8 @@
     </a>
 </div>
 
-        <!-- Tab Navigation -->
         <div class="border-b border-gray-700 mb-8">
             <nav class="flex flex-wrap -mb-px" id="video-tabs">
-                <!-- Tab for Louisville Sharks (Existing) -->
                 <button 
                     class="tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out"
                     data-tab="vs-louisville-sharks"
@@ -73,7 +61,14 @@
                     Louisville Sharks (10-04-2025)
                 </button>
                 
-                <!-- NEW TAB ADDED -->
+                <button 
+                    class="tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out"
+                    data-tab="vs-knoxville-minx"
+                    id="tab-vs-knoxville-minx"
+                >
+                    Knoxville Minx (09-06-2025)
+                </button>
+
                 <button 
                     class="tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out"
                     data-tab="vs-knoxville-tns-7"
@@ -82,27 +77,16 @@
                     Knoxville TNS 7 (06/12/2025)
                 </button>
 
-                <!-- Placeholder for future tabs (Moved the old placeholder to the end) -->
-                <button 
-                    class="tab-button py-2 px-4 text-sm md:text-base font-medium text-red-200 border-b-2 border-transparent hover:text-red-500 hover:border-red-400 transition duration-300 ease-in-out"
-                    data-tab="future-group-1"
-                >
-                    Future Group
-                </button>
             </nav>
         </div>
 
-        <!-- Tab Content Containers -->
         <div id="tab-contents">
             
-            <!-- Content for Louisville Sharks (Existing) -->
             <div id="vs-louisville-sharks" class="tab-content rounded-xl shadow-2xl p-4 md:p-8 bg-black border border-red-900">
                 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                     
-                    <!-- Video 1: https://youtu.be/WkVNfh1JfZc -->
                     <div class="video-card bg-black rounded-lg p-3">
                         <div class="video-container mb-3">
-                            <!-- YouTube Embed URL format: https://www.youtube.com/embed/VIDEO_ID -->
                             <iframe 
                                 src="https://www.youtube.com/embed/WkVNfh1JfZc" 
                                 title="YouTube video player" 
@@ -113,7 +97,6 @@
                         </div>
                     </div>
 
-                    <!-- Video 2: https://youtu.be/hjUPQQbILIo -->
                     <div class="video-card bg-black rounded-lg p-3">
                         <div class="video-container mb-3">
                             <iframe 
@@ -126,7 +109,6 @@
                         </div>
                     </div>
 
-                    <!-- Video 3: https://youtu.be/oH1oSUphgLQ -->
                     <div class="video-card bg-black rounded-lg p-3">
                         <div class="video-container mb-3">
                             <iframe 
@@ -142,11 +124,51 @@
                 </div>
             </div>
 
-            <!-- CONTENT FOR KNOXVILLE TNS 7 (UPDATED with new videos) -->
+            <div id="vs-knoxville-minx" class="tab-content rounded-xl shadow-2xl p-4 md:p-8 bg-black border border-red-900">
+                <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    
+                    <div class="video-card bg-black rounded-lg p-3">
+                        <div class="video-container mb-3">
+                            <iframe 
+                                src="https://www.youtube.com/embed/DXFKpuqe7sI" 
+                                title="Knoxville Minx Highlight 1" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <div class="video-card bg-black rounded-lg p-3">
+                        <div class="video-container mb-3">
+                            <iframe 
+                                src="https://www.youtube.com/embed/NkCNHmjueVI" 
+                                title="Knoxville Minx Highlight 2" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <div class="video-card bg-black rounded-lg p-3">
+                        <div class="video-container mb-3">
+                            <iframe 
+                                src="https://www.youtube.com/embed/Wx_E58EulEg" 
+                                title="Knoxville Minx Highlight 3" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
             <div id="vs-knoxville-tns-7" class="tab-content rounded-xl shadow-2xl p-4 md:p-8 bg-black border border-red-900">
                 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                     
-                    <!-- Video 1: https://youtu.be/v5zr_DUQ0Vo -->
                     <div class="video-card bg-black rounded-lg p-3">
                         <div class="video-container mb-3">
                             <iframe 
@@ -159,7 +181,6 @@
                         </div>
                     </div>
 
-                    <!-- Video 2: https://youtu.be/SJaY9MiKXmU -->
                     <div class="video-card bg-black rounded-lg p-3">
                         <div class="video-container mb-3">
                             <iframe 
@@ -172,7 +193,6 @@
                         </div>
                     </div>
 
-                    <!-- Video 3: https://youtu.be/cJnXSQx3wR8 -->
                     <div class="video-card bg-black rounded-lg p-3">
                         <div class="video-container mb-3">
                             <iframe 
@@ -185,7 +205,6 @@
                         </div>
                     </div>
                     
-                    <!-- Video 4: https://youtu.be/2qzRA2jnmOY -->
                     <div class="video-card bg-black rounded-lg p-3">
                         <div class="video-container mb-3">
                             <iframe 
@@ -200,11 +219,6 @@
                 </div>
             </div>
             
-            <!-- Placeholder for Future Content -->
-            <div id="future-group-1" class="tab-content rounded-xl shadow-2xl p-4 md:p-8 bg-black border border-red-900">
-                <p class="text-red-300">Content for Future Group will go here. Add your video embeds when ready!</p>
-            </div>
-            
         </div>
 
     </div>
@@ -214,9 +228,10 @@
     const galleryMap = {
         // EXISTING MAPPING
         "vs-louisville-sharks": "lexington-black-widows-vs-louisville-sharks-(10-04-2025).html",
-        // NEW MAPPING - CORRECTED KEY
+        // NEW MAPPING ADDED
+        "vs-knoxville-minx": "lexington-black-widows-vs-knoxville-minx-(09-06-2025).html",
+        // EXISTING MAPPING
         "vs-knoxville-tns-7": "knoxville-tns-7.html" 
-        // Add more mappings here as you add more tabs
     };
 
     const backLink = document.getElementById('backToGalleryLink');
@@ -281,3 +296,6 @@
     });
 </script>
 
+
+</body>
+</html>
