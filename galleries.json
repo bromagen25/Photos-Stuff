@@ -1,26 +1,370 @@
-[
-  {
-    "name": "Lexington Black Widows vs Louisville Sharks (10-04-2025)",
-    "description": "Photos from 1st Half, 2nd Half, 3rd Half, Warmups - Team, Team Photos, and Videos!",
-    "link": "lexington-black-widows-vs-louisville-sharks-(10-04-2025).html",
-    "icon": "https://i.postimg.cc/cJfprQLn/DSC-2536.jpg"
-  },
-  {
-    "name": "Lexington Black Widows vs Knoxville Minx (09-06-2025)",
-    "description": "Photos from Game 1, Game 2, Game 3, Team, and Warm ups.",
-    "link": "lexington-black-widows-vs-knoxville-minx-(09-06-2025).html",
-    "icon": "https://i.postimg.cc/cJfprQLn/DSC-2536.jpg"
-  },
-  {
-    "name": "Knoxville TNS 7",
-    "description": "Lexington Black Widows Games 1 - 4",
-    "link": "knoxville-tns-7.html",
-    "icon": "https://i.postimg.cc/htwhCP9X/DSC_2184.jpg"
-  },
-  {
-   "name": "Bourbon Country 10s",
-   "description": "Lexington Black Widows Photos",
-   "link": "bourbon-country-10s.html",
-   "icon": "https://i.postimg.cc/htwhCP9X/DSC_2184.jpg"
-  }
-]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LBX vs Motely (10-25-2025) Photo Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styles for smooth transitions and font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .gallery-image {
+            transition: transform 0.2s ease-in-out;
+        }
+        .gallery-image:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+        .modal {
+            background-color: rgba(0, 0, 0, 0.9);
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            max-height: 90vh; /* Limit height to prevent overflow on smaller screens */
+            max-width: 90vw; /* Limit width to prevent overflow on smaller screens */
+            object-fit: contain; /* Ensure image fits within bounds */
+            cursor: pointer; /* Indicate that the modal image is clickable */
+        }
+        /* Spinner animation */
+        .spinner {
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top: 8px solid #ffffff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            z-index: 50; /* Spinner slightly above image, below close button */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Active button styling */
+        .nav-button.active {
+            background-color: #4a5568; /* Darker gray for active button */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center py-8">
+
+    <header class="w-full max-w-7xl flex justify-between items-center mb-12 p-4 bg-gray-900 rounded-xl shadow-lg">
+        <h1 id="mainTitle" class="text-3xl sm:text-4xl font-extrabold text-red-600">LBX vs Motely (10-25-2025) Gallery</h1>
+        <nav class="flex space-x-4">
+            <a href="index.html" class="flex items-center space-x-2 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition duration-300 transform hover:scale-105">
+                <i class="fas fa-home"></i>
+                <span class="hidden sm:inline">Home</span>
+            </a>
+            </nav>
+    </header>
+
+    <nav class="mb-10 p-4 bg-white rounded-xl shadow-xl flex flex-wrap justify-center gap-4">
+        <button class="nav-button bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Q1">Q1</button>
+        <button class="nav-button bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Q2">Q2</button>
+        <button class="nav-button bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Q3/Q4">Q3/Q4</button>
+        <button class="nav-button bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Warm up's - Team">Warm up's - Team</button>
+        <button class="nav-button bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Team Photos">Team Photos</button>
+        <button class="nav-button bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Social">Social</button>
+    </nav>
+
+    <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 max-w-7xl mx-auto bg-white rounded-xl shadow-2xl">
+        </div>
+
+    <div id="imageModal" class="fixed inset-0 flex items-center justify-center z-50 hidden modal opacity-0">
+        <div class="relative flex flex-col items-center justify-center w-full h-full">
+            <button id="closeModal" class="absolute top-4 right-4 text-white text-4xl p-2 rounded-full bg-gray-700 bg-opacity-50 hover:bg-opacity-75 focus:outline-none z-55" aria-label="Close image modal">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div id="loadingSpinner" class="spinner absolute z-50 hidden"></div>
+
+            <img id="modalImage" src="" alt="Gallery Image" class="modal-content rounded-lg shadow-lg">
+
+            <div id="clickToSourceText" class="absolute bottom-8 text-white text-lg bg-black bg-opacity-50 px-4 py-2 rounded-lg hidden transition-opacity duration-300 opacity-0">
+                Click image to view host page
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data structure containing all sub-galleries for LBX vs Motely (10-25-2025)
+        const subGalleries = {
+            "Q1": [
+                "https://i.postimg.cc/sxzVy43z/DSC-4600.jpg",
+                "https://i.postimg.cc/mk4bRyBS/DSC-4601.jpg",
+                "https://i.postimg.cc/RFKMjD5q/DSC-4602.jpg"
+            ],
+            "Q2": [
+                "https://i.postimg.cc/fL37xqTS/DSC-4919.jpg",
+                "https://i.postimg.cc/8zDbqbtg/DSC-4921.jpg",
+                "https://i.postimg.cc/nLhGLcyP/DSC-4923.jpg"
+            ],
+            "Q3/Q4": [
+                "https://i.postimg.cc/X7yCQyW4/DSC-5182.jpg",
+                "https://i.postimg.cc/fRc0hnk2/DSC-5183.jpg",
+                "https://i.postimg.cc/BnT1G9th/DSC-5184.jpg"
+            ],
+            "Warm up's - Team": [
+                "https://i.postimg.cc/xdkZxR69/DSC-4532.jpg",
+                "https://i.postimg.cc/9QgSYSYM/DSC-4533.jpg",
+                "https://i.postimg.cc/mrcnXwmH/DSC-4534.jpg"
+            ],
+            "Team Photos": [
+                "https://i.postimg.cc/43QTbwyY/DSC-5407.jpg",
+                "https://i.postimg.cc/s24R9KxB/DSC-5408.jpg",
+                "https://i.postimg.cc/1zrZcMXn/DSC-5409.jpg"
+            ],
+            "Social": [
+                "https://i.postimg.cc/63PbdGrY/DSC-4727.jpg",
+                "https://i.postimg.cc/fLPqx0c7/DSC-4827.jpg",
+                "https://i.postimg.cc/yNvb8GkH/DSC-5432.jpg"
+            ]
+        };
+
+        let currentImageUrls = []; // This will hold the URLs for the currently active sub-gallery
+        let currentImageIndex = 0; // Tracks the currently displayed image in the modal
+
+        // Get DOM elements
+        const mainTitle = document.getElementById('mainTitle');
+        const galleryDiv = document.getElementById('gallery');
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeModalBtn = document.getElementById('closeModal');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const clickToSourceText = document.getElementById('clickToSourceText');
+        const navButtons = document.querySelectorAll('.nav-button');
+
+        /**
+         * Populates the gallery with thumbnail images for the given sub-gallery data.
+         * @param {string} subGalleryName - The name of the sub-gallery to load.
+         */
+        function loadSubGallery(subGalleryName) {
+            console.log(`Loading sub-gallery: ${subGalleryName}`); // Debugging: Confirm sub-gallery load
+            // Update the main title to reflect the current sub-gallery
+            mainTitle.textContent = `LBX vs Motely (10-25-2025) Gallery - ${subGalleryName}`;
+
+            // Clear existing images
+            galleryDiv.innerHTML = '';
+            
+            // Set the current image URLs to the selected sub-gallery's data
+            currentImageUrls = subGalleries[subGalleryName];
+
+            // If no images found for the selected sub-gallery
+            if (!currentImageUrls || currentImageUrls.length === 0) {
+                galleryDiv.innerHTML = '<p class="text-center text-gray-500 text-lg col-span-full">No images found for this gallery.</p>';
+                return;
+            }
+
+            // Populate the gallery grid
+            currentImageUrls.forEach((url, index) => {
+                const imgContainer = document.createElement('div');
+                imgContainer.className = 'relative group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300';
+
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = `${subGalleryName} Image ${index + 1}`; // Dynamic alt text
+                img.className = 'w-full h-48 object-cover gallery-image transform group-hover:scale-105 rounded-lg';
+                img.loading = 'lazy'; // Lazy load images
+                img.onerror = function() {
+                    this.src = 'https://placehold.co/400x300/cccccc/333333?text=Image+Error';
+                    this.alt = 'Image failed to load';
+                    console.error(`Error loading image: ${url}`); // Debugging: Image load error
+                };
+
+                const overlay = document.createElement('div');
+                overlay.className = 'absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center';
+                const viewIcon = document.createElement('i');
+                viewIcon.className = 'fas fa-eye text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300';
+                overlay.appendChild(viewIcon);
+
+                imgContainer.appendChild(img);
+                imgContainer.appendChild(overlay);
+                imgContainer.addEventListener('click', () => openModal(index));
+                galleryDiv.appendChild(imgContainer);
+            });
+
+            // Update active button styling
+            navButtons.forEach(button => {
+                if (button.dataset.gallery === subGalleryName) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+
+        /**
+         * Opens the image modal and displays the image at the given index from currentImageUrls.
+         * @param {number} index - The index of the image to display.
+         */
+        function openModal(index) {
+            console.log('Opening modal...'); // Debugging: Modal open attempt
+            currentImageIndex = index;
+            
+            loadingSpinner.classList.remove('hidden');
+            modalImage.classList.add('hidden');
+            clickToSourceText.classList.add('hidden', 'opacity-0');
+
+            // Reset src before setting new one for robustness
+            modalImage.src = ''; 
+
+            // Use a small timeout to ensure browser re-evaluates image load
+            setTimeout(() => {
+                modalImage.src = currentImageUrls[currentImageIndex]; 
+                modalImage.onerror = function() {
+                    this.src = 'https://placehold.co/800x600/cccccc/333333?text=Image+Error';
+                    this.alt = 'Image failed to load';
+                    loadingSpinner.classList.add('hidden');
+                    modalImage.classList.remove('hidden');
+                    console.error(`Error loading modal image: ${currentImageUrls[currentImageIndex]}`); // Debugging: Modal image error
+                };
+
+                modalImage.onload = function() {
+                    loadingSpinner.classList.add('hidden');
+                    modalImage.classList.remove('hidden');
+                    setTimeout(() => {
+                        clickToSourceText.classList.remove('hidden');
+                        setTimeout(() => clickToSourceText.classList.remove('opacity-0'), 10);
+                    }, 200);
+                    console.log('Modal image loaded.'); // Debugging: Modal image loaded
+                };
+            }, 50); // Small delay before setting new image source
+
+            imageModal.classList.remove('hidden');
+            setTimeout(() => {
+                imageModal.classList.remove('opacity-0');
+                console.log('Modal display state after opening:', window.getComputedStyle(imageModal).display, window.getComputedStyle(imageModal).opacity);
+            }, 10);
+            document.body.style.overflow = 'hidden'; // Prevent scrolling background
+        }
+
+        /**
+         * Closes the image modal.
+         */
+        function closeModal() {
+            console.log('Attempting to close modal...'); // Debugging: Close modal attempt
+            imageModal.classList.add('opacity-0');
+            // Hide after transition
+            setTimeout(() => {
+                imageModal.classList.add('hidden');
+                console.log('Modal display state after hiding:', window.getComputedStyle(imageModal).display, window.getComputedStyle(imageModal).opacity);
+                modalImage.src = ''; // Reset image src to prevent flickering on next open
+                document.body.style.overflow = ''; // Restore scrolling
+                console.log('Modal hidden and scrolling restored.'); // Debugging: Modal closed
+            }, 300);
+        }
+
+        /**
+         * Displays the next image in the modal using currentImageUrls.
+         */
+        function showNextImage() {
+            console.log('Showing next image...'); // Debugging: Next image
+            currentImageIndex = (currentImageIndex + 1) % currentImageUrls.length;
+            openModal(currentImageIndex);
+        }
+
+        /**
+         * Displays the previous image in the modal using currentImageUrls.
+         */
+        function showPrevImage() {
+            console.log('Showing previous image...'); // Debugging: Previous image
+            currentImageIndex = (currentImageIndex - 1 + currentImageUrls.length) % currentImageUrls.length;
+            openModal(currentImageIndex);
+        }
+
+        // Event Listeners for modal
+        closeModalBtn.addEventListener('click', () => {
+            console.log('Close button clicked!'); // Debugging: Close button click
+            closeModal();
+        });
+
+        // Add a click listener to the modal background to close it
+        imageModal.addEventListener('click', (e) => {
+            // Only close if the click was directly on the modal background, not on the image or close button
+            if (e.target === imageModal) { 
+                console.log('Modal background clicked.');
+                closeModal();
+            }
+        });
+
+        // This section opens the Postimg.cc page for the image
+        modalImage.addEventListener('click', (e) => {
+            e.stopPropagation(); // Stop event from bubbling up to the modal background
+            if (modalImage.src && !modalImage.classList.contains('hidden')) {
+                console.log('Modal image clicked.'); // Debugging: Click detected
+
+                // Extract the unique image ID from the direct link (e.g., s2GRRZTG from https://i.postimg.cc/s2GRRZTG/DSC-0042.jpg)
+                const parts = modalImage.src.split('/');
+                // The image ID is typically the second-to-last part before the filename
+                const imageId = parts[parts.length - 2]; 
+
+                if (imageId && imageId.length > 0) {
+                    // Construct the Postimg.cc page URL
+                    const postimgPageUrl = `https://postimg.cc/${imageId}`;
+                    console.log('Opening Postimg.cc page:', postimgPageUrl); // Debugging: Page link
+                    window.open(postimgPageUrl, '_blank');
+                } else {
+                    console.error('Could not extract image ID from URL:', modalImage.src);
+                    // Fallback to opening the direct link if ID extraction fails (though this is less ideal for original access)
+                    window.open(modalImage.src, '_blank');
+                }
+            }
+        });
+
+
+        document.addEventListener('keydown', (e) => {
+            if (!imageModal.classList.contains('hidden')) {
+                console.log('Key pressed in modal:', e.key); // Debugging: Key press
+                if (e.key === 'ArrowRight') {
+                    showNextImage();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevImage();
+                } else if (e.key === 'Escape') {
+                    closeModal();
+                }
+            }
+        });
+
+        // Touch event listeners for swiping on the modal image
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        modalImage.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            console.log('Touch start:', touchStartX); // Debugging: Touch start
+        });
+
+        modalImage.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].clientX;
+            console.log('Touch end:', touchEndX); // Debugging: Touch end
+            const swipeThreshold = 50;
+            if (touchEndX < touchStartX - swipeThreshold) {
+                console.log('Swipe left detected.'); // Debugging: Swipe left
+                showNextImage();
+            } else if (touchEndX > touchStartX + swipeThreshold) {
+                console.log('Swipe right detected.'); // Debugging: Swipe right
+                showPrevImage();
+            }
+        });
+
+        // Initialize the gallery on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click listeners to navigation buttons
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const galleryName = button.dataset.gallery;
+                    loadSubGallery(galleryName); // Call loadSubGallery for internal navigation
+                });
+            });
+
+            // Load the first sub-gallery by default when the page loads
+            loadSubGallery("Q1"); 
+        });
+    </script>
+</body>
+</html>
