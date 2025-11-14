@@ -33,6 +33,22 @@
             height: 100%;
             border-radius: 0.5rem; /* Match Tailwind rounded-lg */
         }
+
+        /* Sub-tab styles */
+        .sub-tab-button {
+            border-color: transparent;
+            color: #fca5a5; /* Red-300 */
+        }
+        .sub-tab-button.active {
+            border-color: #ef4444; /* Red-500 */
+            color: #ef4444; /* Red-500 */
+        }
+        .sub-tab-content {
+            display: none;
+        }
+        .sub-tab-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8">
@@ -93,7 +109,14 @@
                     Knoxville TNS 7 (06/12/2025)
                 </button>
 
-            </nav>
+                <button 
+                    class="tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out"
+                    data-tab="vs-clarksville-huntress"
+                    id="tab-vs-clarksville-huntress"
+                >
+                    Clarksville Huntress (11-08-2025)
+                </button>
+                </nav>
         </div>
 
         <div id="tab-contents">
@@ -234,8 +257,97 @@
                     </div>
                 </div>
             </div>
-            
-        </div>
+
+            <div id="vs-clarksville-huntress" class="tab-content rounded-xl shadow-2xl p-4 md:p-8 bg-black border border-red-900">
+                
+                <nav class="flex space-x-4 mb-6 border-b border-red-900" id="sub-tabs-vs-clarksville-huntress">
+                    <button 
+                        class="sub-tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out active"
+                        data-sub-tab="clarksville-game"
+                    >
+                        Game
+                    </button>
+                    <button 
+                        class="sub-tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out"
+                        data-sub-tab="clarksville-social"
+                    >
+                        Social
+                    </button>
+                </nav>
+
+                <div id="clarksville-game" class="sub-tab-content active">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                        
+                        <div class="video-card bg-black rounded-lg p-3">
+                            <div class="video-container mb-3">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/Z91RaVcby9U" 
+                                    title="Clarksville Game Highlight 1" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+
+                        <div class="video-card bg-black rounded-lg p-3">
+                            <div class="video-container mb-3">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/NEuJu0xXS_I" 
+                                    title="Clarksville Game Highlight 2" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="clarksville-social" class="sub-tab-content">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                        
+                        <div class="video-card bg-black rounded-lg p-3">
+                            <div class="video-container mb-3">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/1YGSxDeneZE" 
+                                    title="Clarksville Social Highlight 1" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+
+                        <div class="video-card bg-black rounded-lg p-3">
+                            <div class="video-container mb-3">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/5d4_kGd-KR8" 
+                                    title="Clarksville Social Highlight 2" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+
+                        <div class="video-card bg-black rounded-lg p-3">
+                            <div class="video-container mb-3">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/tOaX-_Q5cdE" 
+                                    title="Clarksville Social Highlight 3 (Short)" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            </div>
 
     </div>
 
@@ -247,13 +359,15 @@
         // NEW MAPPING ADDED
         "vs-knoxville-minx": "lexington-black-widows-vs-knoxville-minx-(09-06-2025).html",
         // EXISTING MAPPING
-        "vs-knoxville-tns-7": "knoxville-tns-7.html" 
+        "vs-knoxville-tns-7": "knoxville-tns-7.html",
+        // NEW MAPPING ADDED
+        "vs-clarksville-huntress": "clarksville-huntress.html" 
     };
 
     const backLink = document.getElementById('backToGalleryLink');
 
     function activateTab(tabId) {
-        // 1. Deactivate all tabs and buttons
+        // 1. Deactivate all main tabs and buttons
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
         });
@@ -264,10 +378,14 @@
 
         // Determine the actual tab ID to use (from hash or default)
         let activeTabId = tabId || Object.keys(galleryMap)[0]; // Fallback to first map key
+        
+        // Handle sub-tab split: tabId might be 'main-tab/sub-tab'
+        let mainTabId = activeTabId.split('/')[0];
+        let subTabId = activeTabId.split('/')[1];
 
-        // 2. Activate the requested tab content and button
-        const activeContent = document.getElementById(activeTabId);
-        const activeButton = document.getElementById(`tab-${activeTabId}`);
+        // 2. Activate the requested main tab content and button
+        const activeContent = document.getElementById(mainTabId);
+        const activeButton = document.getElementById(`tab-${mainTabId}`);
 
         if (activeContent && activeButton) {
             activeContent.classList.add('active');
@@ -275,27 +393,74 @@
             activeButton.classList.add('text-red-500', 'border-red-500');
         } else {
             // If the hash didn't match a tab, default to the first one and update the ID
-            activeTabId = Object.keys(galleryMap)[0];
-            document.getElementById(activeTabId)?.classList.add('active');
-            document.getElementById(`tab-${activeTabId}`)?.classList.remove('text-red-200', 'border-transparent', 'hover:text-red-500', 'hover:border-red-400');
-            document.getElementById(`tab-${activeTabId}`)?.classList.add('text-red-500', 'border-red-500');
+            mainTabId = Object.keys(galleryMap)[0];
+            subTabId = null; // Clear sub-tab if defaulting
+            document.getElementById(mainTabId)?.classList.add('active');
+            document.getElementById(`tab-${mainTabId}`)?.classList.remove('text-red-200', 'border-transparent', 'hover:text-red-500', 'hover:border-red-400');
+            document.getElementById(`tab-${mainTabId}`)?.classList.add('text-red-500', 'border-red-500');
+        }
+
+        // 3. Handle Sub-tabs for the current main tab
+        // Deactivate all sub-tabs first (a precautionary measure)
+        document.querySelectorAll('.sub-tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.querySelectorAll('.sub-tab-button').forEach(button => {
+            button.classList.remove('active');
+        });
+        
+        // Special logic for the new tab with sub-tabs
+        if (mainTabId === "vs-clarksville-huntress") {
+            // Default sub-tab is 'clarksville-game'
+            let activeSubTabId = subTabId || 'clarksville-game'; 
+            
+            const activeSubContent = document.getElementById(activeSubTabId);
+            const activeSubButton = document.querySelector(`#sub-tabs-${mainTabId} .sub-tab-button[data-sub-tab="${activeSubTabId}"]`);
+
+            if (activeSubContent) {
+                activeSubContent.classList.add('active');
+            }
+            if (activeSubButton) {
+                activeSubButton.classList.add('active');
+            }
+            
+            // Reconstruct the full hash if a sub-tab was activated for the backlink update
+            activeTabId = `${mainTabId}/${activeSubTabId}`;
         }
         
-        // 3. **CRUCIAL: Update the Back Link**
-        const galleryFile = galleryMap[activeTabId];
+        // 4. **CRUCIAL: Update the Back Link**
+        const galleryFile = galleryMap[mainTabId];
         if (galleryFile && backLink) {
             backLink.href = galleryFile;
         }
     }
 
-    // Event listeners for tab switching
+    // Event listeners for main tab switching
     document.getElementById('video-tabs').addEventListener('click', (e) => {
         const button = e.target.closest('.tab-button');
         if (button) {
             const tabId = button.getAttribute('data-tab');
+            // Check if the tab has sub-tabs and set a default sub-tab if not already in hash
+            let newHash = tabId;
+            if (tabId === 'vs-clarksville-huntress' && !window.location.hash.includes('/')) {
+                newHash = 'vs-clarksville-huntress/clarksville-game';
+            }
+            history.pushState(null, '', `#${newHash}`);
+            activateTab(newHash);
+        }
+    });
+
+    // Event listeners for sub-tab switching (Only for Clarksville)
+    document.addEventListener('click', (e) => {
+        const button = e.target.closest('#sub-tabs-vs-clarksville-huntress .sub-tab-button');
+        if (button) {
+            const subTabId = button.getAttribute('data-sub-tab');
+            const mainTabId = 'vs-clarksville-huntress';
+            const newHash = `${mainTabId}/${subTabId}`;
+
             // Update the URL hash and activate the tab
-            history.pushState(null, '', `#${tabId}`);
-            activateTab(tabId);
+            history.pushState(null, '', `#${newHash}`);
+            activateTab(newHash);
         }
     });
 
