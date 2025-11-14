@@ -146,7 +146,8 @@
 
         // Function to update button styles using Tailwind classes
         function updateButtonStyles(activeGallery) {
-            if (!navButtons) return; // Guard against uninitialized state
+            // navButtons is a NodeList, so it's always defined if initialized.
+            if (!navButtons) return; 
             navButtons.forEach(button => {
                 const isActive = button.dataset.gallery === activeGallery;
                 
@@ -210,8 +211,8 @@
          * @param {string} galleryName The name of the gallery to load (e.g., "1st Half").
          */
         function loadSubGallery(galleryName) {
-            // Check if element references are initialized, solving the photo loading issue
-            if (!galleryContent || !navButtons) return; 
+            // CRITICAL FIX: Ensure galleryContent element was successfully found.
+            if (!galleryContent) return; 
 
             updateButtonStyles(galleryName);
             galleryContent.innerHTML = '';
