@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LBW vs Clarksville Huntress (11-08-2025) Photo Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styles for smooth transitions and Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .gallery-image {
+            transition: transform 0.2s ease-in-out;
+        }
+        .gallery-image:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .modal {
+            background-color: rgba(0, 0, 0, 0.9);
+            transition: opacity 0.3s ease-in-out;
+            z-index: 50; /* Ensure modal is on top */
+        }
+        .modal-content {
+            max-height: 90vh; /* Limit height to prevent overflow on smaller screens */
+            max-width: 90vw; /* Limit width to prevent overflow on smaller screens */
+            object-fit: contain; /* Ensure image fits within bounds */
+        }
+        .nav-button {
+            transition: all 0.2s ease-in-out;
+            border-bottom: 3px solid transparent; /* Default */
+            /* Tailwind classes handle most styling, adding custom hover for emphasis */
+            @apply text-gray-700 font-medium hover:text-red-600 hover:border-red-500 rounded-t-lg;
+        }
+        .nav-button.active {
+            @apply text-red-600 border-red-600 font-semibold bg-white shadow-inner;
+        }
+        /* Hide the gallery list items until they are populated */
+        #gallery-list li {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+        #gallery-list.loaded li {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <a href="index.html" class="text-xl sm:text-2xl font-bold text-gray-900 hover:text-red-600 transition duration-150">
+                <i class="fas fa-chevron-left mr-2"></i> Back to Galleries
+            </a>
+            <h1 class="text-xl sm:text-3xl font-extrabold text-gray-900 text-center flex-grow hidden sm:block">
+                LBW vs Clarksville Huntress
+            </h1>
+            <div class="w-24"></div> <!-- Spacer for alignment -->
+        </div>
+    </header>
+    
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <h1 class="text-2xl font-extrabold text-gray-900 text-center sm:hidden mb-4">
+            LBW vs Clarksville Huntress
+        </h1>
+
+        <!-- Navigation Bar for Sub-Galleries -->
+        <nav class="flex overflow-x-auto whitespace-nowrap border-b border-gray-300 mb-8 bg-white p-2 rounded-lg shadow-inner">
+            <!-- Navigation Buttons - Dynamically populated or manually set -->
+            <button data-gallery="Q1" class="nav-button px-4 py-2 mx-1 flex-shrink-0 active">Q1</button>
+            <button data-gallery="Q2" class="nav-button px-4 py-2 mx-1 flex-shrink-0">Q2</button>
+            <button data-gallery="Q3" class="nav-button px-4 py-2 mx-1 flex-shrink-0">Q3</button>
+            <button data-gallery="Q4" class="nav-button px-4 py-2 mx-1 flex-shrink-0">Q4</button>
+            <button data-gallery="Warm-ups & Team" class="nav-button px-4 py-2 mx-1 flex-shrink-0">Warm-ups & Team</button>
+            <button data-gallery="Team Photos" class="nav-button px-4 py-2 mx-1 flex-shrink-0">Team Photos</button>
+            
+            <!-- Video Link Button -->
+            <!-- The link is set to videos.html and uses a URL hash to target the specific tab -->
+            <a href="videos.html#Clarksville%20Huntress%20(11-08-2025)" 
+               class="flex-shrink-0 px-4 py-2 mx-1 text-sm sm:text-base font-semibold text-white transition duration-200 ease-in-out bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 shadow-md transform hover:scale-[1.02] active:bg-red-800 flex items-center justify-center">
+                <i class="fas fa-video mr-2"></i> Videos
+            </a>
+        </nav>
+
+        <!-- Current Gallery Title -->
+        <h2 id="current-gallery-title" class="text-3xl font-bold text-gray-800 mb-6 text-center">Q1</h2>
+
+        <!-- Gallery Grid -->
+        <ul id="gallery-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            <!-- Images will be loaded here -->
+        </ul>
+
+    </main>
+
+    <!-- Modal for Full-Screen Image View -->
+    <div id="image-modal" class="modal fixed inset-0 flex items-center justify-center hidden opacity-0 transition-opacity" onclick="closeModal()">
+        <div class="relative p-4" onclick="event.stopPropagation()">
+            <!-- Close Button -->
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-white text-3xl hover:text-red-500 transition duration-150 z-50 p-2 rounded-full bg-black/50" aria-label="Close Image">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <!-- Previous Button -->
+            <button id="prev-btn" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-3xl opacity-75 hover:opacity-100 transition duration-150 p-3 rounded-full bg-black/50 hover:bg-black/75 z-50" aria-label="Previous Image">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <!-- Next Button -->
+            <button id="next-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-3xl opacity-75 hover:opacity-100 transition duration-150 p-3 rounded-full bg-black/50 hover:bg-black/75 z-50" aria-label="Next Image">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <!-- Image -->
+            <img id="modal-image" src="" alt="Full size gallery image" class="modal-content rounded-xl shadow-2xl">
+        </div>
+    </div>
+
+    <script>
+        // Data structure containing all images for each sub-gallery
+        const GALLERY_DATA = {
+            "Q1": [
+                "https://i.postimg.cc/h4m7xJw4/DSC-6183.jpg",
+                "https://i.postimg.cc/x8LJS7Hc/DSC-6185.jpg",
+                "https://i.postimg.cc/nzyjgZsC/DSC-6186.jpg",
+                "https://i.postimg.cc/6pp3HTHP/DSC-6187.jpg"
+            ],
+            "Q2": [
+                "https://i.postimg.cc/h4m7xJw4/DSC-6183.jpg",
+                "https://i.postimg.cc/x8LJS7Hc/DSC-6185.jpg",
+                "https://i.postimg.cc/nzyjgZsC/DSC-6186.jpg",
+                "https://i.postimg.cc/6pp3HTHP/DSC-6187.jpg"
+            ],
+            "Q3": [
+                "https://i.postimg.cc/h4m7xJw4/DSC-6183.jpg",
+                "https://i.postimg.cc/x8LJS7Hc/DSC-6185.jpg",
+                "https://i.postimg.cc/nzyjgZsC/DSC-6186.jpg",
+                "https://i.postimg.cc/6pp3HTHP/DSC-6187.jpg"
+            ],
+            "Q4": [
+                "https://i.postimg.cc/h4m7xJw4/DSC-6183.jpg",
+                "https://i.postimg.cc/x8LJS7Hc/DSC-6185.jpg",
+                "https://i.postimg.cc/nzyjgZsC/DSC-6186.jpg",
+                "https://i.postimg.cc/6pp3HTHP/DSC-6187.jpg"
+            ],
+            "Warm-ups & Team": [
+                "https://i.postimg.cc/h4m7xJw4/DSC-6183.jpg",
+                "https://i.postimg.cc/x8LJS7Hc/DSC-6185.jpg",
+                "https://i.postimg.cc/nzyjgZsC/DSC-6186.jpg",
+                "https://i.postimg.cc/6pp3HTHP/DSC-6187.jpg"
+            ],
+            "Team Photos": [
+                "https://i.postimg.cc/h4m7xJw4/DSC-6183.jpg",
+                "https://i.postimg.cc/x8LJS7Hc/DSC-6185.jpg",
+                "https://i.postimg.cc/nzyjgZsC/DSC-6186.jpg",
+                "https://i.postimg.cc/6pp3HTHP/DSC-6187.jpg"
+            ]
+        };
+
+        const galleryList = document.getElementById('gallery-list');
+        const currentTitle = document.getElementById('current-gallery-title');
+        const navButtons = document.querySelectorAll('.nav-button');
+        
+        const modal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const closeBtn = document.getElementById('close-modal-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        let currentGalleryImages = [];
+        let currentImageIndex = 0;
+        let activeGalleryName = "Q1"; // Default active gallery
+
+        /**
+         * Clears the gallery, loads new images, and updates the active navigation button.
+         * @param {string} galleryName The key in GALLERY_DATA to load.
+         */
+        function loadSubGallery(galleryName) {
+            // 1. Update state
+            activeGalleryName = galleryName;
+            currentGalleryImages = GALLERY_DATA[galleryName] || [];
+            currentTitle.textContent = galleryName;
+
+            // 2. Update navigation bar active state
+            navButtons.forEach(button => {
+                button.classList.remove('active');
+                if (button.dataset.gallery === galleryName) {
+                    button.classList.add('active');
+                }
+            });
+
+            // 3. Render images
+            galleryList.classList.remove('loaded');
+            galleryList.innerHTML = ''; // Clear previous images
+
+            // Create and append new list items for each image
+            currentGalleryImages.forEach((url, index) => {
+                const li = document.createElement('li');
+                li.className = 'w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg transform hover:shadow-xl transition-shadow';
+                li.style.animationDelay = `${index * 0.05}s`; // Staggered entry
+
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = `${galleryName} photo ${index + 1}`;
+                img.className = 'gallery-image w-full h-full object-cover';
+                img.loading = 'lazy'; // Improve performance
+                
+                // Image fallback/placeholder
+                img.onerror = function() {
+                    this.onerror = null; // Prevent infinite loop
+                    this.src = `https://placehold.co/400x300/a80000/ffffff?text=Image+Error`;
+                };
+
+                img.onclick = () => openModal(index);
+                li.appendChild(img);
+                galleryList.appendChild(li);
+            });
+
+            // 4. Trigger fade-in animation
+            setTimeout(() => {
+                galleryList.classList.add('loaded');
+            }, 50);
+        }
+
+        /**
+         * Opens the modal to view an image in full screen.
+         * @param {number} index The index of the image in the current gallery's array.
+         */
+        function openModal(index) {
+            currentImageIndex = index;
+            modalImage.src = currentGalleryImages[currentImageIndex];
+            modalImage.alt = `${activeGalleryName} photo ${currentImageIndex + 1}`;
+            modal.classList.remove('hidden');
+            // Force opacity transition
+            setTimeout(() => {
+                modal.classList.add('opacity-100');
+            }, 10); 
+            document.body.style.overflow = 'hidden'; // Prevent scrolling background
+        }
+
+        /**
+         * Closes the full-screen modal.
+         */
+        function closeModal() {
+            modal.classList.remove('opacity-100');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modalImage.src = ''; // Clear source for performance
+            }, 300);
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        /**
+         * Shows the next image in the sequence.
+         */
+        function showNextImage() {
+            if (currentGalleryImages.length === 0) return;
+            currentImageIndex = (currentImageIndex + 1) % currentGalleryImages.length;
+            modalImage.src = currentGalleryImages[currentImageIndex];
+            modalImage.alt = `${activeGalleryName} photo ${currentImageIndex + 1}`;
+        }
+
+        /**
+         * Shows the previous image in the sequence.
+         */
+        function showPrevImage() {
+            if (currentGalleryImages.length === 0) return;
+            currentImageIndex = (currentImageIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+            modalImage.src = currentGalleryImages[currentImageIndex];
+            modalImage.alt = `${activeGalleryName} photo ${currentImageIndex + 1}`;
+        }
+
+        // --- Event Listeners ---
+
+        closeBtn.addEventListener('click', closeModal);
+        prevBtn.addEventListener('click', showPrevImage);
+        nextBtn.addEventListener('click', showNextImage);
+
+        // Keyboard navigation for modal
+        document.addEventListener('keydown', (e) => {
+            if (!modal.classList.contains('hidden')) {
+                if (e.key === 'ArrowRight') {
+                    showNextImage();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevImage();
+                } else if (e.key === 'Escape') {
+                    closeModal();
+                }
+            }
+        });
+
+        // Touch event listeners for swiping on the modal image
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        modalImage.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        modalImage.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].clientX;
+            const swipeThreshold = 50;
+            if (touchEndX < touchStartX - swipeThreshold) {
+                showNextImage();
+            } else if (touchEndX > touchStartX + swipeThreshold) {
+                showPrevImage();
+            }
+        });
+
+        // Initialize the gallery on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click listeners to navigation buttons
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const galleryName = button.dataset.gallery;
+                    loadSubGallery(galleryName); // Call loadSubGallery for internal navigation
+                });
+            });
+
+            // Load the first sub-gallery ("Q1") by default when the page loads
+            loadSubGallery("Q1"); 
+        });
+    </script>
+</body>
+</html>
