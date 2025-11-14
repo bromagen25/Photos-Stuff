@@ -145,17 +145,8 @@
         let currentImageIndex = 0;
         let currentGalleryKey = null;
 
-        const galleryContent = document.getElementById('gallery-content');
-        const modal = document.getElementById('image-modal');
-        const modalImage = document.getElementById('modal-image');
-        const caption = document.getElementById('modal-caption');
-        const prevButton = document.getElementById('prev-image');
-        const nextButton = document.getElementById('next-image');
-        const closeButton = document.getElementById('close-modal');
-        const navButtons = document.querySelectorAll('.nav-button'); // Select by class
-
         // Function to update button styles using Tailwind classes
-        function updateButtonStyles(activeGallery) {
+        function updateButtonStyles(navButtons, activeGallery) {
             navButtons.forEach(button => {
                 const isActive = button.dataset.gallery === activeGallery;
                 
@@ -174,7 +165,7 @@
         }
 
         // Function to load the video content
-        function loadVideoContent() {
+        function loadVideoContent(galleryContent) {
             galleryContent.innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
                     ${videos.map(video => `
@@ -194,14 +185,57 @@
                 </div>
             `;
         }
+        
+        // Modal functions are defined outside the listener so they can be called globally (e.g., from onclick in HTML)
+        let modal, modalImage, caption, prevButton, nextButton;
 
-        function loadSubGallery(galleryName) {
-            updateButtonStyles(galleryName);
+        function updateModalNav() {
+            if (!currentGalleryKey) return;
+            const totalImages = allGalleries[currentGalleryKey].length;
+            prevButton.style.visibility = (currentImageIndex > 0) ? 'visible' : 'hidden';
+            nextButton.style.visibility = (currentImageIndex < totalImages - 1) ? 'visible' : 'hidden';
+        }
+
+        function openModal(galleryName, index) {
+            currentGalleryKey = galleryName;
+            currentImageIndex = index;
+            const image = allGalleries[galleryName][index];
+            modalImage.src = image.url;
+            modalImage.alt = image.alt;
+            caption.textContent = image.alt;
+            modal.classList.remove('hidden');
+            // Timeout is needed for the CSS transition to work (opacity change)
+            setTimeout(() => modal.classList.remove('opacity-0'), 10); 
+            updateModalNav();
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300); // Hide after transition
+        }
+
+        function showNextImage() {
+            const totalImages = allGalleries[currentGalleryKey].length;
+            if (currentImageIndex < totalImages - 1) {
+                currentImageIndex++;
+                openModal(currentGalleryKey, currentImageIndex);
+            }
+        }
+
+        function showPrevImage() {
+            if (currentImageIndex > 0) {
+                currentImageIndex--;
+                openModal(currentGalleryKey, currentImageIndex);
+            }
+        }
+
+        function loadSubGallery(galleryContent, navButtons, galleryName) {
+            updateButtonStyles(navButtons, galleryName);
             galleryContent.innerHTML = '';
             currentGalleryKey = galleryName;
 
             if (galleryName === "Videos") {
-                loadVideoContent();
+                loadVideoContent(galleryContent);
                 return;
             }
 
@@ -225,93 +259,65 @@
             `;
         }
 
-        function openModal(galleryName, index) {
-            currentGalleryKey = galleryName;
-            currentImageIndex = index;
-            const image = allGalleries[galleryName][index];
-            modalImage.src = image.url;
-            modalImage.alt = image.alt;
-            caption.textContent = image.alt;
-            modal.classList.remove('hidden');
-            // Timeout is needed for the CSS transition to work (opacity change)
-            setTimeout(() => modal.classList.remove('opacity-0'), 10); 
-            updateModalNav();
-        }
-
-        function closeModal() {
-            modal.classList.add('opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 300); // Hide after transition
-        }
-
-        function updateModalNav() {
-            const totalImages = allGalleries[currentGalleryKey].length;
-            prevButton.style.visibility = (currentImageIndex > 0) ? 'visible' : 'hidden';
-            nextButton.style.visibility = (currentImageIndex < totalImages - 1) ? 'visible' : 'hidden';
-        }
-
-        function showNextImage() {
-            const totalImages = allGalleries[currentGalleryKey].length;
-            if (currentImageIndex < totalImages - 1) {
-                currentImageIndex++;
-                openModal(currentGalleryKey, currentImageIndex);
-            }
-        }
-
-        function showPrevImage() {
-            if (currentImageIndex > 0) {
-                currentImageIndex--;
-                openModal(currentGalleryKey, currentImageIndex);
-            }
-        }
-
-        // Attach event listeners
-        prevButton.addEventListener('click', (e) => { e.stopPropagation(); showPrevImage(); });
-        nextButton.addEventListener('click', (e) => { e.stopPropagation(); showNextImage(); });
-        closeButton.addEventListener('click', closeModal);
-
-        // Keyboard navigation for modal
-        document.addEventListener('keydown', (e) => {
-            if (!modal.classList.contains('hidden')) {
-                if (e.key === 'ArrowRight') {
-                    showNextImage();
-                } else if (e.key === 'ArrowLeft') {
-                    showPrevImage();
-                } else if (e.key === 'Escape') {
-                    closeModal();
-                }
-            }
-        });
-
-        // Touch event listeners for swiping on the modal image
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        modalImage.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
-        });
-
-        modalImage.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].clientX;
-            const swipeThreshold = 50;
-            if (touchEndX < touchStartX - swipeThreshold) {
-                showNextImage();
-            } else if (touchEndX > touchStartX + swipeThreshold) {
-                showPrevImage();
-            }
-        });
-
         // Initialize the gallery on page load
         document.addEventListener('DOMContentLoaded', () => {
+            // Element selections are now safely inside DOMContentLoaded
+            const galleryContent = document.getElementById('gallery-content');
+            modal = document.getElementById('image-modal');
+            modalImage = document.getElementById('modal-image');
+            caption = document.getElementById('modal-caption');
+            prevButton = document.getElementById('prev-image');
+            nextButton = document.getElementById('next-image');
+            const closeButton = document.getElementById('close-modal');
+            const navButtons = document.querySelectorAll('.nav-button'); // Select by class
+
+            // Attach event listeners for modal navigation
+            prevButton.addEventListener('click', (e) => { e.stopPropagation(); showPrevImage(); });
+            nextButton.addEventListener('click', (e) => { e.stopPropagation(); showNextImage(); });
+            closeButton.addEventListener('click', closeModal);
+
             // Add click listeners to navigation buttons
             navButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const galleryName = button.dataset.gallery;
-                    loadSubGallery(galleryName); // Call loadSubGallery for internal navigation
+                    // Pass necessary DOM elements to loadSubGallery
+                    loadSubGallery(galleryContent, navButtons, galleryName); 
                 });
             });
 
+            // Keyboard navigation for modal
+            document.addEventListener('keydown', (e) => {
+                if (!modal.classList.contains('hidden')) {
+                    if (e.key === 'ArrowRight') {
+                        showNextImage();
+                    } else if (e.key === 'ArrowLeft') {
+                        showPrevImage();
+                    } else if (e.key === 'Escape') {
+                        closeModal();
+                    }
+                }
+            });
+
+            // Touch event listeners for swiping on the modal image
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            modalImage.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+            });
+
+            modalImage.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].clientX;
+                const swipeThreshold = 50;
+                if (touchEndX < touchStartX - swipeThreshold) {
+                    showNextImage();
+                } else if (touchEndX > touchStartX + swipeThreshold) {
+                    showPrevImage();
+                }
+            });
+
             // Load the first sub-gallery ("1st Half") by default when the page loads
-            loadSubGallery("1st Half"); 
+            loadSubGallery(galleryContent, navButtons, "1st Half"); 
         });
     </script>
 </body>
