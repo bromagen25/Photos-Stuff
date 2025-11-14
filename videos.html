@@ -85,6 +85,14 @@
 
         <div class="border-b border-gray-700 mb-8">
             <nav class="flex flex-wrap -mb-px" id="video-tabs">
+                
+                <button 
+                    class="tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out"
+                    data-tab="vs-clarksville-huntress"
+                    id="tab-vs-clarksville-huntress"
+                >
+                    Clarksville Huntress (11-08-2025)
+                </button>
                 <button 
                     class="tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out"
                     data-tab="vs-louisville-sharks"
@@ -109,18 +117,102 @@
                     Knoxville TNS 7 (06/12/2025)
                 </button>
 
-                <button 
-                    class="tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out"
-                    data-tab="vs-clarksville-huntress"
-                    id="tab-vs-clarksville-huntress"
-                >
-                    Clarksville Huntress (11-08-2025)
-                </button>
-                </nav>
+            </nav>
         </div>
 
         <div id="tab-contents">
-            
+
+            <div id="vs-clarksville-huntress" class="tab-content rounded-xl shadow-2xl p-4 md:p-8 bg-black border border-red-900">
+                
+                <nav class="flex space-x-4 mb-6 border-b border-red-900" id="sub-tabs-vs-clarksville-huntress">
+                    <button 
+                        class="sub-tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out active"
+                        data-sub-tab="clarksville-game"
+                    >
+                        Game
+                    </button>
+                    <button 
+                        class="sub-tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out"
+                        data-sub-tab="clarksville-social"
+                    >
+                        Social
+                    </button>
+                </nav>
+
+                <div id="clarksville-game" class="sub-tab-content active">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                        
+                        <div class="video-card bg-black rounded-lg p-3">
+                            <div class="video-container mb-3">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/Z91RaVcby9U" 
+                                    title="Clarksville Game Highlight 1" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <p class="text-center text-red-400 font-semibold mt-2">Q1</p>
+                        </div>
+
+                        <div class="video-card bg-black rounded-lg p-3">
+                            <div class="video-container mb-3">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/NEuJu0xXS_I" 
+                                    title="Clarksville Game Highlight 2" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <p class="text-center text-red-400 font-semibold mt-2">Q2</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="clarksville-social" class="sub-tab-content">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                        
+                        <div class="video-card bg-black rounded-lg p-3">
+                            <div class="video-container mb-3">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/1YGSxDeneZE" 
+                                    title="Clarksville Social Highlight 1" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+
+                        <div class="video-card bg-black rounded-lg p-3">
+                            <div class="video-container mb-3">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/5d4_kGd-KR8" 
+                                    title="Clarksville Social Highlight 2" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+
+                        <div class="video-card bg-black rounded-lg p-3">
+                            <div class="video-container mb-3">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/tOaX-_Q5cdE" 
+                                    title="Clarksville Social Highlight 3 (Short)" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             <div id="vs-louisville-sharks" class="tab-content rounded-xl shadow-2xl p-4 md:p-8 bg-black border border-red-900">
                 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                     
@@ -257,111 +349,22 @@
                     </div>
                 </div>
             </div>
-
-            <div id="vs-clarksville-huntress" class="tab-content rounded-xl shadow-2xl p-4 md:p-8 bg-black border border-red-900">
-                
-                <nav class="flex space-x-4 mb-6 border-b border-red-900" id="sub-tabs-vs-clarksville-huntress">
-                    <button 
-                        class="sub-tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out active"
-                        data-sub-tab="clarksville-game"
-                    >
-                        Game
-                    </button>
-                    <button 
-                        class="sub-tab-button py-2 px-4 text-sm md:text-base font-medium border-b-2 transition duration-300 ease-in-out"
-                        data-sub-tab="clarksville-social"
-                    >
-                        Social
-                    </button>
-                </nav>
-
-                <div id="clarksville-game" class="sub-tab-content active">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                        
-                        <div class="video-card bg-black rounded-lg p-3">
-                            <div class="video-container mb-3">
-                                <iframe 
-                                    src="https://www.youtube.com/embed/Z91RaVcby9U" 
-                                    title="Clarksville Game Highlight 1" 
-                                    frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowfullscreen>
-                                </iframe>
-                            </div>
-                        </div>
-
-                        <div class="video-card bg-black rounded-lg p-3">
-                            <div class="video-container mb-3">
-                                <iframe 
-                                    src="https://www.youtube.com/embed/NEuJu0xXS_I" 
-                                    title="Clarksville Game Highlight 2" 
-                                    frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowfullscreen>
-                                </iframe>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div id="clarksville-social" class="sub-tab-content">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                        
-                        <div class="video-card bg-black rounded-lg p-3">
-                            <div class="video-container mb-3">
-                                <iframe 
-                                    src="https://www.youtube.com/embed/1YGSxDeneZE" 
-                                    title="Clarksville Social Highlight 1" 
-                                    frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowfullscreen>
-                                </iframe>
-                            </div>
-                        </div>
-
-                        <div class="video-card bg-black rounded-lg p-3">
-                            <div class="video-container mb-3">
-                                <iframe 
-                                    src="https://www.youtube.com/embed/5d4_kGd-KR8" 
-                                    title="Clarksville Social Highlight 2" 
-                                    frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowfullscreen>
-                                </iframe>
-                            </div>
-                        </div>
-
-                        <div class="video-card bg-black rounded-lg p-3">
-                            <div class="video-container mb-3">
-                                <iframe 
-                                    src="https://www.youtube.com/embed/tOaX-_Q5cdE" 
-                                    title="Clarksville Social Highlight 3 (Short)" 
-                                    frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowfullscreen>
-                                </iframe>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            </div>
+            
+        </div>
 
     </div>
 
     <script>
     // Map tab IDs to their corresponding photo gallery HTML file
     const galleryMap = {
+        // NEW MAPPING FIRST
+        "vs-clarksville-huntress": "clarksville-huntress.html",
         // EXISTING MAPPING
         "vs-louisville-sharks": "lexington-black-widows-vs-louisville-sharks-(10-04-2025).html",
         // NEW MAPPING ADDED
         "vs-knoxville-minx": "lexington-black-widows-vs-knoxville-minx-(09-06-2025).html",
         // EXISTING MAPPING
-        "vs-knoxville-tns-7": "knoxville-tns-7.html",
-        // NEW MAPPING ADDED
-        "vs-clarksville-huntress": "clarksville-huntress.html" 
+        "vs-knoxville-tns-7": "knoxville-tns-7.html" 
     };
 
     const backLink = document.getElementById('backToGalleryLink');
