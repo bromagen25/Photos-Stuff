@@ -67,7 +67,11 @@
         <button data-gallery="3rd Half" class="nav-button py-2 px-4 rounded-lg text-lg font-medium transition-colors duration-200">3rd Half</button>
         <button data-gallery="Warm ups" class="nav-button py-2 px-4 rounded-lg text-lg font-medium transition-colors duration-200">Warm ups</button>
         <button data-gallery="Team Photos" class="nav-button py-2 px-4 rounded-lg text-lg font-medium transition-colors duration-200">Team Photos</button>
-        <button data-gallery="Videos" class="nav-button py-2 px-4 rounded-lg text-lg font-medium transition-colors duration-200">Videos</button>
+        
+        <!-- Videos button changed to a standard link that navigates to videos.html -->
+        <a href="videos.html" class="py-2 px-4 rounded-lg text-lg font-medium transition-colors duration-200 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white shadow-xl shadow-red-900/50">
+            <i class="fas fa-video mr-2"></i> Videos
+        </a>
     </div>
 
     <!-- Gallery Content Area -->
@@ -130,23 +134,19 @@
             "Team Photos": [
                 { url: "https://i.postimg.cc/cJfprQLn/DSC-2536.jpg", alt: "Team Photo 1" },
                 { url: "https://i.postimg.cc/sX29T302/DSC-2401.jpg", alt: "Team Photo 2" },
-            ],
-            "Videos": [
-                // Only used to define the tab, content generated separately
             ]
         };
 
-        const videos = [
-            // Mock video data (replace with actual YouTube IDs or embeds)
-            { id: "eBkeq0A0WfE", title: "Game Highlights Part 1 (Example)" },
-            { id: "eBkeq0A0WfE", title: "Game Highlights Part 2 (Example)" },
-        ];
+        // Declaring elements in the outer scope
+        let galleryContent, navButtons;
+        let modal, modalImage, caption, prevButton, nextButton;
 
         let currentImageIndex = 0;
         let currentGalleryKey = null;
 
         // Function to update button styles using Tailwind classes
-        function updateButtonStyles(navButtons, activeGallery) {
+        function updateButtonStyles(activeGallery) {
+            if (!navButtons) return; // Guard against uninitialized state
             navButtons.forEach(button => {
                 const isActive = button.dataset.gallery === activeGallery;
                 
@@ -163,32 +163,8 @@
                 }
             });
         }
-
-        // Function to load the video content
-        function loadVideoContent(galleryContent) {
-            galleryContent.innerHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-                    ${videos.map(video => `
-                        <div class="bg-gray-900 rounded-xl overflow-hidden shadow-2xl transition-all duration-300 hover:scale-[1.02] border border-red-500/10">
-                            <h3 class="text-xl font-semibold text-red-500 p-4 border-b border-gray-700">${video.title}</h3>
-                            <div class="video-container">
-                                <!-- Ensure the video ID is correct and iframe works -->
-                                <iframe 
-                                    src="https://www.youtube.com/embed/${video.id}?autoplay=0&rel=0" 
-                                    frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowfullscreen
-                                ></iframe>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
         
         // Modal functions are defined outside the listener so they can be called globally (e.g., from onclick in HTML)
-        let modal, modalImage, caption, prevButton, nextButton;
-
         function updateModalNav() {
             if (!currentGalleryKey) return;
             const totalImages = allGalleries[currentGalleryKey].length;
@@ -229,18 +205,20 @@
             }
         }
 
-        function loadSubGallery(galleryContent, navButtons, galleryName) {
-            updateButtonStyles(navButtons, galleryName);
+        /**
+         * Loads the content for a specific sub-gallery tab.
+         * @param {string} galleryName The name of the gallery to load (e.g., "1st Half").
+         */
+        function loadSubGallery(galleryName) {
+            // Check if element references are initialized, solving the photo loading issue
+            if (!galleryContent || !navButtons) return; 
+
+            updateButtonStyles(galleryName);
             galleryContent.innerHTML = '';
             currentGalleryKey = galleryName;
 
-            if (galleryName === "Videos") {
-                loadVideoContent(galleryContent);
-                return;
-            }
-
             const images = allGalleries[galleryName];
-            if (!images) {
+            if (!images || images.length === 0) {
                 galleryContent.innerHTML = `<p class="text-center text-red-500 text-xl py-10">No images found for "${galleryName}".</p>`;
                 return;
             }
@@ -261,27 +239,27 @@
 
         // Initialize the gallery on page load
         document.addEventListener('DOMContentLoaded', () => {
-            // Element selections are now safely inside DOMContentLoaded
-            const galleryContent = document.getElementById('gallery-content');
+            // Element assignments to global scope variables
+            galleryContent = document.getElementById('gallery-content');
             modal = document.getElementById('image-modal');
             modalImage = document.getElementById('modal-image');
             caption = document.getElementById('modal-caption');
             prevButton = document.getElementById('prev-image');
             nextButton = document.getElementById('next-image');
             const closeButton = document.getElementById('close-modal');
-            const navButtons = document.querySelectorAll('.nav-button'); // Select by class
+            // Select only the true navigation buttons (excluding the new <a> tag for Videos)
+            navButtons = document.querySelectorAll('.nav-button'); 
 
             // Attach event listeners for modal navigation
             prevButton.addEventListener('click', (e) => { e.stopPropagation(); showPrevImage(); });
             nextButton.addEventListener('click', (e) => { e.stopPropagation(); showNextImage(); });
             closeButton.addEventListener('click', closeModal);
 
-            // Add click listeners to navigation buttons
+            // Add click listeners to navigation buttons (calls now work correctly)
             navButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const galleryName = button.dataset.gallery;
-                    // Pass necessary DOM elements to loadSubGallery
-                    loadSubGallery(galleryContent, navButtons, galleryName); 
+                    loadSubGallery(galleryName); 
                 });
             });
 
@@ -317,7 +295,7 @@
             });
 
             // Load the first sub-gallery ("1st Half") by default when the page loads
-            loadSubGallery(galleryContent, navButtons, "1st Half"); 
+            loadSubGallery("1st Half"); 
         });
     </script>
 </body>
