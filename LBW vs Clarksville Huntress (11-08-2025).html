@@ -3,284 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LBW vs Clarksville Huntress (11-08-2025) Photo Gallery</title>
+    <title>Lexington Black Widows vs Louisville Sharks (10-04-2025) Photo Gallery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Custom styles for smooth transitions and Inter font */
+        /* Custom styles for black background and Inter font */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5;
+            background-color: #000000; /* Deep Black Background */
+            color: #FFFFFF;
         }
         .gallery-image {
             transition: transform 0.2s ease-in-out;
+            /* Add shadow for depth on dark background */
+            box-shadow: 0 4px 6px -1px rgba(255, 0, 0, 0.1), 0 2px 4px -1px rgba(255, 0, 0, 0.06);
         }
         .gallery-image:hover {
             transform: scale(1.05);
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 15px -3px rgba(255, 0, 0, 0.5), 0 4px 6px -2px rgba(255, 0, 0, 0.25);
         }
         .modal {
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.95); /* Darker modal background */
             transition: opacity 0.3s ease-in-out;
-            z-index: 50; /* Ensure modal is on top */
         }
         .modal-content {
-            max-height: 90vh; /* Limit height to prevent overflow on smaller screens */
-            max-width: 90vw; /* Limit width to prevent overflow on smaller screens */
-            object-fit: contain; /* Ensure image fits within bounds */
+            max-height: 90vh;
+            max-width: 90vw;
+            object-fit: contain;
         }
-        .nav-button {
-            transition: all 0.2s ease-in-out;
-            border-bottom: 3px solid transparent; /* Default */
-            /* Tailwind classes handle most styling, adding custom hover for emphasis */
-            @apply text-gray-700 font-medium hover:text-red-600 hover:border-red-500 rounded-t-lg;
+        /* Custom responsive iframe container to maintain 16:9 aspect ratio */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio (9/16 * 100) */
+            height: 0;
         }
-        .nav-button.active {
-            @apply text-red-600 border-red-600 font-semibold bg-white shadow-inner;
-        }
-        /* Hide the gallery list items until they are populated */
-        #gallery-list li {
-            opacity: 0;
-            transform: scale(0.9);
-            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-        }
-        #gallery-list.loaded li {
-            opacity: 1;
-            transform: scale(1);
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 0 0 0.5rem 0.5rem; /* Matches card rounding */
         }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8 bg-black text-white"> 
 
-    <header class="bg-white shadow-md sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-            <a href="index.html" class="text-xl sm:text-2xl font-bold text-gray-900 hover:text-red-600 transition duration-150">
-                <i class="fas fa-chevron-left mr-2"></i> Back to Galleries
-            </a>
-            <h1 class="text-xl sm:text-3xl font-extrabold text-gray-900 text-center flex-grow hidden sm:block">
-                LBW vs Clarksville Huntress
-            </h1>
-            <div class="w-24"></div> <!-- Spacer for alignment -->
-        </div>
-    </header>
-    
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Back Link -->
+    <a href="index.html" class="self-start mb-6 text-red-500 hover:text-red-300 transition duration-200 text-lg font-semibold flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i> Back to Main Gallery
+    </a>
 
-        <h1 class="text-2xl font-extrabold text-gray-900 text-center sm:hidden mb-4">
-            LBW vs Clarksville Huntress
-        </h1>
+    <h1 class="text-4xl sm:text-5xl font-extrabold mb-8 text-red-600">
+        Lexington Black Widows vs Louisville Sharks (10-04-2025)
+    </h1>
 
-        <!-- Navigation Bar for Sub-Galleries -->
-        <nav class="flex overflow-x-auto whitespace-nowrap border-b border-gray-300 mb-8 bg-white p-2 rounded-lg shadow-inner">
-            <!-- Navigation Buttons - Dynamically populated or manually set -->
-            <button data-gallery="Q1" class="nav-button px-4 py-2 mx-1 flex-shrink-0 active">Q1</button>
-            <button data-gallery="Q2" class="nav-button px-4 py-2 mx-1 flex-shrink-0">Q2</button>
-            <button data-gallery="Q3" class="nav-button px-4 py-2 mx-1 flex-shrink-0">Q3</button>
-            <button data-gallery="Q4" class="nav-button px-4 py-2 mx-1 flex-shrink-0">Q4</button>
-            <button data-gallery="Warm-ups & Team" class="nav-button px-4 py-2 mx-1 flex-shrink-0">Warm-ups & Team</button>
-            <button data-gallery="Team Photos" class="nav-button px-4 py-2 mx-1 flex-shrink-0">Team Photos</button>
-            
-            <!-- Video Link Button -->
-            <!-- The link is set to videos.html and uses a URL hash to target the specific tab -->
-            <a href="videos.html#Clarksville%20Huntress%20(11-08-2025)" 
-               class="flex-shrink-0 px-4 py-2 mx-1 text-sm sm:text-base font-semibold text-white transition duration-200 ease-in-out bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 shadow-md transform hover:scale-[1.02] active:bg-red-800 flex items-center justify-center">
-                <i class="fas fa-video mr-2"></i> Videos
-            </a>
-        </nav>
+    <!-- Gallery Navigation (Buttons) -->
+    <div id="gallery-nav" class="flex flex-wrap justify-center gap-3 p-4 bg-gray-900/50 rounded-xl max-w-7xl w-full mb-8 shadow-inner shadow-red-900/50">
+        <button data-gallery="1st Half" class="nav-button py-2 px-4 rounded-lg text-lg font-medium transition-colors duration-200">1st Half</button>
+        <button data-gallery="2nd Half" class="nav-button py-2 px-4 rounded-lg text-lg font-medium transition-colors duration-200">2nd Half</button>
+        <button data-gallery="3rd Half" class="nav-button py-2 px-4 rounded-lg text-lg font-medium transition-colors duration-200">3rd Half</button>
+        <button data-gallery="Warm ups" class="nav-button py-2 px-4 rounded-lg text-lg font-medium transition-colors duration-200">Warm ups</button>
+        <button data-gallery="Team Photos" class="nav-button py-2 px-4 rounded-lg text-lg font-medium transition-colors duration-200">Team Photos</button>
+        <button data-gallery="Videos" class="nav-button py-2 px-4 rounded-lg text-lg font-medium transition-colors duration-200">Videos</button>
+    </div>
 
-        <!-- Current Gallery Title -->
-        <h2 id="current-gallery-title" class="text-3xl font-bold text-gray-800 mb-6 text-center">Q1</h2>
+    <!-- Gallery Content Area -->
+    <div id="gallery-content" class="w-full max-w-7xl min-h-64">
+        <p class="text-center text-gray-500 py-10">Loading gallery...</p>
+    </div>
 
-        <!-- Gallery Grid -->
-        <ul id="gallery-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            <!-- Images will be loaded here -->
-        </ul>
-
-    </main>
-
-    <!-- Modal for Full-Screen Image View -->
-    <div id="image-modal" class="modal fixed inset-0 flex items-center justify-center hidden opacity-0 transition-opacity" onclick="closeModal()">
-        <div class="relative p-4" onclick="event.stopPropagation()">
+    <!-- Modal for Image Viewing -->
+    <div id="image-modal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity" onclick="closeModal()">
+        <div class="relative flex flex-col items-center justify-center" onclick="event.stopPropagation()">
             <!-- Close Button -->
-            <button id="close-modal-btn" class="absolute top-4 right-4 text-white text-3xl hover:text-red-500 transition duration-150 z-50 p-2 rounded-full bg-black/50" aria-label="Close Image">
-                <i class="fas fa-times"></i>
+            <button id="close-modal" class="absolute top-4 right-4 text-white text-3xl z-50 p-2 rounded-full bg-red-600 hover:bg-red-700 transition" aria-label="Close image viewer">
+                &times;
             </button>
             
-            <!-- Previous Button -->
-            <button id="prev-btn" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-3xl opacity-75 hover:opacity-100 transition duration-150 p-3 rounded-full bg-black/50 hover:bg-black/75 z-50" aria-label="Previous Image">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            
-            <!-- Next Button -->
-            <button id="next-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-3xl opacity-75 hover:opacity-100 transition duration-150 p-3 rounded-full bg-black/50 hover:bg-black/75 z-50" aria-label="Next Image">
-                <i class="fas fa-chevron-right"></i>
-            </button>
+            <!-- Image and Navigation -->
+            <div class="flex items-center">
+                <!-- Previous Button -->
+                <button id="prev-image" class="text-white text-4xl p-4 mx-2 rounded-full bg-red-600/50 hover:bg-red-600 transition" aria-label="Previous image">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
 
-            <!-- Image -->
-            <img id="modal-image" src="" alt="Full size gallery image" class="modal-content rounded-xl shadow-2xl">
+                <!-- Image -->
+                <img id="modal-image" src="" alt="Gallery Image" class="modal-content rounded-lg shadow-2xl">
+
+                <!-- Next Button -->
+                <button id="next-image" class="text-white text-4xl p-4 mx-2 rounded-full bg-red-600/50 hover:bg-red-600 transition" aria-label="Next image">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <!-- Caption -->
+            <p id="modal-caption" class="text-white mt-4 text-lg bg-gray-900/75 p-2 rounded-lg"></p>
         </div>
     </div>
 
     <script>
-        // Data structure containing all images for each sub-gallery
-        const GALLERY_DATA = {
-            "Q1": [
-                "https://i.postimg.cc/h4m7xJw4/DSC-6183.jpg",
-                "https://i.postimg.cc/x8LJS7Hc/DSC-6185.jpg",
-                "https://i.postimg.cc/nzyjgZsC/DSC-6186.jpg",
-                "https://i.postimg.cc/6pp3HTHP/DSC-6187.jpg"
+        // Mock data for different sub-galleries (replace with real URLs)
+        const allGalleries = {
+            "1st Half": [
+                { url: "https://i.postimg.cc/sX29T302/DSC-2401.jpg", alt: "1st Half 1" },
+                { url: "https://i.postimg.cc/9F40kSgT/DSC-2500.jpg", alt: "1st Half 2" },
+                { url: "https://i.postimg.cc/VL03fX4G/DSC-2601.jpg", alt: "1st Half 3" },
+                { url: "https://i.postimg.cc/vB7t5p54/DSC-2700.jpg", alt: "1st Half 4" },
+                { url: "https://i.postimg.cc/g0kL5G9r/DSC-2801.jpg", alt: "1st Half 5" },
             ],
-            "Q2": [
-                "https://i.postimg.cc/h4m7xJw4/DSC-6183.jpg",
-                "https://i.postimg.cc/x8LJS7Hc/DSC-6185.jpg",
-                "https://i.postimg.cc/nzyjgZsC/DSC-6186.jpg",
-                "https://i.postimg.cc/6pp3HTHP/DSC-6187.jpg"
+            "2nd Half": [
+                { url: "https://i.postimg.cc/VL03fX4G/DSC-2601.jpg", alt: "2nd Half 1" },
+                { url: "https://i.postimg.cc/vB7t5p54/DSC-2700.jpg", alt: "2nd Half 2" },
+                { url: "https://i.postimg.cc/g0kL5G9r/DSC-2801.jpg", alt: "2nd Half 3" },
             ],
-            "Q3": [
-                "https://i.postimg.cc/h4m7xJw4/DSC-6183.jpg",
-                "https://i.postimg.cc/x8LJS7Hc/DSC-6185.jpg",
-                "https://i.postimg.cc/nzyjgZsC/DSC-6186.jpg",
-                "https://i.postimg.cc/6pp3HTHP/DSC-6187.jpg"
+            "3rd Half": [
+                { url: "https://i.postimg.cc/g0kL5G9r/DSC-2801.jpg", alt: "3rd Half 1" },
+                { url: "https://i.postimg.cc/J0R4W38C/DSC-2900.jpg", alt: "3rd Half 2" },
             ],
-            "Q4": [
-                "https://i.postimg.cc/h4m7xJw4/DSC-6183.jpg",
-                "https://i.postimg.cc/x8LJS7Hc/DSC-6185.jpg",
-                "https://i.postimg.cc/nzyjgZsC/DSC-6186.jpg",
-                "https://i.postimg.cc/6pp3HTHP/DSC-6187.jpg"
-            ],
-            "Warm-ups & Team": [
-                "https://i.postimg.cc/h4m7xJw4/DSC-6183.jpg",
-                "https://i.postimg.cc/x8LJS7Hc/DSC-6185.jpg",
-                "https://i.postimg.cc/nzyjgZsC/DSC-6186.jpg",
-                "https://i.postimg.cc/6pp3HTHP/DSC-6187.jpg"
+            "Warm ups": [
+                { url: "https://i.postimg.cc/Tw451t6p/DSC-3001.jpg", alt: "Warm up 1" },
+                { url: "https://i.postimg.cc/xT352k2q/DSC-3100.jpg", alt: "Warm up 2" },
             ],
             "Team Photos": [
-                "https://i.postimg.cc/h4m7xJw4/DSC-6183.jpg",
-                "https://i.postimg.cc/x8LJS7Hc/DSC-6185.jpg",
-                "https://i.postimg.cc/nzyjgZsC/DSC-6186.jpg",
-                "https://i.postimg.cc/6pp3HTHP/DSC-6187.jpg"
+                { url: "https://i.postimg.cc/cJfprQLn/DSC-2536.jpg", alt: "Team Photo 1" },
+                { url: "https://i.postimg.cc/sX29T302/DSC-2401.jpg", alt: "Team Photo 2" },
+            ],
+            "Videos": [
+                // Only used to define the tab, content generated separately
             ]
         };
 
-        const galleryList = document.getElementById('gallery-list');
-        const currentTitle = document.getElementById('current-gallery-title');
-        const navButtons = document.querySelectorAll('.nav-button');
-        
+        const videos = [
+            // Mock video data (replace with actual YouTube IDs or embeds)
+            { id: "eBkeq0A0WfE", title: "Game Highlights Part 1 (Example)" },
+            { id: "eBkeq0A0WfE", title: "Game Highlights Part 2 (Example)" },
+        ];
+
+        let currentImageIndex = 0;
+        let currentGalleryKey = null;
+
+        const galleryContent = document.getElementById('gallery-content');
         const modal = document.getElementById('image-modal');
         const modalImage = document.getElementById('modal-image');
-        const closeBtn = document.getElementById('close-modal-btn');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
+        const caption = document.getElementById('modal-caption');
+        const prevButton = document.getElementById('prev-image');
+        const nextButton = document.getElementById('next-image');
+        const closeButton = document.getElementById('close-modal');
+        const navButtons = document.querySelectorAll('.nav-button'); // Select by class
 
-        let currentGalleryImages = [];
-        let currentImageIndex = 0;
-        let activeGalleryName = "Q1"; // Default active gallery
-
-        /**
-         * Clears the gallery, loads new images, and updates the active navigation button.
-         * @param {string} galleryName The key in GALLERY_DATA to load.
-         */
-        function loadSubGallery(galleryName) {
-            // 1. Update state
-            activeGalleryName = galleryName;
-            currentGalleryImages = GALLERY_DATA[galleryName] || [];
-            currentTitle.textContent = galleryName;
-
-            // 2. Update navigation bar active state
+        // Function to update button styles using Tailwind classes
+        function updateButtonStyles(activeGallery) {
             navButtons.forEach(button => {
-                button.classList.remove('active');
-                if (button.dataset.gallery === galleryName) {
-                    button.classList.add('active');
+                const isActive = button.dataset.gallery === activeGallery;
+                
+                // Base styles (always present)
+                button.classList.remove('bg-red-600', 'text-white', 'shadow-xl', 'shadow-red-600/50', 'border-transparent');
+                
+                if (isActive) {
+                    // ACTIVE STYLES (Solid Red)
+                    button.classList.remove('bg-gray-800', 'text-red-400', 'border', 'border-red-500/20', 'hover:bg-red-700', 'hover:text-white');
+                    button.classList.add('bg-red-600', 'text-white', 'shadow-xl', 'shadow-red-600/50', 'border-transparent');
+                } else {
+                    // INACTIVE STYLES (Black/Red Outline)
+                    button.classList.add('bg-gray-800', 'text-red-400', 'border', 'border-red-500/20', 'hover:bg-red-700', 'hover:text-white');
                 }
             });
-
-            // 3. Render images
-            galleryList.classList.remove('loaded');
-            galleryList.innerHTML = ''; // Clear previous images
-
-            // Create and append new list items for each image
-            currentGalleryImages.forEach((url, index) => {
-                const li = document.createElement('li');
-                li.className = 'w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg transform hover:shadow-xl transition-shadow';
-                li.style.animationDelay = `${index * 0.05}s`; // Staggered entry
-
-                const img = document.createElement('img');
-                img.src = url;
-                img.alt = `${galleryName} photo ${index + 1}`;
-                img.className = 'gallery-image w-full h-full object-cover';
-                img.loading = 'lazy'; // Improve performance
-                
-                // Image fallback/placeholder
-                img.onerror = function() {
-                    this.onerror = null; // Prevent infinite loop
-                    this.src = `https://placehold.co/400x300/a80000/ffffff?text=Image+Error`;
-                };
-
-                img.onclick = () => openModal(index);
-                li.appendChild(img);
-                galleryList.appendChild(li);
-            });
-
-            // 4. Trigger fade-in animation
-            setTimeout(() => {
-                galleryList.classList.add('loaded');
-            }, 50);
         }
 
-        /**
-         * Opens the modal to view an image in full screen.
-         * @param {number} index The index of the image in the current gallery's array.
-         */
-        function openModal(index) {
+        // Function to load the video content
+        function loadVideoContent() {
+            galleryContent.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+                    ${videos.map(video => `
+                        <div class="bg-gray-900 rounded-xl overflow-hidden shadow-2xl transition-all duration-300 hover:scale-[1.02] border border-red-500/10">
+                            <h3 class="text-xl font-semibold text-red-500 p-4 border-b border-gray-700">${video.title}</h3>
+                            <div class="video-container">
+                                <!-- Ensure the video ID is correct and iframe works -->
+                                <iframe 
+                                    src="https://www.youtube.com/embed/${video.id}?autoplay=0&rel=0" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen
+                                ></iframe>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function loadSubGallery(galleryName) {
+            updateButtonStyles(galleryName);
+            galleryContent.innerHTML = '';
+            currentGalleryKey = galleryName;
+
+            if (galleryName === "Videos") {
+                loadVideoContent();
+                return;
+            }
+
+            const images = allGalleries[galleryName];
+            if (!images) {
+                galleryContent.innerHTML = `<p class="text-center text-red-500 text-xl py-10">No images found for "${galleryName}".</p>`;
+                return;
+            }
+
+            // Create a responsive grid layout
+            const gridHtml = images.map((image, index) => `
+                <div class="gallery-image rounded-lg overflow-hidden bg-gray-900 border border-gray-700 shadow-lg" data-index="${index}" data-gallery="${galleryName}" onclick="openModal('${galleryName}', ${index})">
+                    <img src="${image.url}" alt="${image.alt}" loading="lazy" class="w-full h-48 object-cover transform transition-transform duration-200 hover:scale-[1.1]" onerror="this.onerror=null;this.src='https://placehold.co/400x300/1f2937/9ca3af?text=Image+Not+Found';">
+                </div>
+            `).join('');
+
+            galleryContent.innerHTML = `
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4 max-w-7xl mx-auto w-full">
+                    ${gridHtml}
+                </div>
+            `;
+        }
+
+        function openModal(galleryName, index) {
+            currentGalleryKey = galleryName;
             currentImageIndex = index;
-            modalImage.src = currentGalleryImages[currentImageIndex];
-            modalImage.alt = `${activeGalleryName} photo ${currentImageIndex + 1}`;
+            const image = allGalleries[galleryName][index];
+            modalImage.src = image.url;
+            modalImage.alt = image.alt;
+            caption.textContent = image.alt;
             modal.classList.remove('hidden');
-            // Force opacity transition
-            setTimeout(() => {
-                modal.classList.add('opacity-100');
-            }, 10); 
-            document.body.style.overflow = 'hidden'; // Prevent scrolling background
+            // Timeout is needed for the CSS transition to work (opacity change)
+            setTimeout(() => modal.classList.remove('opacity-0'), 10); 
+            updateModalNav();
         }
 
-        /**
-         * Closes the full-screen modal.
-         */
         function closeModal() {
-            modal.classList.remove('opacity-100');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modalImage.src = ''; // Clear source for performance
-            }, 300);
-            document.body.style.overflow = ''; // Restore scrolling
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300); // Hide after transition
         }
 
-        /**
-         * Shows the next image in the sequence.
-         */
+        function updateModalNav() {
+            const totalImages = allGalleries[currentGalleryKey].length;
+            prevButton.style.visibility = (currentImageIndex > 0) ? 'visible' : 'hidden';
+            nextButton.style.visibility = (currentImageIndex < totalImages - 1) ? 'visible' : 'hidden';
+        }
+
         function showNextImage() {
-            if (currentGalleryImages.length === 0) return;
-            currentImageIndex = (currentImageIndex + 1) % currentGalleryImages.length;
-            modalImage.src = currentGalleryImages[currentImageIndex];
-            modalImage.alt = `${activeGalleryName} photo ${currentImageIndex + 1}`;
+            const totalImages = allGalleries[currentGalleryKey].length;
+            if (currentImageIndex < totalImages - 1) {
+                currentImageIndex++;
+                openModal(currentGalleryKey, currentImageIndex);
+            }
         }
 
-        /**
-         * Shows the previous image in the sequence.
-         */
         function showPrevImage() {
-            if (currentGalleryImages.length === 0) return;
-            currentImageIndex = (currentImageIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
-            modalImage.src = currentGalleryImages[currentImageIndex];
-            modalImage.alt = `${activeGalleryName} photo ${currentImageIndex + 1}`;
+            if (currentImageIndex > 0) {
+                currentImageIndex--;
+                openModal(currentGalleryKey, currentImageIndex);
+            }
         }
 
-        // --- Event Listeners ---
-
-        closeBtn.addEventListener('click', closeModal);
-        prevBtn.addEventListener('click', showPrevImage);
-        nextBtn.addEventListener('click', showNextImage);
+        // Attach event listeners
+        prevButton.addEventListener('click', (e) => { e.stopPropagation(); showPrevImage(); });
+        nextButton.addEventListener('click', (e) => { e.stopPropagation(); showNextImage(); });
+        closeButton.addEventListener('click', closeModal);
 
         // Keyboard navigation for modal
         document.addEventListener('keydown', (e) => {
@@ -323,8 +310,8 @@
                 });
             });
 
-            // Load the first sub-gallery ("Q1") by default when the page loads
-            loadSubGallery("Q1"); 
+            // Load the first sub-gallery ("1st Half") by default when the page loads
+            loadSubGallery("1st Half"); 
         });
     </script>
 </body>
