@@ -1172,20 +1172,25 @@
 
         // Initialize the gallery on page load
         document.addEventListener('DOMContentLoaded', () => {
-            // Add click listeners to navigation buttons
+            // Add click listeners to navigation buttons (Keep this loop as is)
             navButtons.forEach(button => {
                 button.addEventListener('click', () => {
+                    // ... (existing button click logic)
                     const galleryName = button.dataset.gallery;
-                    loadSubGallery(galleryName); // Call loadSubGallery for internal navigation
+                    loadSubGallery(galleryName); 
                 });
             });
 
-            // Load the first sub-gallery ("1st Half") by default when the page loads
-            loadSubGallery("1st Half"); 
+            // FIX: Find the default button and simulate a click to run all necessary logic
+            const defaultButton = document.querySelector('.nav-button[data-gallery="1st Half"]');
+            if (defaultButton) {
+                defaultButton.click();
+            }
         });
     </script>
 </body>
 </html>
+
 
 
 
