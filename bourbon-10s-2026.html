@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bourbon 10s - 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .gallery-image {
+            transition: transform 0.2s ease-in-out;
+        }
+        .gallery-image:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+        .modal {
+            background-color: rgba(0, 0, 0, 0.9);
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            max-height: 90vh;
+            max-width: 90vw;
+            object-fit: contain;
+            cursor: pointer;
+        }
+        .spinner {
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top: 8px solid #ffffff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            z-index: 50;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .nav-button.active {
+            background-color: #4a5568;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        /* Video tab styles */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center py-8">
+
+    <header class="w-full max-w-7xl flex justify-between items-center mb-12 p-4 bg-gray-900 rounded-xl shadow-lg">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-red-600">Bourbon 10s - 2026</h1>
+        <nav class="flex space-x-4">
+            <a href="index.html" class="flex items-center space-x-2 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition duration-300 transform hover:scale-105">
+                <i class="fas fa-home"></i>
+                <span class="hidden sm:inline">Home</span>
+            </a>
+        </nav>
+    </header>
+
+    <nav class="mb-10 p-4 bg-white rounded-xl shadow-xl flex flex-wrap justify-center gap-4">
+        <button class="nav-button bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Louisville Riversharks vs LBW">Louisville Riversharks vs LBW</button>
+        <button class="nav-button bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Clarksville Huntresses vs LBW">Clarksville Huntresses vs LBW</button>
+        <button class="nav-button bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Columbus Squirrels vs LBW">Columbus Squirrels vs LBW</button>
+        <button class="nav-button bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Team / Warm ups">Team / Warm ups</button>
+        <button class="nav-button bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1" data-gallery="Videos">Videos</button>
+    </nav>
+
+    <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 max-w-7xl mx-auto bg-white rounded-xl shadow-2xl w-full">
+    </div>
+
+    <!-- Video section (hidden by default) -->
+    <div id="videoSection" class="hidden p-6 max-w-7xl mx-auto bg-white rounded-xl shadow-2xl w-full">
+        <h2 class="text-2xl font-bold text-gray-700 mb-6 text-center">Videos</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <div class="video-container rounded-lg overflow-hidden shadow-lg">
+                    <iframe src="https://www.youtube.com/embed/IbKahnXR-s0" title="Bourbon 10s 2026 Video 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div>
+                <div class="video-container rounded-lg overflow-hidden shadow-lg">
+                    <iframe src="https://www.youtube.com/embed/nHuXnQDZFZM" title="Bourbon 10s 2026 Video 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="fixed inset-0 flex items-center justify-center z-50 hidden modal opacity-0">
+        <div class="relative flex flex-col items-center justify-center w-full h-full">
+            <button id="closeModal" class="absolute top-4 right-4 text-white text-4xl p-2 rounded-full bg-gray-700 bg-opacity-50 hover:bg-opacity-75 focus:outline-none z-55" aria-label="Close image modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="loadingSpinner" class="spinner absolute z-50 hidden"></div>
+            <img id="modalImage" src="" alt="Gallery Image" class="modal-content rounded-lg shadow-lg">
+            <div id="clickToSourceText" class="absolute bottom-8 text-white text-lg bg-black bg-opacity-50 px-4 py-2 rounded-lg hidden transition-opacity duration-300 opacity-0">
+                Click image to view host page
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const subGalleries = {
+            "Louisville Riversharks vs LBW": [
+                "https://i.postimg.cc/y8RPBTk3/DSC-9123.jpg",
+                "https://i.postimg.cc/6pZ0whyd/DSC-9124.jpg",
+                "https://i.postimg.cc/2SWwmxVd/DSC-9125.jpg"
+            ],
+            "Clarksville Huntresses vs LBW": [
+                "https://i.postimg.cc/X7PTwHgS/DSC-9485.jpg",
+                "https://i.postimg.cc/tgQwcsfw/DSC-9486.jpg",
+                "https://i.postimg.cc/zfZ6Qy6q/DSC-9487.jpg"
+            ],
+            "Columbus Squirrels vs LBW": [
+                "https://i.postimg.cc/Pf07J6zY/DSC-0006.jpg",
+                "https://i.postimg.cc/dQgf3WmW/DSC-0007.jpg",
+                "https://i.postimg.cc/ZYXQnfF9/DSC-0008.jpg"
+            ],
+            "Team / Warm ups": [
+                "https://i.postimg.cc/g2kQ4QJS/DSC-0001.jpg",
+                "https://i.postimg.cc/dVtpnp1W/DSC-0002.jpg",
+                "https://i.postimg.cc/VkLp4p6Z/DSC-0003.jpg"
+            ]
+        };
+
+        let currentImageUrls = [];
+        let currentImageIndex = 0;
+
+        const galleryDiv = document.getElementById('gallery');
+        const videoSection = document.getElementById('videoSection');
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeModalBtn = document.getElementById('closeModal');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const clickToSourceText = document.getElementById('clickToSourceText');
+        const navButtons = document.querySelectorAll('.nav-button');
+
+        function loadSubGallery(subGalleryName) {
+            // Update active button
+            navButtons.forEach(button => {
+                if (button.dataset.gallery === subGalleryName) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+
+            // Handle Videos tab
+            if (subGalleryName === 'Videos') {
+                galleryDiv.classList.add('hidden');
+                videoSection.classList.remove('hidden');
+                return;
+            }
+
+            // Show gallery, hide videos
+            galleryDiv.classList.remove('hidden');
+            videoSection.classList.add('hidden');
+            galleryDiv.innerHTML = '';
+
+            const images = subGalleries[subGalleryName] || [];
+            currentImageUrls = images;
+
+            if (images.length === 0) {
+                galleryDiv.innerHTML = '<p class="col-span-full text-center text-gray-400 text-lg py-10">No images found for this section.</p>';
+                return;
+            }
+
+            images.forEach((url, index) => {
+                const imgContainer = document.createElement('div');
+                imgContainer.className = 'overflow-hidden rounded-lg shadow-md bg-gray-200';
+
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = `Gallery Image ${index + 1}`;
+                img.className = 'gallery-image w-full h-48 object-cover';
+                img.loading = 'lazy';
+                img.onerror = function() {
+                    this.src = 'https://placehold.co/400x300/cccccc/333333?text=Image+Error';
+                };
+
+                imgContainer.appendChild(img);
+                imgContainer.addEventListener('click', () => openModal(index));
+                galleryDiv.appendChild(imgContainer);
+            });
+        }
+
+        function openModal(index) {
+            currentImageIndex = index;
+
+            loadingSpinner.classList.remove('hidden');
+            modalImage.classList.add('hidden');
+            clickToSourceText.classList.add('hidden', 'opacity-0');
+            modalImage.src = '';
+
+            setTimeout(() => {
+                modalImage.src = currentImageUrls[currentImageIndex];
+                modalImage.onerror = function() {
+                    this.src = 'https://placehold.co/800x600/cccccc/333333?text=Image+Error';
+                    this.alt = 'Image failed to load';
+                    loadingSpinner.classList.add('hidden');
+                    modalImage.classList.remove('hidden');
+                };
+                modalImage.onload = function() {
+                    loadingSpinner.classList.add('hidden');
+                    modalImage.classList.remove('hidden');
+                    setTimeout(() => {
+                        clickToSourceText.classList.remove('hidden');
+                        setTimeout(() => clickToSourceText.classList.remove('opacity-0'), 10);
+                    }, 200);
+                };
+            }, 50);
+
+            imageModal.classList.remove('hidden');
+            setTimeout(() => imageModal.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            imageModal.classList.add('opacity-0');
+            setTimeout(() => {
+                imageModal.classList.add('hidden');
+                modalImage.src = '';
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % currentImageUrls.length;
+            openModal(currentImageIndex);
+        }
+
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + currentImageUrls.length) % currentImageUrls.length;
+            openModal(currentImageIndex);
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) closeModal();
+        });
+
+        modalImage.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (modalImage.src && !modalImage.classList.contains('hidden')) {
+                const parts = modalImage.src.split('/');
+                const imageId = parts[parts.length - 2];
+                if (imageId && imageId.length > 0) {
+                    window.open(`https://postimg.cc/${imageId}`, '_blank');
+                } else {
+                    window.open(modalImage.src, '_blank');
+                }
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!imageModal.classList.contains('hidden')) {
+                if (e.key === 'ArrowRight') showNextImage();
+                else if (e.key === 'ArrowLeft') showPrevImage();
+                else if (e.key === 'Escape') closeModal();
+            }
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+        modalImage.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+        modalImage.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].clientX;
+            const swipeThreshold = 50;
+            if (touchEndX < touchStartX - swipeThreshold) showNextImage();
+            else if (touchEndX > touchStartX + swipeThreshold) showPrevImage();
+        });
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => loadSubGallery(button.dataset.gallery));
+        });
+
+        // Load first tab by default
+        loadSubGallery('Louisville Riversharks vs LBW');
+    </script>
+</body>
+</html>
